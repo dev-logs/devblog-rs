@@ -10,11 +10,11 @@ use crate::web::home::navigation::{HomeNavigation, HomeNavigationTab};
 #[component]
 pub fn Home() -> impl IntoView {
     view! {
-        <div class="home-screen h-screen w-screen flex flex-row pl-200 bg-primaryC">
-            <div class="navigation-bar-wrapper fixed h-full top-0 left-0">
+        <div class="home-screen h-screen w-full flex flex-row bg-primaryC">
+            <div class="navigation-bar-wrapper h-full">
                 <HomeNavigation/>
             </div>
-            <div class="home-content-wrapper flex flex-col w-full">
+            <div class="home-content-wrapper flex flex-col pl-8">
                 <Content/>
             </div>
         </div>
@@ -65,7 +65,7 @@ fn BlogList() -> impl IntoView {
     let blogs = provider.list();
 
     view! {
-        <div class="grid lg:grid-cols-1 xl:grid-cols-3 2xl:grid-cols-4 gap-4 m-8 ml-14">
+        <div class="grid lg:grid-cols-1 xl:grid-cols-4 gap-5 mt-8">
             {
                 blogs.into_iter().map(|_|
                     view! {

@@ -93,7 +93,7 @@ pub fn HomeNavigation() -> impl IntoView {
     });
 
     view! {
-        <div class="navigation-header flex flex-col justify-between pl-8 pr-8 pt-10 h-full bg-secondaryC max-w-200" style="max-width=200px">
+        <div class="navigation-header flex flex-col justify-between pl-8 pr-8 pt-10 h-full bg-secondaryC max-w-220px" style="max-width=200px">
             <AuthorAvatar author={AuthorWebModel::from(authors_provider.tiendang())}/>
             <div class="navigation-body flex-col mt-10">
                 <NavigationItem tab={HomeNavigationTab::Blog}/>
