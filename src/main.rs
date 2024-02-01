@@ -1,4 +1,6 @@
 use actix_web::Route;
+use leptos::logging::log;
+use devblog_rs::core_services::logger::setup_logger;
 
 #[cfg(feature = "ssr")]
 #[actix_web::main]
@@ -8,12 +10,17 @@ async fn main() -> std::io::Result<()> {
     use leptos::*;
     use leptos_actix::{generate_route_list, LeptosRoutes};
     use devblog_rs::app::*;
+    use devblog_rs::core_services::surrealdb::connect::connect_surrealdb;
+    use devblog_rs::core_services::logger::setup_logger;
+
+    setup_logger();
+    connect_surrealdb().await;
 
     let conf = get_configuration(None).await.unwrap();
     let addr = conf.leptos_options.site_addr;
     // Generate the list of routes in your Leptos App
     let routes = generate_route_list(App);
-    println!("listening on http://{}", &addr);
+    log!("listening on http://{}", &addr);
 
     HttpServer::new(move || {
         let leptos_options = &conf.leptos_options;

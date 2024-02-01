@@ -24,10 +24,10 @@ impl Default for SurrealDb {
 }
 
 #[derive(Debug, Default)]
-pub struct Config {
+pub struct Environment {
     pub surreal_db: SurrealDb,
 }
 
 lazy_static! {
-    pub static ref CONFIGS: Config = Default::default();
+    pub static ref ENVIRONMENT: Environment = Default::default();
 }

@@ -32,6 +32,8 @@ serde_derive = "1.0.196"
 lazy_static = "1.4.0"
 once_cell = "1.19.0"
 thiserror = "1.0.56"
+log = { version = "0.4.20", optional = true }
+pretty_env_logger = { version = "0.5.0", optional = true }
 
 [dependencies.web-sys]
 version = "0.3"
@@ -41,6 +43,8 @@ features = []
 csr = ["leptos/csr", "leptos_meta/csr", "leptos_router/csr"]
 hydrate = ["leptos/hydrate", "leptos_meta/hydrate", "leptos_router/hydrate"]
 ssr = [
+  "dep:log",
+  "dep:pretty_env_logger",
   "dep:axum",
   "dep:surrealdb",
   "dep:surreal_derive_plus",
