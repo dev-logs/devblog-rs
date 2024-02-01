@@ -1,7 +1,7 @@
 use std::fmt::Debug;
 use leptos::*;
 use web_sys::js_sys::eval;
-use crate::core_services::di::*;
+use crate::core_services::web_di::*;
 use crate::services::author_provider_service::author_provider::AuthorProviderService;
 use crate::web::app_context::home_navigation_context::HomeNavigationSignalContext;
 use crate::web::app_context::signal_context::UseAppSignal;
@@ -70,7 +70,7 @@ pub fn HomeNavigation() -> impl IntoView {
     let navigation_context = use_context::<HomeNavigationSignalContext>().unwrap();
     let selected_tab = navigation_context.read();
 
-    let provider = Injector::service_injector();
+    let provider = WebInjector::service_injector();
     let authors_provider = provider.get_author_service();
 
     create_effect(move |_| {

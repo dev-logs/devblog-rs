@@ -1,6 +1,6 @@
 use leptos::*;
 use web_sys::MouseEvent;
-use crate::core_services::di::*;
+use crate::core_services::web_di::*;
 use crate::services::blog_provider_service::blog_provider_service::BlogProviderService;
 use crate::web::components::blogs::blog_item_container::BlogItemContainer;
 use crate::web::components::blogs::blog_item_description::BlogItemDescription;
@@ -9,7 +9,7 @@ use crate::web::components::read_more_button::ReadMoreButton;
 
 #[component]
 pub fn DeployFlutterWebBlogItem() -> impl IntoView {
-    let di = Injector::service_injector();
+    let di = WebInjector::service_injector();
     let blog = di.get_blog_service().deploy_flutter_web();
     let title = blog.title.clone();
     let description = blog.description.clone();

@@ -1,5 +1,5 @@
 use leptos::*;
-use crate::core_services::di::*;
+use crate::core_services::web_di::*;
 use crate::services::blog_provider_service::blog_provider_service::BlogProviderService;
 use crate::web::app_context::home_navigation_context::HomeNavigationSignalContext;
 use crate::web::app_context::signal_context::UseAppSignal;
@@ -60,7 +60,7 @@ fn Content() -> impl IntoView {
 
 #[component]
 fn BlogList() -> impl IntoView {
-    let di = Injector::service_injector();
+    let di = WebInjector::service_injector();
     let provider = di.get_blog_service();
     let blogs = provider.list();
 

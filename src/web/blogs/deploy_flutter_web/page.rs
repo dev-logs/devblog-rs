@@ -1,5 +1,5 @@
 use leptos::*;
-use crate::core_services::di::*;
+use crate::core_services::web_di::*;
 use crate::services::blog_provider_service::blog_provider_service::BlogProviderService;
 use crate::web::components::blogs::blog_body::BlogBody;
 use crate::web::components::blogs::blog_container::BlogContainer;
@@ -14,7 +14,7 @@ use crate::web::components::code_blog::CodeBlock;
 
 #[component]
 pub fn DeployFlutterWebPage() -> impl IntoView {
-    let di = Injector::service_injector();
+    let di = WebInjector::service_injector();
     let blogs_provider = di.get_blog_service();
     let blog = blogs_provider.deploy_flutter_web();
 
@@ -117,7 +117,7 @@ flutter run -d chrome
             <BlogHeader2>Nginx</BlogHeader2>
             <BlogBody>Copy and paste this file into your directory</BlogBody>
             <CodeBlock code=r#"
-server {
+api {
     listen 80;
 
     location / {
