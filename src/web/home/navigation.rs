@@ -42,7 +42,7 @@ fn NavigationItem(
             let mut context = navigation_context.clone();
             view! {
                 <div class="flex flex-row mt-1 items-center pt-4 pb-1/4 w-full justify-between p-3">
-                    <button class=format!("item-{:?}", tab) on:click=move |_| {context.set_tab(HomeNavigationTab::Products)} class="text-xl font-black">Products</button>
+                    <button class=format!("item-{:?} text-xl font-black", tab) on:click=move |_| {context.set_tab(HomeNavigationTab::Products)} class="text-xl font-black">Products</button>
                     <Product color="white"/>
                 </div>
             }
