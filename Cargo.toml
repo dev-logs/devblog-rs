@@ -21,7 +21,7 @@ wasm-bindgen = "=0.2.89"
 leptos_icons = "0.2.1"
 icondata_core = "0.1.0"
 icondata = "0.3.0"
-chrono = "0.4.33"
+chrono = { version = "0.4.33", features = ["serde"] }
 surrealdb = { version = "1.1.1", optional = true }
 axum = { version = "0.7.4", optional = true }
 surreal_derive_plus = { version = "1.0.8", optional = true }
