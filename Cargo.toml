@@ -120,3 +120,10 @@ lib-default-features = false
 #
 # Optional. Defaults to "release".
 lib-profile-release = "wasm-release"
+
+[package.metadata]
+surreal_use_camel_case = false
+surreal_enable_log = true
+surreal_namespace = "surrealql"
+surreal_enable_compile_log = true
+surreal_info_log_macro = "log::info"

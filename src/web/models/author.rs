@@ -2,8 +2,8 @@ use crate::entities::author::Author;
 
 #[derive(Debug)]
 pub struct AuthorWebModel {
-    pub(crate) name: String,
-    pub(crate) avatar_url: String,
+    pub name: String,
+    pub avatar_url: String,
 }
 
 impl AuthorWebModel {
