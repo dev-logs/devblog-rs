@@ -1,3 +1,3 @@
-pub mod controllers;
+pub mod web_controllers;
 #[cfg(feature = "ssr")]
 pub mod environments;
