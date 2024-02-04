@@ -21,7 +21,6 @@ impl CreateDiscussionApiImpl {
     }
 }
 
-#[async_trait::async_trait]
 impl Service<Params, Discussion> for CreateDiscussionApiImpl {
     async fn execute(self, params: Params) -> Resolve<Discussion> {
         let user: Option<User> = self.db.query(surreal_quote!(r#"SELECT user where email = #val(&params.email)"#))

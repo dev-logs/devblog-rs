@@ -1,8 +1,6 @@
 use leptos::*;
 use leptos_meta::*;
 use leptos_router::*;
-use crate::core_services::web_di::*;
-use crate::services::blog_provider_service::blog_provider_service::BlogProviderService;
 use crate::web::app_context::home_navigation_context::HomeNavigationSignalContext;
 use crate::web::app_context::signal_context::UseAppSignal;
 use crate::web::blogs::deploy_flutter_web::page::DeployFlutterWebPage;
@@ -10,10 +8,6 @@ use crate::web::home::page::Home;
 
 #[component]
 pub fn App() -> impl IntoView {
-    let di = WebInjector::service_injector();
-    let blog_service_provider = di.get_blog_service();
-    let blogs = blog_service_provider.list();
-
     provide_meta_context();
     HomeNavigationSignalContext::attach();
 

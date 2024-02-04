@@ -1,14 +1,15 @@
-use leptos::{server, ServerFnError};
-use crate::core_services::api_di::*;
+use leptos::*;
 use crate::entities::discussion::Discussion;
 use crate::services::create_discussion::service::Params;
-use crate::services::base::service::*;
 
 #[server(CreateDiscussion, "/web")]
-pub async fn create_discussion(create_discussion_params: Params) -> Result<Discussion, ServerFnError> {
+pub async fn create_discussion(params: Params) -> Result<Discussion, ServerFnError> {
+    use crate::services::base::service::*;
+    use crate::core_services::api_di::*;
+
     let di = ApiInjector::service_injector();
     let discussion_service = di.get_create_discussion_service();
 
-    let created_discussion = discussion_service.execute(create_discussion_params).await?;
+    let created_discussion = discussion_service.execute(params).await?;
     Ok(created_discussion)
 }

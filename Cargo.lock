@@ -1236,7 +1236,6 @@ version = "0.1.0"
 dependencies = [
  "actix-files",
  "actix-web",
- "async-trait",
  "axum",
  "cfg-if",
  "chrono",
