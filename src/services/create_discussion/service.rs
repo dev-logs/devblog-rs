@@ -1,15 +1,12 @@
-use crate::entities::user::User;
+use serde_derive::{Deserialize, Serialize};
+use crate::entities::discussion::Discussion;
 use crate::services::base::service::Service;
 
-#[derive(Clone, Debug)]
-pub(crate) struct Params {
-    pub user: User,
-    pub content: &'static str
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct Params {
+    pub email: String,
+    pub content: String
 }
 
 
-pub(crate) struct Response {
-
-}
-
-pub trait CreateDiscussionService: Service<Params, Response> + Sized {}
+pub trait CreateDiscussionService: Service<Params, Discussion> + Sized {}

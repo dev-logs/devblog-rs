@@ -1,6 +1,6 @@
 use chrono::Utc;
 use surreal_derive_plus::surreal_quote;
-use service::{Params, Response};
+use service::Params;
 use crate::core_services::surrealdb::Db;
 use crate::entities::discussion::Discussion;
 use crate::entities::errors::Errors;
@@ -10,7 +10,7 @@ use crate::services::create_discussion::service;
 use crate::services::create_discussion::service::CreateDiscussionService;
 
 pub struct CreateDiscussionApiImpl {
-    db: Db
+    pub(crate) db: Db
 }
 
 impl CreateDiscussionApiImpl {
@@ -22,9 +22,9 @@ impl CreateDiscussionApiImpl {
 }
 
 #[async_trait::async_trait]
-impl Service<Params, Response> for CreateDiscussionApiImpl {
-    async fn execute(self, params: Params) -> Resolve<Response> {
-        let user: Option<User> = self.db.query(surreal_quote!(r#"SELECT #id(&params.user)"#))
+impl Service<Params, Discussion> for CreateDiscussionApiImpl {
+    async fn execute(self, params: Params) -> Resolve<Discussion> {
+        let user: Option<User> = self.db.query(surreal_quote!(r#"SELECT user where email = #val(&params.email)"#))
             .await?.take(0)?;
         if user.is_none() {
             return Err(Errors::UnAuthorization);
@@ -36,10 +36,11 @@ impl Service<Params, Response> for CreateDiscussionApiImpl {
             created_at: Utc::now(),
         };
 
-        let created_discussion = self.db.query(surreal_quote!(r#"
+        let created_discussion: Option<Discussion> = self.db.query(surreal_quote!(r#"
             CREATE #record(&new_discussion)
-        "#));
-        Ok(Response {})
+        "#)).await?.take(0)?;
+
+        Ok(created_discussion.unwrap())
     }
 }
 
