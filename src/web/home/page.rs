@@ -60,8 +60,7 @@ fn Content() -> impl IntoView {
 
 #[component]
 fn BlogList() -> impl IntoView {
-    let di = WebInjector::service_injector();
-    let provider = di.get_blog_service();
+    let provider = WebInjector::service_injector().get_blog_service();
     let blogs = provider.list();
 
     view! {

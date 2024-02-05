@@ -7,8 +7,7 @@ pub async fn create_discussion(params: Params) -> Result<Discussion, ServerFnErr
     use crate::services::base::service::*;
     use crate::core_services::api_di::*;
 
-    let di = ApiInjector::service_injector();
-    let discussion_service = di.get_create_discussion_service();
+    let discussion_service = ApiInjector::service_injector().get_create_discussion_service();
 
     let created_discussion = discussion_service.execute(params).await?;
     Ok(created_discussion)

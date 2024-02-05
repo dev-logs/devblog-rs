@@ -1,6 +1,6 @@
 use leptos::*;
 use crate::web::components::blogs::blog_header::BlogHeader;
-use crate::web::components::discussion::Discussion;
+use crate::web::discussion::Discussion;
 
 #[component]
 pub fn BlogContainer(

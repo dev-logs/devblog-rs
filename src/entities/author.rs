@@ -5,7 +5,7 @@ pub struct Author {
 }
 
 impl Author {
-    pub(crate) fn new(name: &str, avatar_url: &str) -> Self {
+    pub fn new(name: &str, avatar_url: &str) -> Self {
         Self {
             name: name.to_string(),
             avatar_url: avatar_url.to_string()

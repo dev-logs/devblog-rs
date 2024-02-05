@@ -9,8 +9,7 @@ use crate::web::components::read_more_button::ReadMoreButton;
 
 #[component]
 pub fn DeployFlutterWebBlogItem() -> impl IntoView {
-    let di = WebInjector::service_injector();
-    let blog = di.get_blog_service().deploy_flutter_web();
+    let blog = WebInjector::service_injector().get_blog_service().deploy_flutter_web();
     let title = blog.title.clone();
     let description = blog.description.clone();
 

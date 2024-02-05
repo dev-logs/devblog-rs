@@ -4,4 +4,3 @@ pub mod icons;
 pub mod blogs;
 pub mod read_more_button;
 pub mod code_blog;
-pub mod discussion;

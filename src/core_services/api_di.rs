@@ -1,5 +1,7 @@
-use surrealdb::sql::Base::Db;
+use std::ops::Deref;
+use once_cell::sync::Lazy;
 use crate::core_services::surrealdb::DB;
+use crate::core_services::web_di::{WebInjector};
 use crate::services::author_provider_service::author_provider::AuthorProviderService;
 use crate::services::author_provider_service::author_provider_impl::AuthorProviderServiceImpl;
 use crate::services::blog_provider_service::blog_provider_service::BlogProviderService;
@@ -31,8 +33,11 @@ impl ApiServicesInjector for ApiInjector {
     }
 }
 
+static ADI: Lazy<ApiInjector> = Lazy::new(|| ApiInjector {});
+
 impl ApiInjector {
-    pub fn service_injector() -> impl ApiServicesInjector {
-        Self {}
+    pub fn service_injector() ->  &'static impl ApiServicesInjector {
+        ADI.deref()
     }
 }
+

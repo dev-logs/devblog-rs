@@ -4,7 +4,6 @@ use std::env;
 #[derive(Debug)]
 pub struct SurrealDb {
     pub socket_address: String,
-    /// https://surrealdb.com/docs/surrealql/statements/define/namespace
     pub namespace: String,
     pub db_name: String,
     pub db_password: String,

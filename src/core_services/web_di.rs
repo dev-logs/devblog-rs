@@ -1,3 +1,5 @@
+use std::ops::Deref;
+use once_cell::sync::Lazy;
 use crate::services::author_provider_service::author_provider::AuthorProviderService;
 use crate::services::author_provider_service::author_provider_impl::AuthorProviderServiceImpl;
 use crate::services::blog_provider_service::blog_provider_service::BlogProviderService;
@@ -30,7 +32,9 @@ impl WebServicesInjector for WebInjector {
 }
 
 impl WebInjector {
-    pub fn service_injector() -> impl WebServicesInjector {
-        Self {}
+    pub fn service_injector() -> &'static impl WebServicesInjector {
+        WDI.deref()
     }
 }
+
+static WDI: Lazy<WebInjector> = Lazy::new(move || WebInjector {});

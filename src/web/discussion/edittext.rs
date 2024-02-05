@@ -1,25 +1,28 @@
 use leptos::*;
-use leptos::leptos_dom::log;
-use wasm_bindgen::JsCast;
-use web_sys::FormData;
+use crate::web::utils::form_data::FormDataWrapper;
+
+#[derive(Debug, Clone)]
+pub struct DiscussionSubmitEvent {
+    content: String
+}
 
 #[component]
 pub fn EditText(
+    #[prop()]
+    callback: fn(DiscussionSubmitEvent)
 ) -> impl IntoView {
-    let callback:  Callback<web_sys::SubmitEvent> = (move |submit_event: web_sys::SubmitEvent| {
-        // Prevent the default form submission behavior
+    let (event, set_event) = create_signal(DiscussionSubmitEvent {content: String::new()});
+
+    let on_submit: Callback<web_sys::SubmitEvent> = (move |submit_event: web_sys::SubmitEvent| {
         submit_event.prevent_default();
 
-        // Get the form element
-        let form_element = submit_event.target().unwrap();
-        // Access the form values
-        let form_data = FormData::new_with_form(&form_element.dyn_into().unwrap()).unwrap();
+        let form_data = FormDataWrapper::from(submit_event);
         let value = form_data.get("comment").as_string().unwrap();
-        log!("tiendang-debug {value}");
+        callback(DiscussionSubmitEvent { content: String::new() })
     }).into();
 
     view! {
-        <form class="mb-6" on:submit=callback>
+        <form class="mb-6" on:submit=on_submit>
             <div class="py-2 px-4 mb-4 rounded-lg rounded-t-lg border border-gray-200 bg-gray-800 border-gray-700">
                 <label for="comment" class="sr-only">Your comment</label>
                 <textarea id="comment" name="comment" rows="6"

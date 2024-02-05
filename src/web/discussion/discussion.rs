@@ -1,5 +1,5 @@
 use leptos::*;
-use crate::web::components::discussion::user_name::UserName;
+use crate::web::discussion::user_name::UserName;
 
 #[component]
 pub fn UserDiscussion(

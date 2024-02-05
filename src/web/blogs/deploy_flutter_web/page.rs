@@ -14,8 +14,7 @@ use crate::web::components::code_blog::CodeBlock;
 
 #[component]
 pub fn DeployFlutterWebPage() -> impl IntoView {
-    let di = WebInjector::service_injector();
-    let blogs_provider = di.get_blog_service();
+    let blogs_provider = WebInjector::service_injector().get_blog_service();
     let blog = blogs_provider.deploy_flutter_web();
 
     view! {
