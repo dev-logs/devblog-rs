@@ -1260,6 +1260,7 @@ dependencies = [
  "surreal_devl",
  "surrealdb",
  "thiserror",
+ "tokio",
  "wasm-bindgen",
  "web-sys",
 ]

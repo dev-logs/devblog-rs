@@ -1,6 +1,5 @@
 use leptos::{ServerFnError};
 use serde_derive::{Deserialize, Serialize};
-#[cfg(feature = "ssr")]
 use surrealdb::Error;
 use thiserror::Error;
 
@@ -18,10 +17,9 @@ impl From<serde_json::Error> for Errors {
     }
 }
 
-#[cfg(feature = "ssr")]
 impl From<surrealdb::Error> for Errors {
     fn from(value: Error) -> Self {
-        return Self::InternalServerError("".to_string())
+        return Self::InternalServerError(value.to_string())
     }
 }
 

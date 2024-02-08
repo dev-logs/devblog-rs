@@ -3,23 +3,24 @@ use crate::web::utils::form_data::FormDataWrapper;
 
 #[derive(Debug, Clone)]
 pub struct DiscussionSubmitEvent {
-    content: String
+    pub(crate) content: String
 }
 
 #[component]
 pub fn EditText(
     #[prop()]
-    callback: fn(DiscussionSubmitEvent)
+    callback: Callback<DiscussionSubmitEvent>
 ) -> impl IntoView {
     let (event, set_event) = create_signal(DiscussionSubmitEvent {content: String::new()});
 
-    let on_submit: Callback<web_sys::SubmitEvent> = (move |submit_event: web_sys::SubmitEvent| {
+    let on_submit: Callback<web_sys::SubmitEvent> = Callback::new(move |submit_event: web_sys::SubmitEvent| {
         submit_event.prevent_default();
 
         let form_data = FormDataWrapper::from(submit_event);
-        let value = form_data.get("comment").as_string().unwrap();
-        callback(DiscussionSubmitEvent { content: String::new() })
-    }).into();
+        (callback).call(DiscussionSubmitEvent {
+           content: form_data.get("comment").as_string().unwrap()
+        })
+    });
 
     view! {
         <form class="mb-6" on:submit=on_submit>
