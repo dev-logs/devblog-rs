@@ -1,9 +1,10 @@
 use leptos::*;
-use crate::web::models::author::AuthorWebModel;
+use crate::entities::author::Author;
+use crate::entities::user::User;
 
 #[component]
 pub fn AuthorAvatar(
-    author: AuthorWebModel
+    author: Author
 ) -> impl IntoView {
     return view! {
         <div class="flex flex-row items-center text-gray-200">

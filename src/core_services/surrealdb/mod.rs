@@ -10,3 +10,5 @@ pub static DB: Lazy<Db> = Lazy::new(Surreal::init);
 pub mod connect;
 pub mod adaptive_relation;
 pub mod user_tbl;
+pub mod blog_tbl;
+pub mod author_tbl;

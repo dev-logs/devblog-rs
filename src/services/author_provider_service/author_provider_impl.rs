@@ -11,7 +11,7 @@ impl AuthorProviderServiceImpl {
 
 impl AuthorProviderService for AuthorProviderServiceImpl {
     fn tiendang(&self) -> Author {
-        Author::new("Tien Dang", "/assets/images/authors/author_tiendang.png")
+        Author::new("tiendvlp@gmail.com", "/assets/images/authors/author_tiendang.png", "Đặng Minh Tiến", Some("Tien Dang".to_string()), )
     }
 
     fn list(&self) -> Vec<Author> {

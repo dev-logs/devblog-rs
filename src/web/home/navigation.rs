@@ -7,7 +7,6 @@ use crate::web::app_context::home_navigation_context::HomeNavigationSignalContex
 use crate::web::app_context::signal_context::UseAppSignal;
 use crate::web::components::author_avatar::AuthorAvatar;
 use crate::web::components::icons::{bookshelf::BookShelf, product::Product , light_bulb::LightBulb};
-use crate::web::models::author::AuthorWebModel;
 
 #[derive(Clone, Debug)]
 pub enum HomeNavigationTab {
@@ -94,7 +93,7 @@ pub fn HomeNavigation() -> impl IntoView {
 
     view! {
         <div class="navigation-header flex flex-col justify-between pl-8 pr-8 pt-10 h-full bg-secondaryC max-w-220px" style="max-width=200px">
-            <AuthorAvatar author={AuthorWebModel::from(authors_provider.tiendang())}/>
+            <AuthorAvatar author={authors_provider.tiendang()}/>
             <div class="navigation-body flex-col mt-10">
                 <NavigationItem tab={HomeNavigationTab::Blog}/>
                 <NavigationItem tab={HomeNavigationTab::Products}/>

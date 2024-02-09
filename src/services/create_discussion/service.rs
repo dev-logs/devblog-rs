@@ -8,5 +8,4 @@ pub struct Params {
     pub content: String
 }
 
-
 pub trait CreateDiscussionService: Service<Params, Discussion> + Sized {}

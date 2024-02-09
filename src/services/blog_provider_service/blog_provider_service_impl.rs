@@ -18,11 +18,11 @@ impl<APS: AuthorProviderService> BlogProviderServiceImpl<APS> {
 impl<APS: AuthorProviderService> BlogProviderService for BlogProviderServiceImpl<APS> {
     fn deploy_flutter_web(&self) -> Blog {
         return Blog::new(
-        "blogs/deploy-flutter-web",
-        "Deploy Flutter web with Github Action",
-        "Even it is not very common for some one/organization to use Flutter for web, but I still want to share with my audiences how I deploy a Flutter Web.",
-         self.author_provider.tiendang(),
-         DateTime::default()
+            "blogs/deploy-flutter-web",
+           "Deploy Flutter web with Github Action",
+            "Even it is not very common for some one/organization to use Flutter for web, but I still want to share with my audiences how I deploy a Flutter Web.",
+            self.author_provider.tiendang(),
+            DateTime::default()
         );
     }
 
