@@ -9,7 +9,7 @@ use crate::web::home::page::Home;
 #[component]
 pub fn App() -> impl IntoView {
     provide_meta_context();
-    HomeNavigationSignalContext::attach();
+    HomeNavigationSignalContext::new().attach();
 
     view! {
         <Stylesheet id="leptos" href="/pkg/leptos_start.css"/>

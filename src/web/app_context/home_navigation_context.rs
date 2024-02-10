@@ -7,8 +7,10 @@ pub struct HomeNavigationSignalContext {
     pub signal: AppSignal<HomeNavigationTab>
 }
 
-impl AppContext for HomeNavigationSignalContext {
-    fn new() -> Self {
+impl AppContext for HomeNavigationSignalContext {}
+
+impl HomeNavigationSignalContext {
+    pub(crate) fn new() -> Self {
         let (read, write) = create_signal(HomeNavigationTab::default());
         Self {
             signal: AppSignal::new(read, write)

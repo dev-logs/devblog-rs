@@ -1,4 +1,5 @@
-use leptos::{create_signal, provide_context, ReadSignal, use_context, WriteSignal};
+use std::any::type_name;
+use leptos::{provide_context, ReadSignal, use_context, WriteSignal};
 
 #[derive(Debug, Clone)]
 pub struct AppSignal<T> where T: Clone + 'static + Default {
@@ -24,17 +25,18 @@ impl <T> AppSignal<T> where T: Clone + 'static + Default {
 }
 
 pub trait AppContextProvider {
-    fn attach();
+    fn attach(&self) -> Self;
 }
 
-pub trait AppContext {
-    fn new () -> Self;
-}
+pub trait AppContext {}
 
 impl<T> AppContextProvider for T where T: Clone + AppContext + 'static {
-    fn attach() {
+    fn attach(&self) -> Self {
         if let None = use_context::<Self>() {
-            provide_context(Self::new())
+            let context = self.clone();
+            provide_context(context);
         }
+
+        use_context().expect(format!("Unable to retrieve context {}", type_name::<Self>()).as_str())
     }
 }
