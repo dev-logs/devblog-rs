@@ -5,7 +5,8 @@ use crate::services::base::service::Service;
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Params {
     pub email: String,
-    pub content: String
+    pub content: String,
+    pub blog_title: String
 }
 
 pub trait CreateDiscussionService: Service<Params, Discussion> + Sized {}

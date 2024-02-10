@@ -1,11 +1,9 @@
 use log::info;
 use surreal_derive_plus::surreal_quote;
-use surrealdb::iam::Auth;
 use surrealdb::Response;
 use crate::core_services::surrealdb::Db;
 use crate::core_services::surrealdb::result_handler::UniformSurrealResult;
 use crate::entities::author::Author;
-use crate::entities::blog::Blog;
 use crate::services::author_provider_service::author_provider::AuthorProviderService;
 use crate::services::base::service::{Resolve, Service, VoidResponse};
 use crate::services::migration_services::service::{AuthorMigrationParams, AuthorMigrationService};

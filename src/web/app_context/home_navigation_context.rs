@@ -1,27 +1,18 @@
-use leptos::{create_signal, provide_context, ReadSignal, use_context};
-use crate::web::app_context::signal_context::{AppSignalContext, UseAppSignal};
+use leptos::create_signal;
+use crate::web::app_context::signal_context::{AppSignal, AppContext};
 use crate::web::home::navigation::HomeNavigationTab;
 
 #[derive(Debug, Clone)]
 pub struct HomeNavigationSignalContext {
-    signal: AppSignalContext<HomeNavigationTab>
+    pub signal: AppSignal<HomeNavigationTab>
 }
 
-impl UseAppSignal<HomeNavigationTab> for HomeNavigationSignalContext {
-    fn attach() -> Self {
-        use_context::<HomeNavigationSignalContext>().unwrap_or_else(|| {
-            let (read, write) = create_signal(HomeNavigationTab::default());
-            let context = HomeNavigationSignalContext {
-                signal: AppSignalContext::new(read, write)
-            };
-
-            provide_context(context);
-            use_context::<HomeNavigationSignalContext>().unwrap()
-        })
-    }
-
-    fn read(&self) -> ReadSignal<HomeNavigationTab> {
-        self.signal.read()
+impl AppContext for HomeNavigationSignalContext {
+    fn new() -> Self {
+        let (read, write) = create_signal(HomeNavigationTab::default());
+        Self {
+            signal: AppSignal::new(read, write)
+        }
     }
 }
 

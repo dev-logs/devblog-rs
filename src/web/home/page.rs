@@ -2,7 +2,7 @@ use leptos::*;
 use crate::core_services::web_di::*;
 use crate::services::blog_provider_service::blog_provider_service::BlogProviderService;
 use crate::web::app_context::home_navigation_context::HomeNavigationSignalContext;
-use crate::web::app_context::signal_context::UseAppSignal;
+use crate::web::app_context::signal_context::AppContext;
 use crate::web::blogs::deploy_flutter_web::item::DeployFlutterWebBlogItem;
 use crate::web::home::header::SearchHeader;
 use crate::web::home::navigation::{HomeNavigation, HomeNavigationTab};
@@ -25,7 +25,7 @@ pub fn Home() -> impl IntoView {
 fn Content() -> impl IntoView {
     let home_navigation_context = use_context::<HomeNavigationSignalContext>().unwrap();
 
-    let ContentView = move || match home_navigation_context.read().get() {
+    let ContentView = move || match home_navigation_context.signal.read().get() {
         HomeNavigationTab::Blog => {
             view! {
                 <div>

@@ -5,6 +5,7 @@ use surrealdb::sql::Id;
 use service::Params;
 use crate::core_services::surrealdb::adaptive_relation::AdaptiveRelation;
 use crate::core_services::surrealdb::Db;
+use crate::entities::blog::Blog;
 use crate::entities::discussion::Discussion;
 use crate::entities::errors::Errors;
 use crate::entities::user::User;
@@ -34,9 +35,10 @@ impl Service<Params, Discussion> for CreateDiscussionApiImpl {
 
         let new_discussion = Discussion {
             id: RecordId::from(("discussion", Id::uuid())),
-            owner: AdaptiveRelation::<User>::new(user.unwrap().email.clone().as_str()),
+            owner: AdaptiveRelation::<User>::new(user.unwrap().display_name.as_str()),
             content: params.content.to_string(),
             created_at: Utc::now(),
+            blog: AdaptiveRelation::<Blog>::new(params.blog_title.as_str()),
         };
 
         let created_discussion: Option<Discussion> = self.db.query(surreal_quote!(r#"

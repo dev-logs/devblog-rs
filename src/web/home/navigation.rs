@@ -4,7 +4,7 @@ use web_sys::js_sys::eval;
 use crate::core_services::web_di::*;
 use crate::services::author_provider_service::author_provider::AuthorProviderService;
 use crate::web::app_context::home_navigation_context::HomeNavigationSignalContext;
-use crate::web::app_context::signal_context::UseAppSignal;
+use crate::web::app_context::signal_context::AppContext;
 use crate::web::components::author_avatar::AuthorAvatar;
 use crate::web::components::icons::{bookshelf::BookShelf, product::Product , light_bulb::LightBulb};
 
@@ -67,7 +67,7 @@ fn NavigationItem(
 #[component]
 pub fn HomeNavigation() -> impl IntoView {
     let navigation_context = use_context::<HomeNavigationSignalContext>().unwrap();
-    let selected_tab = navigation_context.read();
+    let selected_tab = navigation_context.signal.read();
 
     let provider = WebInjector::service_injector();
     let authors_provider = provider.get_author_service();

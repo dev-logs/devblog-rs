@@ -5,6 +5,7 @@ use surreal_derive_plus::SurrealDerive;
 use surrealdb::opt::RecordId;
 use surrealdb::sql::Thing;
 use crate::core_services::surrealdb::adaptive_relation::AdaptiveRelation;
+use crate::entities::blog::Blog;
 use crate::entities::user::User;
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
@@ -13,7 +14,8 @@ pub struct Discussion {
     pub id: RecordId,
     pub owner: AdaptiveRelation<User>,
     pub content: String,
-    pub created_at: DateTime<Utc>
+    pub created_at: DateTime<Utc>,
+    pub blog: AdaptiveRelation<Blog>
 }
 
 #[cfg(feature = "ssr")]
