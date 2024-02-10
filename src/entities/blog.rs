@@ -15,7 +15,7 @@ pub struct Blog {
     pub description: String,
     pub created_at: DateTime<Utc>,
     pub url: String,
-    pub author: Author
+    pub author: AdaptiveRelation<Author>
 }
 
 impl Blog {
@@ -26,14 +26,15 @@ impl Blog {
         author: Author,
         created_at: DateTime<Utc>
     ) -> Self {
-        let id = AdaptiveRelation::<Blog>::new().id();
+        let id = AdaptiveRelation::<Blog>::new(title).id();
+
         Self {
             id,
             url: url.to_string(),
             title: title.to_string(),
             description: description.to_string(),
             created_at,
-            author,
+            author: AdaptiveRelation::<Author>::Record(author),
         }
     }
 }

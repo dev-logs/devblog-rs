@@ -1,7 +1,11 @@
 use log::info;
 use surreal_derive_plus::surreal_quote;
+use surrealdb::iam::Auth;
+use surrealdb::Response;
 use crate::core_services::surrealdb::Db;
+use crate::core_services::surrealdb::result_handler::UniformSurrealResult;
 use crate::entities::author::Author;
+use crate::entities::blog::Blog;
 use crate::services::author_provider_service::author_provider::AuthorProviderService;
 use crate::services::base::service::{Resolve, Service, VoidResponse};
 use crate::services::migration_services::service::{AuthorMigrationParams, AuthorMigrationService};
@@ -16,24 +20,30 @@ impl<T> Service<AuthorMigrationParams, VoidResponse> for AuthorMigrationServiceI
     async fn execute(self, params: AuthorMigrationParams) -> Resolve<VoidResponse> {
         let ns = format!("{}-author-migration", self.ns);
         let all_authors = self.author_provider_service.list();
-        let migrated_authors : Option<Vec<Author>> = self.db
+        let migrated_authors: Vec<Author> = self.db
             .query(surreal_quote!("SELECT * FROM author"))
             .await?
-            .take(0)?;
+            .take::<Vec<Author>>(0)?;
 
         let not_migrated_authors: Vec<&Author> = all_authors.iter().filter(|author| {
-            migrated_authors.as_ref().unwrap().iter().find(|migrated_author| migrated_author.id.eq(&author.id)).is_none()
+            migrated_authors.iter().find(|migrated_author| migrated_author.id.eq(&author.id)).is_none()
         }).collect();
+
+        if not_migrated_authors.is_empty() {
+            info!(target: &ns, "All authors has been migrated successfully");
+            return Ok(())
+        }
 
         info!(target: ns.as_str(), "Start migrating for authors: {:?}", &not_migrated_authors);
 
-        let complete_authors: Option<Vec<Author>> = self.db.query(surreal_quote!(r#"
-            BEGIN TRANSACTION
-            CREATE #array(&not_migrated_authors)
-            COMMIT TRANSACTION
-        "#)).await?.take(0)?;
+        let mut complete_authors: Response = self.db.query(surreal_quote!(r#"
+            CREATE #multi(&not_migrated_authors)
+        "#)).await?;
 
-        info!(target: &ns, "Complete migrated authors: {:?}", complete_authors.expect("Failed to migrate authors"));
+        let result_handler = UniformSurrealResult::<Author>::try_from(&mut complete_authors)?;
+        let complete_migrated_authors = result_handler.0;
+
+        info!(target: &ns, "Complete migrated authors: {:?}", complete_migrated_authors);
 
         Ok(())
     }

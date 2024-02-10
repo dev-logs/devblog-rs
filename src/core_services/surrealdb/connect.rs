@@ -1,4 +1,4 @@
-use log::{info, log};
+use log::info;
 use surrealdb::engine::remote::ws::Ws;
 use surrealdb::opt::auth::Root;
 use crate::api::environments::ENVIRONMENT;

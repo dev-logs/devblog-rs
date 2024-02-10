@@ -4646,8 +4646,6 @@ checksum = "81cdd64d312baedb58e21336b31bc043b77e01cc99033ce76ef539f78e965ebc"
 [[package]]
 name = "surreal_derive_plus"
 version = "1.0.8"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "aafd905be2559dad47f7d8ed877f4c1191c66506170fa8ebe5d45575906f3446"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -4659,8 +4657,6 @@ dependencies = [
 [[package]]
 name = "surreal_devl"
 version = "1.0.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bd8f307eb564ca57332ab7b32484d09660a1e216fdcb9b568c13062ea8253f38"
 dependencies = [
  "cargo_metadata",
  "surrealdb",

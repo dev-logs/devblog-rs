@@ -12,3 +12,5 @@ pub mod adaptive_relation;
 pub mod user_tbl;
 pub mod blog_tbl;
 pub mod author_tbl;
+#[cfg(feature="ssr")]
+pub mod result_handler;

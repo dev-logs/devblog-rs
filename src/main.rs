@@ -1,10 +1,9 @@
 use leptos::logging::log;
-use devblog_rs::api::web_controllers::discussions::create::create_discussion;
-use devblog_rs::core_services::logger::setup_logger;
-
+use devblog_rs::services::base::service::Resolve;
+use devblog_rs::services::base::service::Service;
 #[cfg(feature = "ssr")]
 #[actix_web::main]
-async fn main() -> std::io::Result<()> {
+pub async fn main() -> std::io::Result<()> {
     use actix_files::Files;
     use actix_web::*;
     use leptos::*;
@@ -12,9 +11,14 @@ async fn main() -> std::io::Result<()> {
     use devblog_rs::app::*;
     use devblog_rs::core_services::surrealdb::connect::connect_surrealdb;
     use devblog_rs::core_services::logger::setup_logger;
+    use log::info;
 
     setup_logger();
     connect_surrealdb().await;
+
+    start_migration().await.map_err(|e| {
+        info!(target: "api", "Failed to perform migration {:?}", e)
+    }).unwrap();
 
     let conf = get_configuration(None).await.unwrap();
     let addr = conf.leptos_options.site_addr;
@@ -44,15 +48,30 @@ async fn main() -> std::io::Result<()> {
 }
 
 #[cfg(feature = "ssr")]
+async fn start_migration() -> Resolve<()> {
+    use devblog_rs::services::migration_services::service::BlogPostMigrationParams;
+    use devblog_rs::services::migration_services::service::AuthorMigrationParams;
+    use devblog_rs::core_services::api_di::ApiServicesInjector;
+    use devblog_rs::core_services::api_di::ApiInjector;
+
+    let ns = "api-migration";
+    let blog_migration = ApiInjector::service_injector().get_blog_migration_service(ns);
+    let author_migration = ApiInjector::service_injector().get_author_migration_service(ns);
+
+    author_migration.execute(AuthorMigrationParams {}).await?;
+    blog_migration.execute(BlogPostMigrationParams {}).await?;
+
+    Ok(())
+}
+
+#[cfg(feature = "ssr")]
 #[actix_web::get("favicon.ico")]
 async fn favicon(
     leptos_options: actix_web::web::Data<leptos::LeptosOptions>,
 ) -> actix_web::Result<actix_files::NamedFile> {
     let leptos_options = leptos_options.into_inner();
     let site_root = &leptos_options.site_root;
-    Ok(actix_files::NamedFile::open(format!(
-        "{site_root}/favicon.ico"
-    ))?)
+    Ok(actix_files::NamedFile::open(format!("{site_root}/favicon.ico"))?)
 }
 
 #[cfg(not(any(feature = "ssr", feature = "csr")))]

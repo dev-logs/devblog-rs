@@ -4,6 +4,6 @@ use crate::entities::author::Author;
 
 impl AdaptiveRelation<Author> {
     pub fn new (email: &str) -> Self {
-        Self::Id(RecordId::from(("user", email)))
+        Self::Id(RecordId::from(("author", email)))
     }
 }

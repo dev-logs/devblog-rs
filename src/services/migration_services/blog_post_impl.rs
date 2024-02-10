@@ -1,15 +1,23 @@
+use std::vec::IntoIter;
 use log::info;
+use serde::{Deserialize, Serialize};
+use serde::de::DeserializeOwned;
 use surreal_derive_plus::surreal_quote;
+use surreal_devl::serialize::SurrealSerialize;
+use surrealdb::opt::RecordId;
+use surrealdb::Response;
 use crate::core_services::surrealdb::Db;
+use crate::core_services::surrealdb::result_handler::UniformSurrealResult;
 use crate::entities::blog::Blog;
+use crate::entities::errors::Errors;
 use crate::services::base::service::{Resolve, Service, VoidResponse};
 use crate::services::blog_provider_service::blog_provider_service::BlogProviderService;
 use crate::services::migration_services::service::{BlogPostMigrationParams, BlogPostMigrationService};
 
 pub struct BlogPostMigrationServiceImpl<T> where T: BlogProviderService {
-    db: Db,
-    post_provider: T,
-    ns: String
+    pub db: Db,
+    pub post_provider: T,
+    pub ns: String
 }
 
 impl<T> Service<BlogPostMigrationParams, VoidResponse> for BlogPostMigrationServiceImpl<T> where T: BlogProviderService {
@@ -17,23 +25,33 @@ impl<T> Service<BlogPostMigrationParams, VoidResponse> for BlogPostMigrationServ
         let ns = format!("{}-blog-post-migration-service", self.ns);
 
         let all_posts = self.post_provider.list();
-        let migrated_posts: Option<Vec<Blog>> = self.db.query("SELECT * FROM blog").await?.take(0)?;
+        let migrated_posts: Vec<Blog> = self.db
+            .query("SELECT * FROM blog")
+            .await?
+            .take::<Vec<Blog>>(0)?;
+
         let not_migrated_posts: Vec<&Blog> = all_posts
             .iter()
             .filter(|post|
-                migrated_posts.as_ref().unwrap().iter().find(|migrated_post| migrated_post.id.eq(&post.id)).is_none())
+                migrated_posts.iter().find(|migrated_post| migrated_post.id.eq(&post.id)).is_none())
             .collect();
 
-        info!(target: &ns, "Migrating blog post into db {:?}", not_migrated_posts);
-        let complete_migrated_posts: Option<Vec<Blog>> = self.db
-            .query(surreal_quote!("CREATE #array(&not_migrated_posts)"))
-            .await?
-            .take(0)?;
+       if not_migrated_posts.is_empty() {
+            info!(target: &ns, "All blogs has been migrated successfully");
+            return Ok(())
+        }
 
-        info!(target: &ns, "Migrated posts: {:?}", &complete_migrated_posts.expect("Failed to migrate posts"));
+        info!(target: &ns, "Migrating blog post into db {:?}", not_migrated_posts);
+        let mut migrated_response: Response = self.db
+            .query(surreal_quote!("CREATE #multi(&not_migrated_posts)"))
+            .await?;
+
+        let result_handler = UniformSurrealResult::<Blog>::try_from(&mut migrated_response)?;
+        let complete_migrated_posts = result_handler.0;
+
+        info!(target: &ns, "Migrated posts: {:?}", &complete_migrated_posts);
 
         Ok(())
-
     }
 }
 
