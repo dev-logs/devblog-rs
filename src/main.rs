@@ -3,7 +3,7 @@ use devblog_rs::services::base::service::Resolve;
 use devblog_rs::services::base::service::Service;
 #[cfg(feature = "ssr")]
 #[actix_web::main]
-pub async fn main() -> std::io::Result<()> {
+async fn main() -> std::io::Result<()> {
     use actix_files::Files;
     use actix_web::*;
     use leptos::*;

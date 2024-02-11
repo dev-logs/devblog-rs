@@ -7,6 +7,8 @@ use crate::services::blog_provider_service::blog_provider_service::BlogProviderS
 use crate::services::blog_provider_service::blog_provider_service_impl::BlogProviderServiceImpl;
 use crate::services::create_discussion::api_impl::CreateDiscussionApiImpl;
 use crate::services::create_discussion::service::CreateDiscussionService;
+use crate::services::create_guess_user::api_impl::CreateGuestUserApiImpl;
+use crate::services::create_guess_user::service::CreateGuestUserService;
 use crate::services::migration_services::author_impl::AuthorMigrationServiceImpl;
 use crate::services::migration_services::blog_post_impl::BlogPostMigrationServiceImpl;
 use crate::services::migration_services::service::{AuthorMigrationService, BlogPostMigrationService};
@@ -21,6 +23,8 @@ pub trait ApiServicesInjector {
     fn get_author_migration_service(&self, ns: &str) -> impl AuthorMigrationService;
 
     fn get_blog_migration_service(&self, ns: &str) -> impl BlogPostMigrationService;
+
+    fn get_create_guest_user_service(&self) -> impl CreateGuestUserService;
 }
 
 pub struct ApiInjector;
@@ -35,7 +39,7 @@ impl ApiServicesInjector for ApiInjector {
     }
 
     fn get_create_discussion_service(&self) -> impl CreateDiscussionService {
-        CreateDiscussionApiImpl { db: DB.clone() }
+        CreateDiscussionApiImpl { db: DB.clone(), create_guess_user: self.get_create_guest_user_service() }
     }
 
     fn get_author_migration_service(&self, ns: &str) -> impl AuthorMigrationService {
@@ -52,6 +56,10 @@ impl ApiServicesInjector for ApiInjector {
             db: DB.clone(),
             ns: ns.to_string(),
         }
+    }
+
+    fn get_create_guest_user_service(&self) -> impl CreateGuestUserService {
+        return CreateGuestUserApiImpl { db: DB.clone() }
     }
 }
 

@@ -39,7 +39,7 @@ impl<T> Deref for AdaptiveRelation<T> where T: Clone + Sized + Into<RecordId> {
 
     fn deref(&self) -> &Self::Target {
         match self {
-            AdaptiveRelation::Id(i) => panic!("Can not deref AdaptiveRelation, the entities does not include record"),
+            AdaptiveRelation::Id(_) => panic!("Can not deref AdaptiveRelation, the entities does not include record"),
             AdaptiveRelation::Record(r) => {&r}
         }
     }

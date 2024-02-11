@@ -4,7 +4,7 @@ use crate::services::base::service::Service;
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Params {
-    pub email: String,
+    pub display_name: String,
     pub content: String,
     pub blog_title: String
 }

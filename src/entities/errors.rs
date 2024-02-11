@@ -12,7 +12,7 @@ pub enum Errors {
 }
 
 impl From<serde_json::Error> for Errors {
-    fn from(value: serde_json::Error) -> Self {
+    fn from(_: serde_json::Error) -> Self {
         Self::InternalServerError("Invalid format for json".to_string())
     }
 }

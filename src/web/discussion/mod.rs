@@ -7,16 +7,20 @@ use crate::core_services::web_di::*;
 use crate::services::create_discussion::service::*;
 use crate::web::discussion::discussion::UserDiscussion;
 use crate::services::base::service::Service;
+use crate::web::app_context::blog_post_context::BlogPostContext;
 use crate::web::discussion::edittext::{DiscussionSubmitEvent, EditText};
 
 #[component]
 pub fn Discussion () -> impl IntoView {
-    let create_discussion = create_action(|event: &DiscussionSubmitEvent| {
+    let context = use_context::<BlogPostContext>().expect("Expect inside a blog to be comment");
+    let create_discussion = create_action(move |event: &DiscussionSubmitEvent| {
+        let current_blog = context.get_selected_blog();
+
         WebInjector::service_injector().get_create_discussion_service().execute(
             Params {
                 content: event.content.clone(),
-                email: String::from("tiendvlp@gmail.com"),
-                blog_title: String::from("a")
+                display_name: String::from("tiendvlp"),
+                blog_title: String::from(&current_blog.title)
             }
         )
     });

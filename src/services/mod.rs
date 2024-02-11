@@ -4,3 +4,5 @@ pub mod base;
 pub mod create_discussion;
 #[cfg(feature = "ssr")]
 pub mod migration_services;
+#[cfg(feature = "ssr")]
+pub mod create_guess_user;

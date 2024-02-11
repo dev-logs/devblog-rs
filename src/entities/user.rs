@@ -15,7 +15,7 @@ pub struct User {
 
 impl User {
     pub fn new (email: Option<&str>, avatar_url: Option<&str>, display_name: &str) -> Self {
-        let id = AdaptiveRelation::<User>::new(display_name.clone());
+        let id = AdaptiveRelation::<User>::new(display_name);
         Self {
             email: email.map(|e| e.to_owned()),
             avatar_url: avatar_url.map(|v| v.to_owned()),

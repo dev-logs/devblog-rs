@@ -1,6 +1,8 @@
 use leptos::*;
 use crate::core_services::web_di::*;
 use crate::services::blog_provider_service::blog_provider_service::BlogProviderService;
+use crate::web::app_context::blog_post_context::BlogPostContext;
+use crate::web::app_context::signal_context::AppContextProvider;
 use crate::web::components::blogs::blog_body::BlogBody;
 use crate::web::components::blogs::blog_container::BlogContainer;
 use crate::web::components::blogs::blog_description::BlogDescription;
@@ -15,7 +17,10 @@ use crate::web::components::code_blog::CodeBlock;
 #[component]
 pub fn DeployFlutterWebPage() -> impl IntoView {
     let blogs_provider = WebInjector::service_injector().get_blog_service();
-    let blog = blogs_provider.deploy_flutter_web();
+    BlogPostContext::new(blogs_provider.deploy_flutter_web()).attach();
+
+    let blog_context = use_context::<BlogPostContext>().unwrap();
+    let blog = blog_context.get_selected_blog().clone();
 
     view! {
         <BlogContainer class="flex flex-col pt-10 my-10">

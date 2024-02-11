@@ -7,35 +7,35 @@ use crate::core_services::surrealdb::adaptive_relation::AdaptiveRelation;
 use crate::core_services::surrealdb::Db;
 use crate::entities::blog::Blog;
 use crate::entities::discussion::Discussion;
-use crate::entities::errors::Errors;
 use crate::entities::user::User;
 use crate::services::base::service::{Resolve, Service};
 use crate::services::create_discussion::service;
 use crate::services::create_discussion::service::CreateDiscussionService;
+use crate::services::create_guess_user::service::{CreateGuestUserService, Params as CreateGuestUserParams};
 
-pub struct CreateDiscussionApiImpl {
-    pub db: Db
+pub struct CreateDiscussionApiImpl<T> where T: CreateGuestUserService {
+    pub db: Db,
+    pub create_guess_user: T
 }
 
-impl CreateDiscussionApiImpl {
-    pub fn new(db: Db) -> Self {
+impl<T> CreateDiscussionApiImpl<T> where T: CreateGuestUserService {
+    pub fn new(db: Db, create_guess_user: T) -> Self {
         Self {
-            db
+            db,
+            create_guess_user
         }
     }
 }
 
-impl Service<Params, Discussion> for CreateDiscussionApiImpl {
+impl<T> Service<Params, Discussion> for CreateDiscussionApiImpl<T> where T: CreateGuestUserService {
     async fn execute(self, params: Params) -> Resolve<Discussion> {
-        let user: Option<User> = self.db.query(surreal_quote!(r#"SELECT * FROM user:`#&(params.email)`"#))
-            .await?.take(0).expect("aaa");
-        if user.is_none() {
-            return Err(Errors::UnAuthorization);
-        }
+        let user = self.create_guess_user.execute(CreateGuestUserParams {
+            display_name: params.display_name.clone()
+        }).await?;
 
         let new_discussion = Discussion {
             id: RecordId::from(("discussion", Id::uuid())),
-            owner: AdaptiveRelation::<User>::new(user.unwrap().display_name.as_str()),
+            owner: AdaptiveRelation::<User>::new(user.display_name.as_str()),
             content: params.content.to_string(),
             created_at: Utc::now(),
             blog: AdaptiveRelation::<Blog>::new(params.blog_title.as_str()),
@@ -43,11 +43,11 @@ impl Service<Params, Discussion> for CreateDiscussionApiImpl {
 
         let created_discussion: Option<Discussion> = self.db.query(surreal_quote!(r#"
             CREATE #record(&new_discussion);
-            SELECT * from #id(&new_discussion) fetch owner
+            SELECT * from #id(&new_discussion) fetch owner, blog
         "#)).await?.take(1)?;
 
         Ok(created_discussion.unwrap())
     }
 }
 
-impl CreateDiscussionService for CreateDiscussionApiImpl {}
+impl<T> CreateDiscussionService for CreateDiscussionApiImpl<T> where T: CreateGuestUserService {}
