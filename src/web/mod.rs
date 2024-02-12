@@ -5,3 +5,4 @@ pub mod app_context;
 pub mod blogs;
 pub mod discussion;
 pub mod utils;
+pub mod local_storage;
