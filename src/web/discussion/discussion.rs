@@ -7,9 +7,9 @@ pub fn UserDiscussion(
     #[prop(default="")]
     content: &'static str
 ) -> impl IntoView {
+
     view! {
         <div class="flex flex-col">
-            <LoginModal is_show=true/>
             <UserName/>
             <p class="text-gray-500 dark:text-gray-400">{content}</p>
             <div class="flex items-center mt-4 space-x-4">

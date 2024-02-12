@@ -1253,6 +1253,7 @@ dependencies = [
  "log",
  "once_cell",
  "pretty_env_logger",
+ "ring 0.17.7",
  "serde",
  "serde_derive",
  "serde_json",
