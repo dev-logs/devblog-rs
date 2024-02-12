@@ -9,6 +9,8 @@ use crate::services::create_discussion::api_impl::CreateDiscussionApiImpl;
 use crate::services::create_discussion::service::CreateDiscussionService;
 use crate::services::create_guess_user::api_impl::CreateGuestUserApiImpl;
 use crate::services::create_guess_user::service::CreateGuestUserService;
+use crate::services::get_discussions::api_impl::GetDiscussionsApiImpl;
+use crate::services::get_discussions::service::GetDiscussionsService;
 use crate::services::migration_services::author_impl::AuthorMigrationServiceImpl;
 use crate::services::migration_services::blog_post_impl::BlogPostMigrationServiceImpl;
 use crate::services::migration_services::service::{AuthorMigrationService, BlogPostMigrationService};
@@ -25,6 +27,8 @@ pub trait ApiServicesInjector {
     fn get_blog_migration_service(&self, ns: &str) -> impl BlogPostMigrationService;
 
     fn get_create_guest_user_service(&self) -> impl CreateGuestUserService;
+
+    fn get_get_discussions_service(&self) -> impl GetDiscussionsService;
 }
 
 pub struct ApiInjector;
@@ -60,6 +64,10 @@ impl ApiServicesInjector for ApiInjector {
 
     fn get_create_guest_user_service(&self) -> impl CreateGuestUserService {
         return CreateGuestUserApiImpl { db: DB.clone() }
+    }
+
+    fn get_get_discussions_service(&self) -> impl GetDiscussionsService {
+        return GetDiscussionsApiImpl { db: DB.clone() }
     }
 }
 
