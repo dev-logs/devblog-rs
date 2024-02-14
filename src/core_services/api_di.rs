@@ -14,6 +14,8 @@ use crate::services::get_discussions::service::GetDiscussionsService;
 use crate::services::migration_services::author_impl::AuthorMigrationServiceImpl;
 use crate::services::migration_services::blog_post_impl::BlogPostMigrationServiceImpl;
 use crate::services::migration_services::service::{AuthorMigrationService, BlogPostMigrationService};
+use crate::services::user_default_avatar::api_impl::RandomUserAvatarServiceApiImpl;
+use crate::services::user_default_avatar::service::RandomUserDefaultAvatarService;
 
 pub trait ApiServicesInjector {
     fn get_author_service(&self) -> impl AuthorProviderService;
@@ -29,6 +31,8 @@ pub trait ApiServicesInjector {
     fn get_create_guest_user_service(&self) -> impl CreateGuestUserService;
 
     fn get_get_discussions_service(&self) -> impl GetDiscussionsService;
+
+    fn get_generate_random_avatar_url_service(&self) -> impl RandomUserDefaultAvatarService;
 }
 
 pub struct ApiInjector;
@@ -63,11 +67,15 @@ impl ApiServicesInjector for ApiInjector {
     }
 
     fn get_create_guest_user_service(&self) -> impl CreateGuestUserService {
-        return CreateGuestUserApiImpl { db: DB.clone() }
+        return CreateGuestUserApiImpl { db: DB.clone(), random_avatar: self.get_generate_random_avatar_url_service() }
     }
 
     fn get_get_discussions_service(&self) -> impl GetDiscussionsService {
         return GetDiscussionsApiImpl { db: DB.clone() }
+    }
+
+    fn get_generate_random_avatar_url_service(&self) -> impl RandomUserDefaultAvatarService {
+        RandomUserAvatarServiceApiImpl {}
     }
 }
 

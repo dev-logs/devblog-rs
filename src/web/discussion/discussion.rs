@@ -2,6 +2,7 @@ use leptos::*;
 use crate::web::components::modals::login_modal::LoginModal;
 use crate::web::discussion::user_name::UserName;
 use crate::entities::discussion::{Discussion, self};
+use crate::entities::user::User;
 
 #[component]
 pub fn UserDiscussion(
@@ -11,7 +12,7 @@ pub fn UserDiscussion(
 
     view! {
         <div class="flex flex-col">
-            <UserName/>
+            <Header user={(*discussion.owner.clone()).clone()}/>
             <p class="text-gray-500 dark:text-gray-400">{discussion.content}</p>
             <div class="flex items-center mt-4 space-x-4">
                 <button
@@ -23,6 +24,23 @@ pub fn UserDiscussion(
                     Reply
                 </button>
             </div>
+        </div>
+    }
+}
+
+#[component]
+fn Header(
+    user: User,
+) -> impl IntoView {
+    view! {
+        <div class="flex items-center">
+            <p class="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white font-semibold">
+                <img class="mr-2 w-10 h-10 aspect-square rounded-full" src={&user.avatar_url.unwrap_or(String::from(""))} alt="No avatar"/>
+                {&user.display_name}
+            </p>
+            <p class="text-sm text-gray-600 dark:text-gray-400">
+               <time pubdate datetime="2022-02-08" title="February 8th, 2022">Feb. 8, 2022</time>
+            </p>
         </div>
     }
 }

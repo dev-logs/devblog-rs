@@ -11,6 +11,7 @@ use crate::web::components::modals::login_modal::LoginModal;
 use crate::web::discussion::edittext::{DiscussionSubmitEvent, EditText};
 use crate::web::local_storage::user::UserStorage;
 use crate::services::get_discussions::service::Params as GetDiscussionParams;
+use crate::web::discussion::discussion::UserDiscussion;
 
 #[component]
 pub fn Discussion () -> impl IntoView {
@@ -20,9 +21,9 @@ pub fn Discussion () -> impl IntoView {
     let create_discussion = create_action(move |event: &(String, String, String)| {
         WebInjector::service_injector().get_create_discussion_service().execute(
             Params {
-                content: (&event.2).to_string(),
+                content: (&event.1).to_string(),
                 blog_title: event.0.clone(),
-                display_name: String::from(&event.1),
+                display_name: String::from(&event.2),
             }
         )
     });
@@ -64,13 +65,31 @@ pub fn Discussion () -> impl IntoView {
             {move || {
                 let value = fetch_all_discussions.value();
                 if let Some(result) = value.get() {
-                    view! {
-                        <div></div>
+                    if let Ok(discussions) = result {
+                        if discussions.is_empty() {
+                            view! {
+                                <div><p class="text-xl font-bold">There is no discussions yet, make your first discussion</p></div>
+                            }
+                        }
+                        else {
+                            view! {
+                                <div>
+                                    {discussions.iter().map(|discussion| view! {
+                                        <UserDiscussion discussion={discussion.clone()}/>
+                                    }).collect_view()}
+                                </div>
+                            }
+                        }
+                    }
+                    else {
+                        view! {
+                            <div><p class="text-xl font-bold">Failed to load discussions</p></div>
+                        }
                     }
                 }
                 else {
                     view! {
-                        <div></div>
+                        <div><p class="text-xl font-bold">Loading</p></div>
                     }
                 }
             }}
