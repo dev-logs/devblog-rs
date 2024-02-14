@@ -3,7 +3,7 @@ use serde_derive::{Deserialize, Serialize};
 use surrealdb::Error;
 use thiserror::Error;
 
-#[derive(Error, Debug, Serialize, Deserialize)]
+#[derive(Error, Debug, Serialize, Deserialize, Clone)]
 pub enum Errors {
     #[error("You are not authorized to access/perform this resource/action")]
     UnAuthorization,

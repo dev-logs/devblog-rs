@@ -1,17 +1,18 @@
 use leptos::*;
 use crate::web::components::modals::login_modal::LoginModal;
 use crate::web::discussion::user_name::UserName;
+use crate::entities::discussion::{Discussion, self};
 
 #[component]
 pub fn UserDiscussion(
-    #[prop(default="")]
-    content: &'static str
+    #[prop()]
+    discussion: Discussion
 ) -> impl IntoView {
 
     view! {
         <div class="flex flex-col">
             <UserName/>
-            <p class="text-gray-500 dark:text-gray-400">{content}</p>
+            <p class="text-gray-500 dark:text-gray-400">{discussion.content}</p>
             <div class="flex items-center mt-4 space-x-4">
                 <button
                     type="button"

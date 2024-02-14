@@ -1,3 +1,4 @@
+#![feature(async_closure)]
 use leptos::*;
 use leptos_meta::*;
 use leptos_router::*;

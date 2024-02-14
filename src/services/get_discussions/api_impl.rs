@@ -1,8 +1,10 @@
+use leptos::logging::log;
 use surreal_derive_plus::surreal_quote;
 use crate::core_services::surrealdb::adaptive_relation::AdaptiveRelation;
 use crate::core_services::surrealdb::Db;
 use crate::entities::blog::Blog;
 use crate::entities::discussion::Discussion;
+use crate::entities::errors::Errors;
 use crate::services::base::service::{Resolve, Service};
 use crate::services::get_discussions::service::{GetDiscussionsService, Params};
 
@@ -20,9 +22,10 @@ impl Service<Params, Vec<Discussion>> for GetDiscussionsApiImpl {
             where_statement = format!("{where_statement} AND {query}")
         }
 
-        let main_query = format!("SELECT * from discussions {where_statement} fetch owner");
-        let discussions: Option<Vec<Discussion>> = self.db.query(main_query).await?.take(0)?;
-        Ok(discussions.unwrap())
+        let main_query = format!("SELECT * from discussion {where_statement} fetch owner");
+        let discussions: Vec<Discussion> = self.db.query(main_query).await?.take(0)?;
+
+        Ok(discussions)
     }
 }
 
