@@ -5,7 +5,6 @@ use surreal_derive_plus::SurrealDerive;
 use surrealdb::opt::RecordId;
 use crate::core_services::surrealdb::adaptive_relation::AdaptiveRelation;
 use crate::entities::author::Author;
-use crate::entities::user::User;
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[cfg_attr(feature = "ssr", derive(SurrealDerive))]

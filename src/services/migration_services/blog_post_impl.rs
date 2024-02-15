@@ -1,15 +1,9 @@
-use std::vec::IntoIter;
 use log::info;
-use serde::{Deserialize, Serialize};
-use serde::de::DeserializeOwned;
 use surreal_derive_plus::surreal_quote;
-use surreal_devl::serialize::SurrealSerialize;
-use surrealdb::opt::RecordId;
 use surrealdb::Response;
 use crate::core_services::surrealdb::Db;
 use crate::core_services::surrealdb::result_handler::UniformSurrealResult;
 use crate::entities::blog::Blog;
-use crate::entities::errors::Errors;
 use crate::services::base::service::{Resolve, Service, VoidResponse};
 use crate::services::blog_provider_service::blog_provider_service::BlogProviderService;
 use crate::services::migration_services::service::{BlogPostMigrationParams, BlogPostMigrationService};
@@ -21,7 +15,7 @@ pub struct BlogPostMigrationServiceImpl<T> where T: BlogProviderService {
 }
 
 impl<T> Service<BlogPostMigrationParams, VoidResponse> for BlogPostMigrationServiceImpl<T> where T: BlogProviderService {
-    async fn execute(self, params: BlogPostMigrationParams) -> Resolve<VoidResponse> {
+    async fn execute(self, _: BlogPostMigrationParams) -> Resolve<VoidResponse> {
         let ns = format!("{}-blog-post-migration-service", self.ns);
 
         let all_posts = self.post_provider.list();

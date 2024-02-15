@@ -1,7 +1,5 @@
 use std::ops::Deref;
-use crate::entities::discussion::Discussion;
 use crate::entities::errors::Errors;
-use crate::entities::user::User;
 
 pub type NoParam = ();
 

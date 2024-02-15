@@ -2,7 +2,6 @@ use leptos::*;
 use crate::core_services::web_di::*;
 use crate::services::blog_provider_service::blog_provider_service::BlogProviderService;
 use crate::web::app_context::home_navigation_context::HomeNavigationSignalContext;
-use crate::web::app_context::signal_context::AppContext;
 use crate::web::blogs::deploy_flutter_web::item::DeployFlutterWebBlogItem;
 use crate::web::home::header::SearchHeader;
 use crate::web::home::navigation::{HomeNavigation, HomeNavigationTab};
@@ -11,10 +10,10 @@ use crate::web::home::navigation::{HomeNavigation, HomeNavigationTab};
 pub fn Home() -> impl IntoView {
     view! {
         <div class="home-screen h-screen w-full flex flex-row bg-primaryC">
-            <div class="navigation-bar-wrapper h-full">
+            <div class="navigation-bar-wrapper h-screen">
                 <HomeNavigation/>
             </div>
-            <div class="home-content-wrapper flex flex-col pl-8">
+            <div class="home-content-wrapper overflow-auto pl-8">
                 <Content/>
             </div>
         </div>
@@ -38,12 +37,7 @@ fn Content() -> impl IntoView {
                 <div></div>
             }
         }
-        HomeNavigationTab::Products => {
-            view! {
-                <div></div>
-            }
-        }
-        _ => {
+        HomeNavigationTab::Services=> {
             view! {
                 <div></div>
             }
@@ -64,7 +58,7 @@ fn BlogList() -> impl IntoView {
     let blogs = provider.list();
 
     view! {
-        <div class="grid lg:grid-cols-1 xl:grid-cols-4 gap-5 mt-8">
+        <div class="grid sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-5 mt-8 sm:mx-10 lg:mx-0 sm:max-w-xl lg:max-w-max overflow-auto">
             {
                 blogs.into_iter().map(|_|
                     view! {

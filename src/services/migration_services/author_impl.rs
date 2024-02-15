@@ -15,7 +15,7 @@ pub struct AuthorMigrationServiceImpl<T> where T: AuthorProviderService {
 }
 
 impl<T> Service<AuthorMigrationParams, VoidResponse> for AuthorMigrationServiceImpl<T> where T: AuthorProviderService {
-    async fn execute(self, params: AuthorMigrationParams) -> Resolve<VoidResponse> {
+    async fn execute(self, _: AuthorMigrationParams) -> Resolve<VoidResponse> {
         let ns = format!("{}-author-migration", self.ns);
         let all_authors = self.author_provider_service.list();
         let migrated_authors: Vec<Author> = self.db

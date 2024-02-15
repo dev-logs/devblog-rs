@@ -55,7 +55,7 @@ pub fn DeployFlutterWebPage() -> impl IntoView {
                 In this tutorial I use Digital Ocean for cloud hosting, but of course feel free to use your own services like AWS, GCP, etc..
             </BlogBody>
             <BlogHeader2 spacing=true>
-                #1. Setup Digital Ocean:
+                1 - Setup Digital Ocean:
             </BlogHeader2>
             <BlogBody newline=true spacing=true>
                 You can get your new Digital Account <BlogLink href="https://try.digitalocean.com/freetrialoffer/">here </BlogLink>
@@ -67,7 +67,7 @@ pub fn DeployFlutterWebPage() -> impl IntoView {
             </BlogBody>
             <BlogImage src="/assets/images/document/digital-ocean-create-menu.png" class="max-w-screen-lg mt-10"/>
             <BlogHeader2 spacing=true>
-                #2. Setting up your droplet
+                2 - Setting up your droplet
             </BlogHeader2>
             <BlogBody>
                 Here is my configurations:
@@ -91,9 +91,8 @@ pub fn DeployFlutterWebPage() -> impl IntoView {
                     </li>
                 </ul>
             </BlogBody>
-            <BlogImage spacing=true src="/images/document/digital-ocean-create-droplet.png" caption="create droplet screen"/>
+            <BlogImage src="/images/document/digital-ocean-create-droplet.png" caption="create droplet screen"/>
             <BlogHeader>New Flutter Web Project (optional)</BlogHeader>
-            <BlogHeader2>Create</BlogHeader2>
             <BlogBody>
                 Using this command to init your first Flutter web project
             </BlogBody>
@@ -118,7 +117,7 @@ flutter run -d chrome
             <BlogBody>And inside that directory is exactly the content of our webpage with the entrypoint is <BlogHighLight bold=true>index.html</BlogHighLight> file.</BlogBody>
             <BlogImage src="/assets/images/document/flutter-web-directory.png"/>
             <BlogHighLight bold=true>So the idea is that we will will use Nginx to act like a simple web server and serve our build/web directory to the internet. SIMPLE {"😉"} </BlogHighLight>
-            <BlogHeader2>Nginx</BlogHeader2>
+            <BlogHeader2>1 - Nginx</BlogHeader2>
             <BlogBody>Copy and paste this file into your directory</BlogBody>
             <CodeBlock code=r#"
 api {
@@ -131,7 +130,7 @@ api {
 }
             "#/>
             <BlogHeader2>
-                #1. Write Dockerfile
+                2 - Write Dockerfile
             </BlogHeader2>
             <BlogBody>
                 If you dont know what Docker is, feel free to visit their website <BlogLink href="https://docs.docker.com/get-started/overview">here</BlogLink>.
@@ -207,7 +206,7 @@ RUN service nginx stop
 ENTRYPOINT ["/bin/bash", "-c", "echo 'Start nginx...'; nginx -g 'daemon off;'"]
 "#/>
             <BlogHeader2>
-                #2. Test on your local machine
+                2 - Test on your local machine
             </BlogHeader2>
             <BlogBody>On your project directory, to build Docker image we run:</BlogBody>
             <CodeBlock language="bash" code=r#"
@@ -252,7 +251,7 @@ docker run -p 3000:80 --name simple_web_container simple_web:latest
                 </ul>
             </BlogBody>
             <BlogBody>Now let get started</BlogBody>
-                <BlogHeader2>#1. Allow Github Action to perform ssh</BlogHeader2>
+                <BlogHeader2>1 - Allow Github Action to perform ssh</BlogHeader2>
             <BlogBody>
                 To enable Github Action to link with our cloud server, we need to authorize it to use SSH for connecting to the server.
             </BlogBody>
@@ -281,8 +280,7 @@ docker run -p 3000:80 --name simple_web_container simple_web:latest
                 </ul>
             </BlogBody>
             <BlogBody>Hmm... we are now ready to move to the last step {"😃"}.</BlogBody>
-            <BlogHeader>Write Github Action pipeline</BlogHeader>
-            <BlogHeader2>#1 Create the Github workflow</BlogHeader2>
+            <BlogHeader2>2 - Create the Github workflow</BlogHeader2>
             <BlogBody><BlogLink href="https://docs.github.com/en/actions/using-workflows/about-workflows">Github workflow</BlogLink> allow us to describe our instructions on how to build and deploy our application.</BlogBody>
             <BlogBody>On your project directory create a folder name <BlogHighLight italic=true>.github/workflows/ci.yaml</BlogHighLight></BlogBody>
             <BlogImage src="/assets/images/document/ci-folder.png"/>

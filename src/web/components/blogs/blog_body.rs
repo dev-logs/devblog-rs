@@ -15,7 +15,7 @@ pub fn BlogBody(
             "{} {} {}",
             class,
             if newline { "mt-2" } else { "" },
-            if !spacing { "mt-6" } else { "" },
+            if spacing { "mt-6" } else { "" },
         )}>
             <p class="text-gray-400 font-thin text-base w-full font-main leading-8">{children()}</p>
         </div>

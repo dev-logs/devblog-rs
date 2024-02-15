@@ -11,13 +11,11 @@ pub fn EditText(
     #[prop()]
     callback: Callback<DiscussionSubmitEvent>
 ) -> impl IntoView {
-    let (event, set_event) = create_signal(DiscussionSubmitEvent {content: String::new()});
-
     let on_submit: Callback<web_sys::SubmitEvent> = Callback::new(move |submit_event: web_sys::SubmitEvent| {
         submit_event.prevent_default();
 
         let form_data = FormDataWrapper::from(submit_event);
-        (callback).call(DiscussionSubmitEvent {
+        callback(DiscussionSubmitEvent {
            content: form_data.get("comment").as_string().unwrap()
         })
     });

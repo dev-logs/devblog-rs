@@ -1,7 +1,7 @@
 use surreal_derive_plus::surreal_quote;
 use crate::core_services::surrealdb::Db;
 use crate::entities::user::User;
-use crate::services::base::service::{NoParam, Resolve, Service};
+use crate::services::base::service::{Resolve, Service};
 use crate::services::create_guess_user::service::{CreateGuestUserService, Params};
 use crate::services::user_default_avatar::service::RandomUserDefaultAvatarService;
 

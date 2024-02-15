@@ -1,5 +1,5 @@
 #![feature(iter_collect_into)]
-
+#![feature(async_closure)]
 pub mod app;
 pub mod web;
 pub mod entities;

@@ -1,6 +1,5 @@
 use leptos::*;
 use crate::entities::author::Author;
-use crate::entities::user::User;
 
 #[component]
 pub fn AuthorAvatar(

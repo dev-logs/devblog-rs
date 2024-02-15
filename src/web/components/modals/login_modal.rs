@@ -7,7 +7,7 @@ use crate::web::components::icons::github::Github;
 use crate::web::components::icons::google::Google;
 use crate::web::local_storage::user::{UserStorage};
 use crate::web::utils::form_data::FormDataWrapper;
-use crate::web::utils::toast::showWelcomeToast;
+use crate::web::utils::toast::show_welcome_toast;
 
 #[component]
 pub fn login_modal(
@@ -16,7 +16,6 @@ pub fn login_modal(
 ) -> impl IntoView {
     let (show, set_show) = create_signal(is_show);
 
-    let empty_view = view!{<div></div>};
     let on_dismiss_click: Callback<MouseEvent> = Callback::new(move |_| {
         set_show(!show.get());
     });
@@ -27,7 +26,7 @@ pub fn login_modal(
         let display_name = form_data.get("displayname").as_string().unwrap();
         let mut user_storage = UserStorage::new();
         user_storage.update(User::new(None, None, display_name.as_str()));
-        showWelcomeToast(display_name.as_str());
+        show_welcome_toast(display_name.as_str());
         set_show(false);
     });
 

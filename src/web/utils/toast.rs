@@ -1,7 +1,7 @@
 use leptos::leptos_dom::log;
 use web_sys::js_sys::eval;
 
-pub fn showToast(html: String) {
+pub fn show_toast(html: String) {
     let script = format!(r#"
         const toastContainer = document.createElement('div');
         toastContainer.style.position = "fixed"
@@ -35,7 +35,7 @@ pub fn showToast(html: String) {
     eval(script.as_str()).expect("TODO: panic message");
 }
 
-pub fn showWelcomeToast(display_name: &str) {
+pub fn show_welcome_toast(display_name: &str) {
     // HTML content
     let html_content = format!(r###"
         <div id='toast-message-cta' class='w-full max-w-xs p-4 text-gray-500 bg-white rounded-lg shadow dark:bg-gray-800 dark:text-gray-400' role='alert'>
@@ -52,5 +52,5 @@ pub fn showWelcomeToast(display_name: &str) {
 
     log!("Append {html_content}");
 
-    showToast(html_content.to_string());
+    show_toast(html_content.to_string());
 }

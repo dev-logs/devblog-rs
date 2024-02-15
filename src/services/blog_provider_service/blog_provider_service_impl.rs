@@ -20,7 +20,7 @@ impl<APS: AuthorProviderService> BlogProviderService for BlogProviderServiceImpl
         return Blog::new(
             "blogs/deploy-flutter-web",
            "Deploy Flutter web with Github Action",
-            "Even it is not very common for some one/organization to use Flutter for web, but I still want to share with my audiences how I deploy a Flutter Web.",
+            "Flutter for Web is more stable and powerful, but you need to deploy it, here is how. Using Github Action, Docker and Digital Ocean.",
             self.author_provider.tiendang(),
             DateTime::default()
         );

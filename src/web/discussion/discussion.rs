@@ -1,7 +1,5 @@
 use leptos::*;
-use crate::web::components::modals::login_modal::LoginModal;
-use crate::web::discussion::user_name::UserName;
-use crate::entities::discussion::{Discussion, self};
+use crate::entities::discussion::{Discussion};
 use crate::entities::user::User;
 
 #[component]
