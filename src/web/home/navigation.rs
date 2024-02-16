@@ -75,7 +75,7 @@ pub fn HomeNavigation() -> impl IntoView {
         let selected_item_selector = format!(".item-{:?}", selected_tab.get());
         let animation = "{
             y: y - initialHandRect.top,
-            duration:  0.1,
+            duration: 0.1,
             ease: 'bounce.inOut'
         }";
 

@@ -1532,6 +1532,10 @@ video {
   aspect-ratio: 1 / 1;
 }
 
+.h-1\/2{
+  height: 50%;
+}
+
 .h-10{
   height: 2.5rem;
 }
@@ -1584,6 +1588,10 @@ video {
   width: 0.875rem;
 }
 
+.w-40{
+  width: 10rem;
+}
+
 .w-44{
   width: 11rem;
 }
@@ -1625,6 +1633,14 @@ video {
   flex: 1 1 0%;
 }
 
+.basis-1{
+  flex-basis: 0.25rem;
+}
+
+.basis-1\/4{
+  flex-basis: 25%;
+}
+
 .transform{
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
@@ -1655,6 +1671,10 @@ video {
 
 .items-start{
   align-items: flex-start;
+}
+
+.items-end{
+  align-items: flex-end;
 }
 
 .items-center{
@@ -1709,6 +1729,10 @@ video {
 
 .overflow-hidden{
   overflow: hidden;
+}
+
+.overscroll-contain{
+  overscroll-behavior: contain;
 }
 
 .scroll-auto{
@@ -1920,6 +1944,14 @@ video {
   padding-bottom: 1.25rem;
 }
 
+.pl-12{
+  padding-left: 3rem;
+}
+
+.pl-2{
+  padding-left: 0.5rem;
+}
+
 .pl-4{
   padding-left: 1rem;
 }
@@ -1970,6 +2002,10 @@ video {
 
 .text-center{
   text-align: center;
+}
+
+.text-start{
+  text-align: start;
 }
 
 .font-code{
@@ -2300,6 +2336,10 @@ code {
     margin-right: 2.5rem;
   }
 
+  .sm\:hidden{
+    display: none;
+  }
+
   .sm\:max-w-xl{
     max-width: 36rem;
   }
@@ -2309,64 +2349,15 @@ code {
   }
 }
 
-@media (min-width: 768px){
-  .md\:mx-10{
-    margin-left: 2.5rem;
-    margin-right: 2.5rem;
-  }
-
-  .md\:max-w-2xl{
-    max-width: 42rem;
-  }
-
-  .md\:max-w-xl{
-    max-width: 36rem;
-  }
-
-  .md\:max-w-max{
-    max-width: -moz-max-content;
-    max-width: max-content;
-  }
-
-  .md\:grid-cols-1{
-    grid-template-columns: repeat(1, minmax(0, 1fr));
-  }
-}
-
 @media (min-width: 1024px){
-  .lg\:mx-12{
-    margin-left: 3rem;
-    margin-right: 3rem;
-  }
-
   .lg\:mx-0{
     margin-left: 0px;
     margin-right: 0px;
   }
 
-  .lg\:max-w-20{
-    max-width: 5rem;
-  }
-
-  .lg\:max-w-96{
-    max-width: 24rem;
-  }
-
-  .lg\:max-w-2xl{
-    max-width: 42rem;
-  }
-
-  .lg\:max-w-4xl{
-    max-width: 56rem;
-  }
-
   .lg\:max-w-max{
     max-width: -moz-max-content;
     max-width: max-content;
-  }
-
-  .lg\:grid-cols-1{
-    grid-template-columns: repeat(1, minmax(0, 1fr));
   }
 
   .lg\:grid-cols-2{
@@ -2375,8 +2366,8 @@ code {
 }
 
 @media (min-width: 1280px){
-  .xl\:grid-cols-4{
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+  .xl\:block{
+    display: block;
   }
 
   .xl\:grid-cols-3{

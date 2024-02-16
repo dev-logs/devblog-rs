@@ -10,7 +10,7 @@ use crate::web::home::navigation::{HomeNavigation, HomeNavigationTab};
 pub fn Home() -> impl IntoView {
     view! {
         <div class="home-screen h-screen w-full flex flex-row bg-primaryC">
-            <div class="navigation-bar-wrapper h-screen">
+            <div class="navigation-bar-wrapper h-screen sm:hidden xl:block">
                 <HomeNavigation/>
             </div>
             <div class="home-content-wrapper overflow-auto pl-8">
