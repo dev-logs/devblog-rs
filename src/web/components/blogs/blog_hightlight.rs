@@ -11,16 +11,19 @@ pub fn BlogHighLight(
     rounded: bool,
     #[prop(default = false)]
     italic: bool,
+    #[prop(default = false)]
+    border: bool
 ) -> impl IntoView {
     view! {
         <b class={
             format!(
-                "{} {} {} {} {} p-1 font-main text-base",
+                "{} {} {} {} {} {} p-1 font-main text-base",
                 if rounded { "rounded-lg p-2 ml-1" } else { "" },
                 if bold { "font-bold" } else { "" },
                 if italic { "italic" } else { "" },
-                if bold { "text-white" } else { "" },
+                if bold { "text-gray-200" } else { "" },
                 if background { "bg-blue-800" } else { "" },
+                if border { "border border-white rounded-xl" } else { "" },
             )
         }>
             {children()}

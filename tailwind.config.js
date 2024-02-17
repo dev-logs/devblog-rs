@@ -6,11 +6,11 @@ module.exports = {
     theme: {
         extend: {
             fontFamily: {
-                main: ['Montserrat', 'sans-serif'],
+                main: ["Segoe UI Regular", 'Roboto', 'Helvetica', 'Arial', 'sans-serif', "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", 'Montserrat', 'sans-serif'],
                 code: ['Source Code Pro', 'sans-serif']
             },
             colors: {
-                primaryC: '#000000CC',          // primaryContainerColor
+                primaryC: '#18181b',          // primaryContainerColor
                 onPrimaryC: '#F5F7F8',          // onPrimaryContainerColor
                 backgroundC: '#000',            // backgroundColor
                 onBackgroundC: '#F5F7F8',       // onBackgroundColor

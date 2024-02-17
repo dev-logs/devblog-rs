@@ -10,3 +10,4 @@ pub mod blog_item_description;
 pub mod blog_item_title;
 pub mod link;
 pub mod blog_header3;
+pub mod blog_title;

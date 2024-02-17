@@ -10,7 +10,7 @@ pub fn SearchHeader() -> impl IntoView {
             </a>
             <form class="flex flex-row bg-gray-500 border border-gray-800 p-2 rounded-lg w-50 bg-onBackgroundC">
                 <input type="search" id="default-search" class="block w-full p-2 ps-10 text-sm placeholder-gray-400 text-black bg-transparent" placeholder="Anything..."/>
-                <button type="submit" class="ml-4 text-white w-44 font-black rounded-lg text-sm bg-secondaryC text-onSecondaryC">Search</button>
+                <button type="submit" class="ml-4 text-gray-200 w-44 font-black rounded-lg text-sm bg-secondaryC text-onSecondaryC">Search</button>
             </form>
             <div class="empty"></div>
         </div>

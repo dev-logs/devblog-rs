@@ -4,29 +4,35 @@ use crate::web::components::blogs::blog_header::BlogHeader;
 use crate::web::discussion::Discussion;
 
 #[component]
-pub fn BlogContainer(
+pub fn BlogContainer<E, F>(
     #[prop(default = "")]
     class: &'static str,
     children: Children,
-) -> impl IntoView {
+    header: F
+) -> impl IntoView
+    where E: IntoView, F: Fn() -> E + 'static
+{
     view! {
-        <div class="w-full flex flex-row justify-center h-screen items-center overflow-auto">
+        <div class="flex flex-col justify-start items-center bg-gray-950">
+        {header()}
+        <div class="w-full flex flex-row justify-start items-start">
             <link rel="stylesheet" href="https://unpkg.com/prismjs@1.29.0/themes/prism-twilight.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
-            <div class="basis-1/4"/>
-            <div class="basis-1 overflow-auto h-full flex-1 overflow-auto">
-                <article class="mt-8 prose prose-lg flex flex-col h-full items-start justify-start overflow-auto">
+            <div class="flex-1"/>
+            <div class="flex-1 overflow-auto">
+                <article class="mt-8 prose prose-sm flex flex-col h-full items-start justify-start overflow-auto">
                     {children()}
                     <BlogHeader>Discussions</BlogHeader>
                     <Discussion/>
                 </article>
             </div>
-            <div class="basis-1/4 justify-end items-end text-start pl-12 h-1/2 overflow-auto">
-                <TableOfContents class=""/>
+            <div class="flex-1 sticky top-0 right-0 justify-end items-end text-start pl-12 h-1/2 overflow-auto">
+                <TableOfContents class="sticky top-0"/>
             </div>
             <script src="https://unpkg.com/prismjs@1.29.0/components/prism-core.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	        <script src="https://unpkg.com/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js">
             </script>
+        </div>
         </div>
     }
 }
@@ -52,8 +58,8 @@ fn TableOfContents(
                 const listItem = document.createElement('button')
                 const isSub = header.className.includes('blog-header2')
                 const tailwind = isSub
-                    ? 'button pl-4 text-gray-400 z-10'
-                    : 'font-bold pl-2 text-gray-400 z-10'
+                    ? 'text-sm button pl-4 text-gray-400 z-20'
+                    : 'text-sm text-gray-200 pl-2 z-20'
                 listItem.className = `list list-none text-start ${tailwind}` // tailwind styling
                 const uniqueClassName = `c-${index}`
                 header.className = `${header.className} ${uniqueClassName}`
@@ -75,7 +81,7 @@ fn TableOfContents(
                         const bounding = element.getBoundingClientRect()
                         const tableOfContents = document.querySelector('.table-of-contents').parentElement.parentElement
                         const parentBounding = tableOfContents.getBoundingClientRect()
-                        if (bounding.top > parentBounding.height || (bounding.top + parentBounding.top) < 0) {
+                        if (bounding.top > parentBounding.height || (element.offsetTop - tableOfContents.scrollTop) < 0) {
                             tableOfContents.scrollTo({top: element.offsetTop})
                         }
 
@@ -84,7 +90,7 @@ fn TableOfContents(
                         selectorElement.savedBounding = selectorInitialBound
 
                         gsap.to(selectorElement, {
-                            y: element.offsetTop + 10,
+                            y: element.offsetTop,
                             width: bounding.width + 20,
                             height: bounding.height,
                             duration:  0.1,
@@ -106,8 +112,11 @@ fn TableOfContents(
     
     view! {
         <div class="relative p-2">
-            <div class="selector absolute top-0 left-0 w-40 h-8 rounded-lg bg-white z-0"/>
-            <ul class=format!("table-of-contents {class} z-10 relative")></ul>
+            <div class="flex flex-col">
+                <p class="text-lg mb-4">Contents</p>
+                <ul class="table-of-contents box z-20 h-1/2 overflow-auto"/>
+            </div>
+            <div class="selector absolute top-0 left-0 w-40 h-8 rounded-lg border z-10 bg-zinc-900"/>
         </div>
     }
 }

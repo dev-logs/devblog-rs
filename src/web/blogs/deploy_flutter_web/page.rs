@@ -1,5 +1,6 @@
 use leptos::*;
 use crate::core_services::web_di::*;
+use crate::entities::blog::Blog;
 use crate::services::blog_provider_service::blog_provider_service::BlogProviderService;
 use crate::web::app_context::blog_post_context::BlogPostContext;
 use crate::web::app_context::signal_context::AppContextProvider;
@@ -11,8 +12,26 @@ use crate::web::components::blogs::blog_header3::BlogHeader3;
 use crate::web::components::blogs::blog_header::BlogHeader;
 use crate::web::components::blogs::blog_hightlight::BlogHighLight;
 use crate::web::components::blogs::blog_image::BlogImage;
+use crate::web::components::blogs::blog_title::BlogTitle;
 use crate::web::components::blogs::link::BlogLink;
 use crate::web::components::code_blog::CodeBlock;
+
+#[component]
+fn Header(
+    #[prop()]
+    blog: Blog
+) -> impl IntoView {
+    view! {
+        <BlogTitle class={"flex flex-row items-start justify-start space-x-10 min-h-0.5 bg-gray-200"}>
+            <BlogImage class="basis-1 flex-1" src="/assets/images/document/computer1.jpg"/>
+            <div class="basis-1/4 flex-col space-y-2">
+                <BlogHeader class="text-5xl font-bold text-gray-200">Deploy Flutter Web</BlogHeader>
+                <BlogDescription>{blog.description}</BlogDescription>
+            </div>
+            <div class="basis-1/4"></div>
+        </BlogTitle>
+    }
+}
 
 #[component]
 pub fn DeployFlutterWebPage() -> impl IntoView {
@@ -23,41 +42,35 @@ pub fn DeployFlutterWebPage() -> impl IntoView {
     let blog = blog_context.get_selected_blog().clone();
 
     view! {
-        <BlogContainer class="flex flex-col pt-10 my-10">
-            <p class="text-5xl font-bold text-white">Deploy Flutter Web</p>
-            <BlogDescription>{blog.description}</BlogDescription>
-            <BlogImage spacing=true src="/assets/images/document/computer1.jpg" caption="https://unsplash.com" />
+        <BlogContainer class="flex flex-col pt-10 my-10 font-main" header={move || view! {<Header blog={blog.clone()}/>}}>
+            <BlogHeader>Introduction</BlogHeader>
             <BlogBody>
-                Hi, welcome to my first blog on <BlogLink href="/">devlog.studio</BlogLink> website, my name is Dang Minh Tien a member of devlog.studio, I hope you well, it is my honor to share with you my knowledge.
-            </BlogBody>
-            <BlogHeader class="mt-12">Introduction</BlogHeader>
-            <BlogBody class="mt-5">
                 <BlogLink href="https://flutter.dev/multi-platform/web">Flutter Web</BlogLink> brings the power of Flutter declarative approach to web development, enabling developers to construct high-quality.
                 This open-source framework utilizes the Dart programming language, offering a seamless transition for developers familiar with Flutter for mobile development.
             </BlogBody>
             <BlogBody newline=true>
                 In this post, well walk you through the step-by-step process of deploying your Flutter Web projects using <BlogLink href={"https://www.docker.com/"}>Docker</BlogLink> and <BlogLink href={"https://github.com/features/actions"}>Github Action</BlogLink>.
             </BlogBody>
-            <BlogHeader spacing=true>
+            <BlogHeader>
                 Prequisites
             </BlogHeader>
             <BlogBody>
-                <ul class="list-disc list mt-4 text-gray-400">
+                <ul class="list-disc list mt-4 text-gray-200">
                     <li><BlogBody>Docker installed, we need to test our script on local environment before deploy.</BlogBody></li>
                     <li><BlogBody>Docker Hub account, we will deploy our images to Docker Hub, you can register <BlogLink href="https://hub.docker.com/signup">here</BlogLink></BlogBody></li>
                 </ul>
             </BlogBody>
-            <BlogHeader spacing=true>
+            <BlogHeader>
                 Prepare a cloud server
             </BlogHeader>
             <BlogBody>
                 Skip if you already have one.
                 In this tutorial I use Digital Ocean for cloud hosting, but of course feel free to use your own services like AWS, GCP, etc..
             </BlogBody>
-            <BlogHeader2 spacing=true>
+            <BlogHeader2>
                 1 - Setup Digital Ocean:
             </BlogHeader2>
-            <BlogBody newline=true spacing=true>
+            <BlogBody newline=true>
                 You can get your new Digital Account <BlogLink href="https://try.digitalocean.com/freetrialoffer/">here </BlogLink>
                 Digital Ocean will give you <b>200$ USD bill usage</b> for your first signup.
             </BlogBody>
@@ -66,28 +79,28 @@ pub fn DeployFlutterWebPage() -> impl IntoView {
                 droplet is a virtual computer with a public IP address that is hosted by Digital Ocean.
             </BlogBody>
             <BlogImage src="/assets/images/document/digital-ocean-create-menu.png" class="max-w-screen-lg mt-10"/>
-            <BlogHeader2 spacing=true>
+            <BlogHeader2>
                 2 - Setting up your droplet
             </BlogHeader2>
             <BlogBody>
                 Here is my configurations:
-                <ul class="list-none text-lg list-outside text-gray-400">
+                <ul class="list-none text-lg list-outside text-gray-200 rounded-xl border-2 border-cyan-900 p-2">
                     <li>
-                        <p class="font-bold">Region: Singapore</p>
-                        <p>Choose country that the most nearest your country</p>
+                        <BlogBody class="font-bold">Region: Singapore</BlogBody>
+                        <BlogBody>Choose country that the most nearest your country</BlogBody>
                     </li>
                     <li>
-                        <p class="font-bold">Choose an image: Ubuntu</p>
-                        <p>Choose what OS you want, but in this article I choose Ubuntu as the most common linux</p>
+                        <BlogBody class="font-bold">Choose an image: Ubuntu</BlogBody>
+                        <BlogBody>Choose what OS you want, but in this article I choose Ubuntu as the most common linux</BlogBody>
                     </li>
                     <li>
-                        <p class="font-bold">Choose size: select the cheapest one 1CPU, 1GB RAM took 6$/month</p>
-                        <p>Since the heaviest job is build the source code is taken by Github Action Runner, so we only need a very tiny server to host our webserver</p>
+                        <BlogBody class="font-bold">Choose size: select the cheapest one 1CPU, 1GB RAM took 6$/month</BlogBody>
+                        <BlogBody>Since the heaviest job is build the source code is taken by Github Action Runner, so we only need a very tiny server to host our webserver</BlogBody>
                     </li>
                     <li>
-                        <p class="font-bold">Select Authentication Method: SSH</p>
-                        <p>To perform the remote access to your droplet, you need to setup the authentication method, visit digital ocean website <BlogLink href="https://docs.digitalocean.com/products/droplets/how-to/connect-with-ssh">how to connect with ssh</BlogLink>
-                        </p>
+                        <BlogBody class="font-bold">Select Authentication Method: SSH</BlogBody>
+                        <BlogBody>To perform the remote access to your droplet, you need to setup the authentication method, visit digital ocean website <BlogLink href="https://docs.digitalocean.com/products/droplets/how-to/connect-with-ssh">how to connect with ssh</BlogLink>
+                        </BlogBody>
                     </li>
                 </ul>
             </BlogBody>
@@ -140,11 +153,10 @@ api {
                 Now, on you project directory create file call <BlogHighLight italic=true bold=true>Dockerfile</BlogHighLight>
             </BlogBody>
             <BlogImage src="/assets/images/document/dockerfile-in-project.png"/>
-            <BlogBody>
                 <BlogBody>Lets breakdown our Docker instructions before we start</BlogBody>
-                <ul class="list-none text-lg list-outside">
+                <ul class="list-none text-lg list-outside border-pink-900 border-2 rounded-xl">
                     <li>
-                        <BlogHeader3>We need to have two steps: Build and Run, why ? </BlogHeader3>
+                        <BlogHeader3 >We need to have two steps: Build and Run, why ? </BlogHeader3>
                         <BlogBody>
                             The build process requires more dependencies than the runtime, resulting in our runtime consuming more storage than necessary.
                             To address this, we can split the process into two phases. After completing the build phase, we can then copy the output into the runtime phase.
@@ -156,13 +168,12 @@ api {
                     </li>
                     <li>
                         <BlogHeader3>[Build] build the flutter-web</BlogHeader3>
-                        <BlogBody>By using command: <BlogHighLight bold=true background=true>flutter build web --release</BlogHighLight> flutter will build and then the output will be saved into <BlogHighLight bold=true>build/web</BlogHighLight> directory.</BlogBody>
+                        <BlogBody>By using command: <BlogHighLight bold=true border=true>flutter build web --release</BlogHighLight> flutter will build and then the output will be saved into <BlogHighLight bold=true>build/web</BlogHighLight> directory.</BlogBody>
                     </li>
                     <li>
                         <BlogHeader3>[Run] Copy the output of Building phase /build/web into Running phase</BlogHeader3>
                     </li>
                 </ul>
-            </BlogBody>
             <BlogBody>Copy and paste this into your Dockerfile</BlogBody>
             <CodeBlock language="Dockerfile" code=r#"
 FROM ubuntu:16.04 as builder
@@ -234,7 +245,7 @@ docker run -p 3000:80 --name simple_web_container simple_web:latest
                 You can easily follow along with this post without prior knowledge of Github Action. However, I recommend checking out the
                 <BlogLink href="https://docs.github.com/en/actions/learn-github-actions/understanding-github-actions">Github Action documentation</BlogLink> for a basic understanding before we proceed.
             </BlogBody>
-            <BlogBody newline=true spacing=true>
+            <BlogBody newline=true>
                 At this point, we&#39;ve successfully dockerized our code, and our cloud server is in place. However, we still need a solution to:
                 <ul class="list list-disc">
                     <li><BlogBody>Automatically build every time there are code changes.</BlogBody></li>
@@ -266,17 +277,11 @@ docker run -p 3000:80 --name simple_web_container simple_web:latest
             <BlogImage src="/assets/images/document/github_action_new_secret.png"/>
             <BlogBody>
                 Now fill in:
-                <ul className="list-none">
-                    <li><BlogHeader3>Name: SSH_PRIVATE_KEY</BlogHeader3></li>
-                    <li><BlogHeader3>Secret: Enter your secret that has been generated above</BlogHeader3></li>
-                </ul>
-            </BlogBody>
-            <BlogBody>
-                Continue to enter two more secret values
-                <ul class="font-bold">
-                    <li><BlogHeader3>SSH_HOST: The public IP address of your cloud server</BlogHeader3></li>
-                    <li><BlogHeader3>DOCKER_REGISTRY_USERNAME: Your Docker Hub username</BlogHeader3></li>
-                    <li><BlogHeader3>DOCKER_REGISTRY_PASSWORD: Your Docker Hub password</BlogHeader3></li>
+                <ul class="list-none w-full p-2">
+                    <li><BlogBody class="pt-2"><BlogHighLight rounded=true border=true>SSH_PRIVATE_KEY / Enter your secret that has been generated above</BlogHighLight> </BlogBody></li>
+                    <li><BlogBody class="pt-2"><BlogHighLight rounded=true border=true> SSH_HOST: The public IP address of your cloud server</BlogHighLight></BlogBody></li>
+                    <li><BlogBody class="pt-2"><BlogHighLight rounded=true border=true> DOCKER_REGISTRY_USERNAME: Your Docker Hub username</BlogHighLight></BlogBody></li>
+                    <li><BlogBody class="pt-2"><BlogHighLight rounded=true border=true> DOCKER_REGISTRY_PASSWORD: Your Docker Hub password</BlogHighLight></BlogBody></li>
                 </ul>
             </BlogBody>
             <BlogBody>Hmm... we are now ready to move to the last step {"😃"}.</BlogBody>

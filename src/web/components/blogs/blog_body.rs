@@ -17,7 +17,7 @@ pub fn BlogBody(
             if newline { "mt-2" } else { "" },
             if spacing { "mt-6" } else { "" },
         )}>
-            <p class="text-gray-400 font-thin text-base w-full font-main leading-8">{children()}</p>
+            <p class="text-gray-200 font-thin text-base w-full not-prose my-4 leading-8 font-main leading-8">{children()}</p>
         </div>
     }
 }

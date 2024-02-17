@@ -32,7 +32,7 @@ fn Header(
 ) -> impl IntoView {
     view! {
         <div class="flex items-center">
-            <p class="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white font-semibold">
+            <p class="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-gray-200 font-semibold">
                 <img class="mr-2 w-10 h-10 aspect-square rounded-full" src={&user.avatar_url.unwrap_or(String::from(""))} alt="No avatar"/>
                 {&user.display_name}
             </p>

@@ -9,7 +9,7 @@ pub fn UserName(
 ) -> impl IntoView {
     view! {
         <div class="flex items-center">
-            <p class="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white font-semibold">
+            <p class="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-gray-200 font-semibold">
                 <img class="mr-2 w-6 h-6 rounded-full" src=avatar_url alt=user_name/>
                 {user_name}
             </p>
