@@ -6,8 +6,10 @@ module.exports = {
     theme: {
         extend: {
             fontFamily: {
-                main: ["Segoe UI Regular", 'Roboto', 'Helvetica', 'Arial', 'sans-serif', "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", 'Montserrat', 'sans-serif'],
-                code: ['Source Code Pro', 'sans-serif']
+                'main': ['Segoe UI Regular', 'Segoe UI', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+                'main-italic': ['Segoe UI Italic', 'Segoe UI', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+                'main-bold': ['Segoe UI Bold', 'Segoe UI', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+                'main-bold-italic': ['Segoe UI Bold Italic', 'Segoe UI', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
             },
             colors: {
                 primaryC: '#18181b',          // primaryContainerColor

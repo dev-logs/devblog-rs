@@ -11,7 +11,7 @@ pub fn ReadMoreButton(
     onclick: Callback<MouseEvent>,
 ) -> impl IntoView {
     view! {
-        <button on:click=onclick class={format!("rounded-xl bg-white text-black font-bold px-3 py-2 w-fit hover:bg-gray-600 hover:outline hover:outline-gray-950 {}", class)} style={style}>
+        <button on:click=onclick class={format!("rounded-xl bg-white text-black font-main-bold px-3 py-2 w-fit hover:bg-gray-600 hover:outline hover:outline-gray-950 {}", class)} style={style}>
             {children()}
         </button>
     }

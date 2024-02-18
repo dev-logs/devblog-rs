@@ -23,9 +23,9 @@ fn Header(
 ) -> impl IntoView {
     view! {
         <BlogTitle class={"flex flex-row items-start justify-start space-x-10 min-h-0.5 bg-gray-200"}>
-            <BlogImage class="basis-1 flex-1" src="/assets/images/document/computer1.jpg"/>
+            <BlogImage border=true class="basis-1 flex-1" src="/assets/images/document/computer1.jpg"/>
             <div class="basis-1/4 flex-col space-y-2">
-                <BlogHeader class="text-5xl font-bold text-gray-200">Deploy Flutter Web</BlogHeader>
+                <BlogHeader class="text-5xl font-main-bold text-gray-200">Deploy Flutter Web</BlogHeader>
                 <BlogDescription>{blog.description}</BlogDescription>
             </div>
             <div class="basis-1/4"></div>
@@ -78,7 +78,7 @@ pub fn DeployFlutterWebPage() -> impl IntoView {
                 After register successfully, on dashboard, click on <BlogHighLight background=true bold=true>create droplet</BlogHighLight> button,
                 droplet is a virtual computer with a public IP address that is hosted by Digital Ocean.
             </BlogBody>
-            <BlogImage src="/assets/images/document/digital-ocean-create-menu.png" class="max-w-screen-lg mt-10"/>
+            <BlogImage border=true src="/assets/images/document/digital-ocean-create-menu.png"/>
             <BlogHeader2>
                 2 - Setting up your droplet
             </BlogHeader2>
@@ -86,25 +86,25 @@ pub fn DeployFlutterWebPage() -> impl IntoView {
                 Here is my configurations:
                 <ul class="list-none text-lg list-outside text-gray-200 rounded-xl border-2 border-cyan-900 p-2">
                     <li>
-                        <BlogBody class="font-bold">Region: Singapore</BlogBody>
+                        <BlogBody class="font-main-bold">Region: Singapore</BlogBody>
                         <BlogBody>Choose country that the most nearest your country</BlogBody>
                     </li>
                     <li>
-                        <BlogBody class="font-bold">Choose an image: Ubuntu</BlogBody>
+                        <BlogBody class="font-main-bold">Choose an image: Ubuntu</BlogBody>
                         <BlogBody>Choose what OS you want, but in this article I choose Ubuntu as the most common linux</BlogBody>
                     </li>
                     <li>
-                        <BlogBody class="font-bold">Choose size: select the cheapest one 1CPU, 1GB RAM took 6$/month</BlogBody>
+                        <BlogBody class="font-main-bold">Choose size: select the cheapest one 1CPU, 1GB RAM took 6$/month</BlogBody>
                         <BlogBody>Since the heaviest job is build the source code is taken by Github Action Runner, so we only need a very tiny server to host our webserver</BlogBody>
                     </li>
                     <li>
-                        <BlogBody class="font-bold">Select Authentication Method: SSH</BlogBody>
+                        <BlogBody class="font-main-bold">Select Authentication Method: SSH</BlogBody>
                         <BlogBody>To perform the remote access to your droplet, you need to setup the authentication method, visit digital ocean website <BlogLink href="https://docs.digitalocean.com/products/droplets/how-to/connect-with-ssh">how to connect with ssh</BlogLink>
                         </BlogBody>
                     </li>
                 </ul>
             </BlogBody>
-            <BlogImage src="/images/document/digital-ocean-create-droplet.png" caption="create droplet screen"/>
+            <BlogImage border=true src="/images/document/digital-ocean-create-droplet.png" caption="create droplet screen"/>
             <BlogHeader>New Flutter Web Project (optional)</BlogHeader>
             <BlogBody>
                 Using this command to init your first Flutter web project
@@ -128,7 +128,7 @@ flutter run -d chrome
             <CodeBlock language="bash" code=r#"flutter build web --release"#/>
             <BlogBody>You will see <BlogHighLight bold=true>build/web/index.html</BlogHighLight></BlogBody>
             <BlogBody>And inside that directory is exactly the content of our webpage with the entrypoint is <BlogHighLight bold=true>index.html</BlogHighLight> file.</BlogBody>
-            <BlogImage src="/assets/images/document/flutter-web-directory.png"/>
+            <BlogImage border=true src="/assets/images/document/flutter-web-directory.png"/>
             <BlogHighLight bold=true>So the idea is that we will will use Nginx to act like a simple web server and serve our build/web directory to the internet. SIMPLE {"😉"} </BlogHighLight>
             <BlogHeader2>1 - Nginx</BlogHeader2>
             <BlogBody>Copy and paste this file into your directory</BlogBody>
@@ -152,7 +152,7 @@ api {
             <BlogBody>
                 Now, on you project directory create file call <BlogHighLight italic=true bold=true>Dockerfile</BlogHighLight>
             </BlogBody>
-            <BlogImage src="/assets/images/document/dockerfile-in-project.png"/>
+            <BlogImage border=true src="/assets/images/document/dockerfile-in-project.png"/>
                 <BlogBody>Lets breakdown our Docker instructions before we start</BlogBody>
                 <ul class="list-none text-lg list-outside border-pink-900 border-2 rounded-xl">
                     <li>
@@ -217,7 +217,7 @@ RUN service nginx stop
 ENTRYPOINT ["/bin/bash", "-c", "echo 'Start nginx...'; nginx -g 'daemon off;'"]
 "#/>
             <BlogHeader2>
-                2 - Test on your local machine
+                3 - Test on your local machine
             </BlogHeader2>
             <BlogBody>On your project directory, to build Docker image we run:</BlogBody>
             <CodeBlock language="bash" code=r#"
@@ -238,7 +238,7 @@ simple_web  latest    873973fd1815   2 minutes ago    222MB
 docker run -p 3000:80 --name simple_web_container simple_web:latest
             "#/>
             <BlogBody>Then go check your <BlogLink href="http://localhost:3000">localhost:3000</BlogLink></BlogBody>
-            <BlogBody>If it is online, it means {"🤗"} you are successfully dockerized your website !!!, we ve completed 70% now !!</BlogBody>
+            <BlogBody>If it is online, {"🤗"} you are successfully dockerized your website !!!, we ve completed 70% now !!</BlogBody>
             <BlogHeader>Github Action</BlogHeader>
             <BlogBody>
                 We will not delve into the details of what Github Action is and how to use it in this section.
@@ -272,23 +272,23 @@ docker run -p 3000:80 --name simple_web_container simple_web:latest
             <CodeBlock language="bash" code=r#"cat ~/.ssh/id_rsa"#/>
             <BlogBody>Copy the whole output of that command, we need to use it later on.</BlogBody>
             <BlogBody>Open your Github Repository, go to settings, in the left bottom, there is an options call <BlogHighLight bold=true>Secrets and Variables</BlogHighLight></BlogBody>
-            <BlogImage src="/assets/images/document/github_secret.png"/>
+            <BlogImage border=true src="/assets/images/document/github_secret.png"/>
             <BlogBody>Press the button <BlogHighLight rounded=true background=true>New repository secret</BlogHighLight> which will produce this popup: </BlogBody>
-            <BlogImage src="/assets/images/document/github_action_new_secret.png"/>
+            <BlogImage border=true src="/assets/images/document/github_action_new_secret.png"/>
             <BlogBody>
                 Now fill in:
                 <ul class="list-none w-full p-2">
                     <li><BlogBody class="pt-2"><BlogHighLight rounded=true border=true>SSH_PRIVATE_KEY / Enter your secret that has been generated above</BlogHighLight> </BlogBody></li>
-                    <li><BlogBody class="pt-2"><BlogHighLight rounded=true border=true> SSH_HOST: The public IP address of your cloud server</BlogHighLight></BlogBody></li>
-                    <li><BlogBody class="pt-2"><BlogHighLight rounded=true border=true> DOCKER_REGISTRY_USERNAME: Your Docker Hub username</BlogHighLight></BlogBody></li>
-                    <li><BlogBody class="pt-2"><BlogHighLight rounded=true border=true> DOCKER_REGISTRY_PASSWORD: Your Docker Hub password</BlogHighLight></BlogBody></li>
+                    <li><BlogBody class="pt-2"><BlogHighLight rounded=true border=true> SSH_HOST / The public IP address of your cloud server</BlogHighLight></BlogBody></li>
+                    <li><BlogBody class="pt-2"><BlogHighLight rounded=true border=true> DOCKER_REGISTRY_USERNAME / Your Docker Hub username</BlogHighLight></BlogBody></li>
+                    <li><BlogBody class="pt-2"><BlogHighLight rounded=true border=true> DOCKER_REGISTRY_PASSWORD / Your Docker Hub password</BlogHighLight></BlogBody></li>
                 </ul>
             </BlogBody>
             <BlogBody>Hmm... we are now ready to move to the last step {"😃"}.</BlogBody>
             <BlogHeader2>2 - Create the Github workflow</BlogHeader2>
             <BlogBody><BlogLink href="https://docs.github.com/en/actions/using-workflows/about-workflows">Github workflow</BlogLink> allow us to describe our instructions on how to build and deploy our application.</BlogBody>
             <BlogBody>On your project directory create a folder name <BlogHighLight italic=true>.github/workflows/ci.yaml</BlogHighLight></BlogBody>
-            <BlogImage src="/assets/images/document/ci-folder.png"/>
+            <BlogImage border=true src="/assets/images/document/ci-folder.png"/>
             <BlogBody>Copy and paste this into your ci.yaml</BlogBody>
             <CodeBlock language="yaml" code=r#"
 on:
@@ -330,12 +330,12 @@ jobs:
             <BlogBody>
                 Now open your Github Repository, click on tab <BlogHighLight rounded=true background=true>Actions</BlogHighLight>
             </BlogBody>
-            <BlogImage src="/assets/images/document/github_action_tab.png"/>
+            <BlogImage border=true src="/assets/images/document/github_action_tab.png"/>
             <BlogBody>
                 You will see your workflow is ready right there, and because we are setting the workflow to automatically running every time we push to the main branch,
                 Github will now automatically trigger the first build process.
             </BlogBody>
-            <BlogImage src="/assets/images/document/github_action_running.png"/>
+            <BlogImage border=true src="/assets/images/document/github_action_running.png"/>
             <BlogBody>And your CI should be success {"😉"}!!</BlogBody>
             <BlogHeader>Finalize</BlogHeader>
             <BlogBody>

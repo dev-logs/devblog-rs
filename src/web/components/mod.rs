@@ -6,3 +6,4 @@ pub mod read_more_button;
 pub mod code_blog;
 pub mod modals;
 pub mod avatars;
+pub mod rive;

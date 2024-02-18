@@ -68,7 +68,7 @@ pub fn Discussion () -> impl IntoView {
                     if let Ok(discussions) = result {
                         if discussions.is_empty() {
                             view! {
-                                <div><p class="text-xl font-bold">There is no discussions yet, make your first discussion</p></div>
+                                <div><p class="text-xl font-main-bold">There is no discussions yet, make your first discussion</p></div>
                             }
                         }
                         else {
@@ -83,13 +83,13 @@ pub fn Discussion () -> impl IntoView {
                     }
                     else {
                         view! {
-                            <div><p class="text-xl font-bold">Failed to load discussions</p></div>
+                            <div><p class="text-xl font-main-bold">Failed to load discussions</p></div>
                         }
                     }
                 }
                 else {
                     view! {
-                        <div><p class="text-xl font-bold">Loading</p></div>
+                        <div><p class="text-xl font-main-bold">Loading</p></div>
                     }
                 }
             }}

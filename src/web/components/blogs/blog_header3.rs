@@ -10,7 +10,7 @@ pub fn BlogHeader3(
 ) -> impl IntoView {
     view! {
         <div class={format!("{}{}", if spacing { "mt-12 " } else { "mt-8" }, class)}>
-            <p class="text-gray-200 font-bold font-main text-lg w-full">{children()}</p>
+            <p class="text-gray-200 font-main-bold font-main text-lg w-full">{children()}</p>
         </div>
     }
 }

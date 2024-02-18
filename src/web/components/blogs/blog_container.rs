@@ -1,6 +1,7 @@
 use leptos::*;
 use web_sys::js_sys::eval;
 use crate::web::components::blogs::blog_header::BlogHeader;
+use crate::web::components::rive::thump_up::ThumbUpRive;
 use crate::web::discussion::Discussion;
 
 #[component]
@@ -17,21 +18,22 @@ pub fn BlogContainer<E, F>(
         {header()}
         <div class="w-full flex flex-row justify-start items-start">
             <link rel="stylesheet" href="https://unpkg.com/prismjs@1.29.0/themes/prism-twilight.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
-            <div class="flex-1"/>
+            <div class="flex-1">
+                <ThumbUpRive/>
+            </div>
             <div class="flex-1 overflow-auto">
-                <article class="mt-8 prose prose-sm flex flex-col h-full items-start justify-start overflow-auto">
+                <article class="mt-8 prose prose-lg flex flex-col h-full items-start justify-start overflow-auto">
                     {children()}
                     <BlogHeader>Discussions</BlogHeader>
                     <Discussion/>
                 </article>
             </div>
-            <div class="flex-1 sticky top-0 right-0 justify-end items-end text-start pl-12 h-1/2 overflow-auto">
+            <div class="flex-1 sticky top-0 right-0 pt-10 justify-end items-end text-start pl-12 h-1/2 overflow-auto">
                 <TableOfContents class="sticky top-0"/>
             </div>
             <script src="https://unpkg.com/prismjs@1.29.0/components/prism-core.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	        <script src="https://unpkg.com/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js">
-            </script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
         </div>
         </div>
     }
@@ -113,10 +115,10 @@ fn TableOfContents(
     view! {
         <div class="relative p-2">
             <div class="flex flex-col">
-                <p class="text-lg mb-4">Contents</p>
+                <p class="text-lg mb-4 pl-1">Contents</p>
                 <ul class="table-of-contents box z-20 h-1/2 overflow-auto"/>
             </div>
-            <div class="selector absolute top-0 left-0 w-40 h-8 rounded-lg border z-10 bg-zinc-900"/>
+            <div class="selector absolute top-0 left-2 w-40 h-8 rounded-lg border z-10 bg-zinc-900"/>
         </div>
     }
 }

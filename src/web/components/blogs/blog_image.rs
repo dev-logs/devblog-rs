@@ -12,10 +12,12 @@ pub fn BlogImage(
     #[prop(default = "")]
     url: &'static str,
     #[prop(default = false)]
-    spacing: bool
+    spacing: bool,
+    #[prop(default = false)]
+    border: bool
 ) -> impl IntoView {
     view! {
-        <figure class={format!("{}{}", if spacing { "mt-5 " } else { "" }, class)}>
+        <figure class={format!("{}{}{}", if spacing { "mt-5 " } else { "" }, if border {"border p-2 border-2 border-gray-900 rounded-xl"} else { "" }, class)}>
             <img class="h-auto max-w-full rounded-lg" src={src} alt={alt}/>
             <figcaption class="mt-2 text-sm text-center text-gray-500">
                 {if !url.is_empty() {

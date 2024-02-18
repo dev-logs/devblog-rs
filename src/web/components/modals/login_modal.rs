@@ -71,17 +71,17 @@ fn LoginForm(
                             <input class="w-full p-2 mb-4 text-indigo-700 border-b-2 border-indigo-500 outline-none focus:bg-gray-300" type="text" name="displayname"/>
                         </div>
                         <div>
-                            <button class="w-full text-indigo-700 hover:text-indigo-300 text-md font-bold px-4" type="submit">
+                            <button class="w-full text-indigo-700 hover:text-indigo-300 text-md font-main-bold px-4" type="submit">
                                 Continue
                             </button>
                         </div>
                     </form>
-                    <p class="font-bold text-center mt-10">Or login with</p>
+                    <p class="font-main-bold text-center mt-10">Or login with</p>
                     <footer class="flex flex-row justify-center space-x-9 items-center">
-                        <button class="bg-white shadow-gray-300 shadow-lg rounded-xl hover:bg-gray-300 text-gray-200 font-bold py-2 px-4 mb-6 rounded" type="submit">
+                        <button class="bg-white shadow-gray-300 shadow-lg rounded-xl hover:bg-gray-300 text-gray-200 font-main-bold py-2 px-4 mb-6 rounded" type="submit">
                             <Github/>
                         </button>
-                        <button class="bg-white shadow-gray-300 shadow-lg rounded-xl hover:bg-gray-300 text-gray-200 font-bold py-2 px-4 mb-6 rounded" type="submit">
+                        <button class="bg-white shadow-gray-300 shadow-lg rounded-xl hover:bg-gray-300 text-gray-200 font-main-bold py-2 px-4 mb-6 rounded" type="submit">
                             <Google/>
                         </button>
                     </footer>

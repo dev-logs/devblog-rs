@@ -16,9 +16,9 @@ pub fn CodeBlock(
 
     view! {
         <div class="w-full rounded-lg">
-            <div class="rounded-2xl" style:padding="0px">
-                <pre class="p-1 rounded-3xl" style:padding="0px" style:padding-left="20px" style:padding="10px" style:border="none" style:box-shadow="none">
-                    <code class=format!("w-full rounded-2xl overflow-hidden scroll-auto font-code language-{language}")>
+            <div class="rounded-xl border border-stone-800" style:padding="0px">
+                <pre class="rounded-xl" style:padding="0px" style:padding-left="20px" style:padding="15px" style:margin="5px" style:border="none" style:box-shadow="none">
+                    <code class=format!("w-full rounded-xl overflow-hidden scroll-auto font-code language-{language}")>
                       {final_value}
                     </code>
                 </pre>
