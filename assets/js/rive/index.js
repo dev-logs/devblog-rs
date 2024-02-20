@@ -49,7 +49,6 @@ class RiveApp {
 class RiveComponent extends HTMLElement {
     constructor() {
         super()
-
         this._cleanupTasks = []
     }
 
@@ -68,12 +67,12 @@ class RiveComponent extends HTMLElement {
         this._canvas = canvas
 
         this._renderer = this._rive.makeRenderer(canvas)
-        const rivRequest = await fetch(new Request(this._rivFileUrl))
+        const rivRequest = await fetch(new Request(this.rivFileUrl))
         const bytes = await rivRequest.arrayBuffer()
         this._rifFile = await this._rive.load(new Uint8Array(bytes))
-        this._artboard = this._rifFile.artboardByName(this._artboardName)
+        this._artboard = this._rifFile.artboardByName(this.artboardName)
         this._stateMachine = new this._rive.StateMachineInstance(
-            this._artboard.stateMachineByName(this._state),
+            this._artboard.stateMachineByName(this.state),
             this._artboard
         )
 
@@ -81,35 +80,55 @@ class RiveComponent extends HTMLElement {
     }
 
     set rivFileUrl(value) {
-        this._rivFileUrl = value
+        this.setAttribute('rivFileUrl', value)
+    }
+
+    get rivFileUrl() {
+        return this.getAttribute('rivFileUrl')
     }
 
     set state(value) {
-        this._state = value
+        this.setAttribute('state', value)
+    }
+
+    get state() {
+        return this.getAttribute('state')
     }
 
     set artboardName(value) {
-        this._artboardName = value
+        this.setAttribute('artboardName', value)
     }
 
     get artboardName() {
-        return this._artboardName
+        return this.getAttribute('artboardName')
     }
 
     set fit(value) {
-        this._fit = value
+        this.setAttribute('fit', Object.keys(this._rive.Alignment).find((key) => this._rive.Fit[key] === value))
     }
 
     set alignment(value) {
-        this._alignment = value
+        this.setAttribute('alignment', Object.keys(this._rive.Alignment).find((key) => this._rive.Alignment[key] === value))
     }
 
     get fit() {
-        return this._fit || this._rive.Fit.contain
+        const fitAttr = this.getAttribute('fit')
+        if (!fitAttr) {
+            this.setAttribute('fit', 'contain')
+        }
+
+        const name = this.getAttribute('fit')
+        return this._rive.Fit[name]
     }
 
     get alignment() {
-        return this._alignment || this._rive.Alignment.center
+        const alignmentAttr = this.getAttribute('alignment')
+        if (!alignmentAttr) {
+            this.setAttribute('alignment', 'center')
+        }
+
+        const name = this.getAttribute('alignment')
+        return this._rive.Alignment[name]
     }
 
     async registerListeners() {
@@ -225,9 +244,29 @@ class ThumbUpRiveComponent extends RiveComponent {
     constructor() {
         super()
 
-        this._state = 'thumb_up'
-        this._artboardName = 'thumb'
-        this._rivFileUrl = '/assets/riv/rive.riv'
+        this.state = 'thumb_up'
+        this.artboardName = 'thumb'
+        this.rivFileUrl = '/assets/riv/rive.riv'
+    }
+
+    async connectedCallback() {
+        await super.connectedCallback()
+        this.likeCount = this.getAttribute('likeCount')
+    }
+
+    set likeCount(value) {
+        this.setAttribute('likeCount', value)
+        if (this._stateMachine) {
+            const textRun = this._artboard.textRun("text_run_likes")
+            textRun.text = this.likeCount.toString()
+        }
+    }
+
+    get likeCount() {
+        let n = Number(this.getAttribute('likeCount'))
+        if (isNaN(n)) n = 0
+
+        return n
     }
 }
 
