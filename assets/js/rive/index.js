@@ -46,65 +46,79 @@ class RiveApp {
     }
 }
 
-class RiveController {
-    constructor(rivFileUrl, canvas) {
+class RiveComponent extends HTMLElement {
+    constructor() {
+        super()
+
+        this._cleanupTasks = []
+    }
+
+    async connectedCallback() {
+        await RiveApp.getInstance()
         this._rive = RiveApp.currentInstance.rive
         if (!this._rive) {
             throw Error("The rive has not been initialize, call await RiveApp.init() first")
         }
 
+        const {width, height} = this.getBoundingClientRect()
+        const canvas = document.createElement('canvas')
+        canvas.width = width
+        canvas.height = height
+        this.appendChild(canvas)
         this._canvas = canvas
+
         this._renderer = this._rive.makeRenderer(canvas)
-        this._rivFileUrl = rivFileUrl
-        this._fits = {}
-        this._alignments = {}
-        this._stateMachines = {}
-        this._cleanupTasks = []
-        this._listeners = {}
+        const rivRequest = await fetch(new Request(this._rivFileUrl))
+        const bytes = await rivRequest.arrayBuffer()
+        this._rifFile = await this._rive.load(new Uint8Array(bytes))
+        this._artboard = this._rifFile.artboardByName(this._artboardName)
+        this._stateMachine = new this._rive.StateMachineInstance(
+            this._artboard.stateMachineByName(this._state),
+            this._artboard
+        )
+
+        await this.render()
     }
 
-    async getRivFile() {
-        if (!this._rivFile) {
-            const rivRequest = await fetch(new Request(this._rivFileUrl))
-            const bytes = await rivRequest.arrayBuffer()
-            this._rifFile = await this._rive.load(new Uint8Array(bytes))
-        }
-
-        return this._rifFile
+    set rivFileUrl(value) {
+        this._rivFileUrl = value
     }
 
-    async getArtBoard() {
-        if (!this._artboard) {
-            const file = await this.getRivFile()
-            this._artboard = file.artboardByName('thumb')
-        }
-
-        return this._artboard
+    set state(value) {
+        this._state = value
     }
 
-    setFit(state, value) {
-        this._fits[state] = value
+    set artboardName(value) {
+        this._artboardName = value
     }
 
-    setAlignment(state, value) {
-        this._alignments[state] = value
+    get artboardName() {
+        return this._artboardName
     }
 
-    getFit(state) {
-        return this._fits[state] || this._rive.Fit.contain
+    set fit(value) {
+        this._fit = value
     }
 
-    getAlignment(state) {
-        return this._alignments[state] || this._rive.Alignment.center
+    set alignment(value) {
+        this._alignment = value
     }
 
-    async registerListeners(state) {
+    get fit() {
+        return this._fit || this._rive.Fit.contain
+    }
+
+    get alignment() {
+        return this._alignment || this._rive.Alignment.center
+    }
+
+    async registerListeners() {
         const rive = this._rive
-        const fit = this.getFit(state)
-        const alignment = this.getAlignment(state)
+        const fit = this.fit
+        const alignment = this.alignment
         const canvas = this._canvas
-        const artboard = await this.getArtBoard()
-        const stateMachine = await this.getStateMachine(state)
+        const artboard = this._artboard
+        const stateMachine = this._stateMachine
 
         const mouseCallback = (event) => {
             const boundingRect = event.currentTarget.getBoundingClientRect()
@@ -161,62 +175,14 @@ class RiveController {
         })
     }
 
-    async getStateMachine(name) {
-        if (!name) return null
-
-        if (!this._stateMachines) this._stateMachines = {}
-
-        if (!this._stateMachines[name]) {
-            const artboard = await this.getArtBoard()
-            this._stateMachines[name] = new this._rive.StateMachineInstance(
-                artboard.stateMachineByName(name),
-                artboard
-            )
-        }
-
-        return this._stateMachines[name]
-    }
-
-    on(state, event, callback) {
-        if (!this._listeners[state]) this._listeners[state] = {}
-        const stateListeners = this._listeners[state]
-
-        if (!stateListeners[event]) stateListeners[event] = []
-        const listeners = stateListeners[event]
-
-        listeners.push(callback)
-
-        this._cleanupTasks.push(() => {
-            if (!stateListeners[event]) return
-
-            const index = stateListeners[event].indexOf(callback)
-            if (index > -1) {
-                listeners.splice(index, 1)
-            }
-        })
-    }
-
-    dispatchEvent(state, event) {
-        const stateListeners = this._listeners[state]
-        if (stateListeners && stateListeners[event.name]) {
-            stateListeners[event.name].forEach((it) => it(event))
-        }
-    }
-
-    async dispose() {
-        this._cleanupTasks.forEach((it) => it())
-    }
-
-    async render(state) {
+    async render() {
         if (this._isRendering) return
         this._isRendering = true
 
-        console.log('rendering thumb thumb')
-
         const renderer = this._renderer
-        const artboard = await this.getArtBoard()
-        const stateMachine = await this.getStateMachine(state)
-        await this.registerListeners(state)
+        const artboard = this._artboard
+        const stateMachine = this._stateMachine
+        await this.registerListeners(stateMachine)
 
         RiveApp.currentInstance.requestRenderLoop(({time, deltaTime}) => {
             const elapsedTimeSec = deltaTime / 1000
@@ -224,7 +190,11 @@ class RiveController {
             const numFiredEvents = stateMachine.reportedEventCount()
             for (let i = 0; i < numFiredEvents; i++) {
                 const event = stateMachine.reportedEventAt(i)
-                this.dispatchEvent(state, event)
+                this.dispatchEvent(new CustomEvent(event.name, {
+                    detail: {target: this},
+                    bubbles: true,
+                    cancelable: true
+                }))
             }
 
             renderer.clear()
@@ -234,8 +204,8 @@ class RiveController {
             artboard.advance(elapsedTimeSec)
             renderer.save()
             renderer.align(
-                this.getFit(state),
-                this.getAlignment(state),
+                this.fit,
+                this.alignment,
                 {
                     minX: 0,
                     minY: 0,
@@ -251,48 +221,15 @@ class RiveController {
     }
 }
 
-class ThumbUpRiveComponent extends HTMLElement {
-    async connectedCallback() {
-        const {width, height} = this.getBoundingClientRect()
-        this.canvas = document.createElement('canvas')
-        console.log(width, height)
-        this.canvas.width = width
-        this.canvas.height = height
-        this.appendChild(this.canvas)
+class ThumbUpRiveComponent extends RiveComponent {
+    constructor() {
+        super()
 
-        await RiveApp.getInstance()
-        const controller = new RiveThumbUpController({
-            canvas: this.canvas,
-            numberOfLikes: this.numberOfLikes
-        })
-
-        await controller.render()
+        this._state = 'thumb_up'
+        this._artboardName = 'thumb'
+        this._rivFileUrl = '/assets/riv/rive.riv'
     }
 }
 
+customElements.define('rive-component', RiveComponent)
 customElements.define('thumb-up', ThumbUpRiveComponent)
-
-class RiveThumbUpController extends RiveController {
-    state = 'thumb_up'
-
-    constructor({canvas, numberOfLikes}) {
-        super('/assets/riv/rive.riv', canvas)
-        this._numberOfLikes = numberOfLikes
-    }
-
-    async updateLikes(value) {
-        const textRunLikes = (await this.getArtBoard()).textRun("text_run_likes")
-        this._numberOfLikes = value
-        textRunLikes.text = (this._numberOfLikes).toString()
-    }
-
-    async render() {
-        if (this._isRendering) return
-
-        this.on(this.state, 'LikeEvent', async(event) => {
-            callback(this._numberOfLikes)
-        })
-
-        return super.render(this.state)
-    }
-}
