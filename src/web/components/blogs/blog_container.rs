@@ -14,27 +14,25 @@ pub fn BlogContainer<E, F>(
     where E: IntoView, F: Fn() -> E + 'static
 {
     view! {
-        <div class="flex flex-col justify-start items-center bg-gray-950">
-        {header()}
-        <div class="w-full flex flex-row justify-start items-start">
+        <div class="grid grid-cols-10 justify-start bg-gray-950">
+            // {header()}
             <link rel="stylesheet" href="https://unpkg.com/prismjs@1.29.0/themes/prism-twilight.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
-            <div class="flex-1">
+            <div class="sticky top-0 right-0 h-screen col-span-3">
                 <ThumbUpRive/>
             </div>
-            <div class="flex-1 overflow-auto">
+            <div class="overflow-auto col-span-4">
                 <article class="mt-8 prose prose-lg flex flex-col h-full items-start justify-start overflow-auto">
                     {children()}
                     <BlogHeader>Discussions</BlogHeader>
                     <Discussion/>
                 </article>
             </div>
-            <div class="flex-1 sticky top-0 right-0 pt-10 justify-end items-end text-start pl-12 h-1/2 overflow-auto">
-                <TableOfContents class="sticky top-0"/>
+            <div class="sticky top-0 right-0 pt-10 justify-end items-end text-start h-screen pl-12 overflow-auto col-span-3">
+                <TableOfContents class=""/>
             </div>
             <script src="https://unpkg.com/prismjs@1.29.0/components/prism-core.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	        <script src="https://unpkg.com/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-        </div>
         </div>
     }
 }
@@ -113,7 +111,7 @@ fn TableOfContents(
     });
     
     view! {
-        <div class="relative p-2">
+        <div class=format!("relative p-2 {class}")>
             <div class="flex flex-col">
                 <p class="text-lg mb-4 pl-1">Contents</p>
                 <ul class="table-of-contents box z-20 h-1/2 overflow-auto"/>
