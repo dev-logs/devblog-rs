@@ -1680,6 +1680,11 @@ video {
   margin-bottom: 1rem;
 }
 
+.mx-5{
+  margin-left: 1.25rem;
+  margin-right: 1.25rem;
+}
+
 .mb-1{
   margin-bottom: 0.25rem;
 }
@@ -1852,6 +1857,18 @@ video {
   height: 100vh;
 }
 
+.h-40{
+  height: 10rem;
+}
+
+.h-20{
+  height: 5rem;
+}
+
+.h-44{
+  height: 11rem;
+}
+
 .min-h-0{
   min-height: 0px;
 }
@@ -1951,6 +1968,10 @@ video {
 
 .grid-cols-10{
   grid-template-columns: repeat(10, minmax(0, 1fr));
+}
+
+.grid-cols-3{
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .flex-row{

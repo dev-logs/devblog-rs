@@ -9,5 +9,10 @@
     "autoprefixer": "^10.0.1",
     "postcss": "^8",
     "tailwindcss": "^3.3.0"
+  },
+  "scripts": {
+    "leptos": "cargo leptos",
+    "web": "yarn leptos watch",
+    "style": "tailwindcss -i ./global.scss -o style/main.css --watch"
   }
 }

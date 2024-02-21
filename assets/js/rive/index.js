@@ -1,7 +1,11 @@
 const RIVE_VERSION = '2.7.0'
 
+/*
+* Represent for the Rive instance
+* it will loaded as singleton in the first time, and later use will always using the same rive instance
+* load library at @rive-app manually because it is a js module (.mjs) so that we need to load it internally
+* */
 class RiveApp {
-    static _instance
     constructor(rive) {
         this._rive = rive
     }
@@ -10,22 +14,14 @@ class RiveApp {
         return this._rive
     }
 
-    static async getInstance() {
-        if (RiveApp._instance) {
-            return RiveApp._instance
-        }
-
+    static async init() {
         const {default: RiveCanvas} = await import((`https://unpkg.com/@rive-app/canvas-advanced@${RIVE_VERSION}`))
         const rive = await RiveCanvas({
             locateFile: (_) => `https://unpkg.com/@rive-app/canvas-advanced@${RIVE_VERSION}/rive.wasm`
         })
 
-        RiveApp._instance = new RiveApp(rive)
-        return RiveApp._instance
-    }
-
-    static get currentInstance() {
-        return RiveApp._instance
+        const instance = new RiveApp(rive)
+        return instance
     }
 
     requestRenderLoop(callback) {
@@ -47,18 +43,16 @@ class RiveApp {
 }
 
 class RiveComponent extends HTMLElement {
+    static observedAttributes = ["fit", "alignment", "text", "value"];
+
     constructor() {
         super()
         this._cleanupTasks = []
     }
 
     async connectedCallback() {
-        await RiveApp.getInstance()
-        this._rive = RiveApp.currentInstance.rive
-        if (!this._rive) {
-            throw Error("The rive has not been initialize, call await RiveApp.init() first")
-        }
-
+        this._riveApp = await RiveApp.init()
+        this._rive = this._riveApp.rive
         const {width, height} = this.getBoundingClientRect()
         const canvas = document.createElement('canvas')
         canvas.width = width
@@ -67,10 +61,10 @@ class RiveComponent extends HTMLElement {
         this._canvas = canvas
 
         this._renderer = this._rive.makeRenderer(canvas)
-        const rivRequest = await fetch(new Request(this.rivFileUrl))
-        const bytes = await rivRequest.arrayBuffer()
-        this._rifFile = await this._rive.load(new Uint8Array(bytes))
-        this._artboard = this._rifFile.artboardByName(this.artboardName)
+        const fetchRiveFileResponse = await fetch(new Request(this.rivFileUrl))
+        const bytes = await fetchRiveFileResponse.arrayBuffer()
+        this._rivFile = await this._rive.load(new Uint8Array(bytes))
+        this._artboard = this._rivFile.artboardByName(this.artboardName)
         this._stateMachine = new this._rive.StateMachineInstance(
             this._artboard.stateMachineByName(this.state),
             this._artboard
@@ -79,56 +73,62 @@ class RiveComponent extends HTMLElement {
         await this.render()
     }
 
+    disconnectedCallback() {
+        console.log('rive-debug', `disconnectedCallback ${this.constructor.name}`)
+        this._cleanupTasks.forEach((it) => it())
+
+        this._renderer.delete();
+        this._rivFile.delete();
+        this._artboard.delete();
+        this._stateMachine.delete();
+    }
+
     set rivFileUrl(value) {
-        this.setAttribute('rivFileUrl', value)
+        this._rivFileUrl = value
     }
 
     get rivFileUrl() {
-        return this.getAttribute('rivFileUrl')
+        return this._rivFileUrl
     }
 
     set state(value) {
-        this.setAttribute('state', value)
+        this._state = value
     }
 
     get state() {
-        return this.getAttribute('state')
+        return this._state
     }
 
     set artboardName(value) {
-        this.setAttribute('artboardName', value)
+        this._artboardName = value
     }
 
     get artboardName() {
-        return this.getAttribute('artboardName')
+        return this._artboardName
     }
 
     set fit(value) {
-        this.setAttribute('fit', Object.keys(this._rive.Alignment).find((key) => this._rive.Fit[key] === value))
+        this._fit = value
     }
 
     set alignment(value) {
-        this.setAttribute('alignment', Object.keys(this._rive.Alignment).find((key) => this._rive.Alignment[key] === value))
+        this._alignment = value
     }
 
     get fit() {
-        const fitAttr = this.getAttribute('fit')
-        if (!fitAttr) {
-            this.setAttribute('fit', 'contain')
+        if (!this._fit) {
+            this._fit = 'contain'
         }
 
-        const name = this.getAttribute('fit')
-        return this._rive.Fit[name]
+        return this._rive.Fit[this._fit]
     }
 
     get alignment() {
-        const alignmentAttr = this.getAttribute('alignment')
-        if (!alignmentAttr) {
-            this.setAttribute('alignment', 'center')
+        if (!this._alignment) {
+            this._alignment = 'center'
         }
 
-        const name = this.getAttribute('alignment')
-        return this._rive.Alignment[name]
+        return this._rive.Alignment[this._alignment]
     }
 
     async registerListeners() {
@@ -194,6 +194,11 @@ class RiveComponent extends HTMLElement {
         })
     }
 
+    attributeChangedCallback(name, oldValue, newValue) {
+        console.log(`Attribute ${name} has changed.`);
+        this[name] = newValue
+    }
+
     async render() {
         if (this._isRendering) return
         this._isRendering = true
@@ -203,7 +208,7 @@ class RiveComponent extends HTMLElement {
         const stateMachine = this._stateMachine
         await this.registerListeners(stateMachine)
 
-        RiveApp.currentInstance.requestRenderLoop(({time, deltaTime}) => {
+        this._riveApp.requestRenderLoop(({time, deltaTime}) => {
             const elapsedTimeSec = deltaTime / 1000
 
             const numFiredEvents = stateMachine.reportedEventCount()
@@ -218,8 +223,6 @@ class RiveComponent extends HTMLElement {
 
             renderer.clear()
             stateMachine.advance(elapsedTimeSec)
-            // animation.advance(elapsedTimeSec)
-            // animation.apply(1)
             artboard.advance(elapsedTimeSec)
             renderer.save()
             renderer.align(
@@ -248,27 +251,48 @@ class ThumbUpRiveComponent extends RiveComponent {
         this.artboardName = 'thumb'
         this.rivFileUrl = '/assets/riv/rive.riv'
     }
+}
 
-    async connectedCallback() {
-        await super.connectedCallback()
-        this.likeCount = this.getAttribute('likeCount')
+class RiveText extends RiveComponent {
+    static observedAttributes = ["fit", "alignment", "text", "value"]
+
+    constructor() {
+        super()
+        this.state = 'controller'
+        this.rivFileUrl = '/assets/riv/rive.riv'
+        this.artboardName = 'text'
     }
 
-    set likeCount(value) {
-        this.setAttribute('likeCount', value)
+    attributeChangedCallback(name, oldValue, newValue) {
+        super.attributeChangedCallback(name, oldValue, newValue);
+    }
+
+    set text(value) {
+        this._text = value
         if (this._stateMachine) {
-            const textRun = this._artboard.textRun("text_run_likes")
-            textRun.text = this.likeCount.toString()
+            const textRun = this._artboard.textRun("text_run")
+            textRun.text = this.text
+            const triggerSetTextAnimation = this._stateMachine.input(0).asTrigger()
+            triggerSetTextAnimation.fire()
         }
     }
 
-    get likeCount() {
-        let n = Number(this.getAttribute('likeCount'))
-        if (isNaN(n)) n = 0
-
-        return n
+    get text() {
+        return this._text
     }
 }
 
+class RiveEmojiFaceLove extends RiveComponent {
+    constructor() {
+        super()
+        this.state = 'controller'
+        this.rivFileUrl = '/assets/riv/rive.riv'
+        this.artboardName = 'love'
+    }
+}
+
+
 customElements.define('rive-component', RiveComponent)
-customElements.define('thumb-up', ThumbUpRiveComponent)
+customElements.define('rive-thumb-up', ThumbUpRiveComponent)
+customElements.define('rive-text', RiveText)
+customElements.define('rive-emoji-face-love', RiveEmojiFaceLove)
