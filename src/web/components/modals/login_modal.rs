@@ -67,11 +67,11 @@ fn LoginForm(
                     </header>
                     <form on:submit=on_submit class="pt-2 pb-5 px-10">
                         <div>
-                            <label class="block mb-2 text-indigo-500 text-md" for="displayname">Display name</label>
-                            <input class="w-full p-2 mb-4 text-indigo-700 border-b-2 border-indigo-500 outline-none focus:bg-gray-300" type="text" name="displayname"/>
+                            <label class="block mb-2 text-indigo-500 text-md font-main" for="displayname">Display name</label>
+                            <input class="w-full p-2 mb-4 text-indigo-700 border-b-2 font-main border-indigo-500 outline-none focus:bg-gray-300" type="text" name="displayname" required/>
                         </div>
                         <div>
-                            <button class="w-full text-indigo-700 hover:text-indigo-300 text-md font-main-bold px-4" type="submit">
+                            <button class="w-full text-indigo-700 font-main hover:text-indigo-300 text-md font-main-bold px-4" type="submit">
                                 Continue
                             </button>
                         </div>

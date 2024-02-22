@@ -18,7 +18,7 @@ pub fn ThumbUpRive(
 
     let author_name = blog.author.display_name.clone().unwrap();
     view! {
-        <div class="grid grid-rows-10 divide-y divide-gray-700 mx-5 h-80 bg-stone-950 border h-72 border-gray-700 mt-10 rounded-xl max-w-64">
+        <div class="grid grid-rows-10 divide-y divide-gray-700 mx-5 h-80 h-72 border border-gray-700 mt-10 rounded-xl max-w-64">
             <div class="row-span-6 flex-col justify-between flex p-2 pl-5">
                 <div>
                    <p class="font-main text-lg">{blog.title.clone()}</p>
