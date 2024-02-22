@@ -43,8 +43,6 @@ class RiveApp {
 }
 
 class RiveComponent extends HTMLElement {
-    static observedAttributes = ["fit", "alignment", "text", "value"];
-
     constructor() {
         super()
         this._cleanupTasks = []
@@ -254,17 +252,13 @@ class ThumbUpRiveComponent extends RiveComponent {
 }
 
 class RiveText extends RiveComponent {
-    static observedAttributes = ["fit", "alignment", "text", "value"]
+    static observedAttributes = ["text"]
 
     constructor() {
         super()
         this.state = 'controller'
         this.rivFileUrl = '/assets/riv/rive.riv'
         this.artboardName = 'text'
-    }
-
-    attributeChangedCallback(name, oldValue, newValue) {
-        super.attributeChangedCallback(name, oldValue, newValue);
     }
 
     set text(value) {

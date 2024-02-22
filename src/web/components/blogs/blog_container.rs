@@ -1,5 +1,6 @@
 use leptos::*;
 use web_sys::js_sys::eval;
+use crate::entities::blog::Blog;
 use crate::web::components::blogs::blog_header::BlogHeader;
 use crate::web::components::rive::thump_up::ThumbUpRive;
 use crate::web::discussion::Discussion;
@@ -9,7 +10,9 @@ pub fn BlogContainer<E, F>(
     #[prop(default = "")]
     class: &'static str,
     children: Children,
-    header: F
+    header: F,
+    #[prop()]
+    blog: Blog
 ) -> impl IntoView
     where E: IntoView, F: Fn() -> E + 'static
 {
@@ -17,8 +20,8 @@ pub fn BlogContainer<E, F>(
         <div class="grid grid-cols-10 justify-start bg-gray-950">
             // {header()}
             <link rel="stylesheet" href="https://unpkg.com/prismjs@1.29.0/themes/prism-twilight.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
-            <div class="sticky top-0 right-0 h-screen col-span-3">
-                <ThumbUpRive/>
+            <div class="sticky top-0 right-0 h-screen col-span-3 flex flex-row w-full items-start justify-center">
+                <ThumbUpRive blog=blog/>
             </div>
             <div class="overflow-auto col-span-4">
                 <article class="mt-8 prose prose-lg flex flex-col h-full items-start justify-start overflow-auto">

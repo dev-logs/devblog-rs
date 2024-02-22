@@ -1,8 +1,12 @@
 use leptos::*;
 use web_sys::MouseEvent;
+use crate::entities::blog::Blog;
 
 #[component]
-pub fn ThumbUpRive() -> impl IntoView {
+pub fn ThumbUpRive(
+    #[prop()]
+    blog: Blog
+) -> impl IntoView {
     let (how_many_like, set_like_count) = create_signal(1);
     let on_like = {
         let how_many_like = how_many_like.clone();
@@ -12,17 +16,24 @@ pub fn ThumbUpRive() -> impl IntoView {
         })
     };
 
+    let author_name = blog.author.display_name.clone().unwrap();
     view! {
-        <div class="grid grid-cols-3 mx-5 h-44">
-            <div class="flex flex-row">
+        <div class="grid grid-rows-10 divide-y divide-gray-700 mx-5 h-80 bg-stone-950 border h-72 border-gray-700 mt-10 rounded-xl max-w-64">
+            <div class="row-span-6 flex-col justify-between flex p-2 pl-5">
+                <div>
+                   <p class="font-main text-lg">{blog.title.clone()}</p>
+                   <p class="font-main-bold text-md mt-2">{author_name}</p>
+                </div>
+                <p class="font-main text-gray-600 mb-2 text-sm">1 min read</p>
+            </div>
+            <div class="flex flex-row row-span-2">
                 <rive-thumb-up id="riveThumbUpLike" class="block w-full h-full" on:LikeEvent=on_like likeCount=10></rive-thumb-up>
-                <rive-text id="riveTextLike" class="block w-full h-full" text={move || {how_many_like.get().to_string()}}></rive-text>
+                <rive-text id="riveTextLike" class="block w-full h-full" text={move || {format!("{} likes", how_many_like.get().to_string())}}></rive-text>
             </div>
-            <div>
-                <rive-emoji-face-love id="riveEmojiView" class="block w-full h-full"></rive-emoji-face-love>
+            <div class="flex flex-row row-span-2">
+                <rive-emoji-face-love id="riveEmojiView" class="block w-full h-full m-1"></rive-emoji-face-love>
+                <rive-text id="riveTextView" class="block w-full h-full" text={move || {format!("{} views", how_many_like.get().to_string())}}></rive-text>
             </div>
-            <div></div>
-
             <script src="/assets/js/rive/index.js"></script>
         </div>
     }

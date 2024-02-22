@@ -42,7 +42,7 @@ pub fn DeployFlutterWebPage() -> impl IntoView {
     let blog = blog_context.get_selected_blog().clone();
 
     view! {
-        <BlogContainer class="flex flex-col pt-10 my-10 font-main" header={move || view! {<Header blog={blog.clone()}/>}}>
+        <BlogContainer class="flex flex-col pt-10 my-10 font-main" blog={blog.clone()} header={move || view! {<Header blog={blog.clone()}/>}}>
             <BlogHeader>Introduction</BlogHeader>
             <BlogBody>
                 <BlogLink href="https://flutter.dev/multi-platform/web">Flutter Web</BlogLink> brings the power of Flutter declarative approach to web development, enabling developers to construct high-quality.
