@@ -13,7 +13,7 @@ pub enum AdaptiveRelation<T> where T: Clone + Sized + Into<RecordId> {
     Record(T),
 }
 
-impl<T> AdaptiveRelation<T> where T: Clone + Sized + Into<RecordId>{
+impl<T> AdaptiveRelation<T> where T: Clone + Sized + Into<RecordId> {
     pub fn id(&self) -> RecordId {
         match self {
             Self::Id(id) => id.clone(),

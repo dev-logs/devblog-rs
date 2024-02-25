@@ -6,4 +6,5 @@ pub mod create_discussion;
 pub mod migration_services;
 pub mod create_guess_user;
 pub mod get_discussions;
-pub(crate) mod user_default_avatar;
+pub mod user_default_avatar;
+pub mod like;

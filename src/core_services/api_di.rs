@@ -11,6 +11,8 @@ use crate::services::create_guess_user::api_impl::CreateGuestUserApiImpl;
 use crate::services::create_guess_user::service::CreateGuestUserService;
 use crate::services::get_discussions::api_impl::GetDiscussionsApiImpl;
 use crate::services::get_discussions::service::GetDiscussionsService;
+use crate::services::like::api_impl::LikeBlogServiceApiImpl;
+use crate::services::like::service::LikeBlogService;
 use crate::services::migration_services::author_impl::AuthorMigrationServiceImpl;
 use crate::services::migration_services::blog_post_impl::BlogPostMigrationServiceImpl;
 use crate::services::migration_services::service::{AuthorMigrationService, BlogPostMigrationService};
@@ -33,6 +35,8 @@ pub trait ApiServicesInjector {
     fn get_get_discussions_service(&self) -> impl GetDiscussionsService;
 
     fn get_generate_random_avatar_url_service(&self) -> impl RandomUserDefaultAvatarService;
+
+    fn get_like_blog_service(&self) -> impl LikeBlogService;
 }
 
 pub struct ApiInjector;
@@ -76,6 +80,12 @@ impl ApiServicesInjector for ApiInjector {
 
     fn get_generate_random_avatar_url_service(&self) -> impl RandomUserDefaultAvatarService {
         RandomUserAvatarServiceApiImpl {}
+    }
+
+    fn get_like_blog_service(&self) -> impl LikeBlogService {
+        LikeBlogServiceApiImpl {
+            db: DB.clone()
+        }
     }
 }
 
