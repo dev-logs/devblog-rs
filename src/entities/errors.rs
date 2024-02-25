@@ -8,7 +8,11 @@ pub enum Errors {
     #[error("You are not authorized to access/perform this resource/action")]
     UnAuthorization,
     #[error("Internal server error {}", .0)]
-    InternalServerError(String)
+    InternalServerError(String),
+    #[error("Already exist {}", .0)]
+    AlreadyExist(String),
+    #[error("Not found {}", .0)]
+    NotFound(String)
 }
 
 impl From<serde_json::Error> for Errors {

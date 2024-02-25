@@ -1,11 +1,12 @@
 use leptos::*;
 use web_sys::js_sys::eval;
 use web_sys::{MouseEvent, SubmitEvent};
-use crate::entities::user::User;
+use crate::core_services::web_di::{WebInjector, WebServicesInjector};
+use crate::services::create_guess_user::service::*;
+use crate::services::base::service::*;
 use crate::web::components::icons::close::Close;
 use crate::web::components::icons::github::Github;
 use crate::web::components::icons::google::Google;
-use crate::web::local_storage::user::{UserStorage};
 use crate::web::utils::form_data::FormDataWrapper;
 use crate::web::utils::toast::show_welcome_toast;
 
@@ -20,14 +21,27 @@ pub fn login_modal(
         set_show(!show.get());
     });
 
+    let create_user_action = {
+        let set_show = set_show.clone();
+        create_action(move |display_name: &String| {
+            let display_name = display_name.clone();
+            async move {
+                let result = WebInjector::service_injector().get_create_guest_user_service().execute(Params {
+                    display_name: display_name.clone()
+                }).await;
+
+                show_welcome_toast(display_name.as_str());
+                set_show(false);
+                ()
+            }
+        })
+    };
+
     let on_submit_clicked: Callback<SubmitEvent> = Callback::new(move |submit_event: SubmitEvent| {
         submit_event.prevent_default();
         let form_data = FormDataWrapper::from(submit_event);
         let display_name = form_data.get("displayname").as_string().unwrap();
-        let mut user_storage = UserStorage::new();
-        user_storage.update(User::new(None, None, display_name.as_str()));
-        show_welcome_toast(display_name.as_str());
-        set_show(false);
+        create_user_action.dispatch(display_name);
     });
 
     create_effect(move |_| {

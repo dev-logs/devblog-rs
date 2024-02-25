@@ -6,6 +6,8 @@ use crate::services::blog_provider_service::blog_provider_service::BlogProviderS
 use crate::services::blog_provider_service::blog_provider_service_impl::BlogProviderServiceImpl;
 use crate::services::create_discussion::service::CreateDiscussionService;
 use crate::services::create_discussion::web_impl::CreateDiscussionWebImpl;
+use crate::services::create_guess_user::service::{CreateGuestUserService, Params};
+use crate::services::create_guess_user::web_impl::CreateGuestUserWebImpl;
 use crate::services::get_discussions::service::GetDiscussionsService;
 use crate::services::get_discussions::web_impl::GetDiscussionsWebImpl;
 
@@ -17,6 +19,8 @@ pub trait WebServicesInjector {
     fn get_create_discussion_service(&self) -> impl CreateDiscussionService;
 
     fn get_get_discussions_service(&self) -> impl GetDiscussionsService;
+
+    fn get_create_guest_user_service(&self) -> impl CreateGuestUserService;
 }
 
 pub struct WebInjector;
@@ -36,6 +40,10 @@ impl WebServicesInjector for WebInjector {
 
     fn get_get_discussions_service(&self) -> impl GetDiscussionsService {
         GetDiscussionsWebImpl {}
+    }
+
+    fn get_create_guest_user_service(&self) -> impl CreateGuestUserService {
+        CreateGuestUserWebImpl {}
     }
 }
 

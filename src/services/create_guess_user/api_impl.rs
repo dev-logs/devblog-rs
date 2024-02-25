@@ -1,5 +1,6 @@
 use surreal_derive_plus::surreal_quote;
 use crate::core_services::surrealdb::Db;
+use crate::entities::errors::Errors;
 use crate::entities::user::User;
 use crate::services::base::service::{Resolve, Service};
 use crate::services::create_guess_user::service::{CreateGuestUserService, Params};
@@ -23,7 +24,7 @@ impl<T> Service<Params, User> for CreateGuestUserApiImpl<T> where T: RandomUserD
                     .take(0)?;
                 Ok(created_user.unwrap())
             }
-            Some(user) => {Ok(user)}
+            Some(user) => {Err(Errors::AlreadyExist(format!("User {}", params.display_name)))}
         }
     }
 }

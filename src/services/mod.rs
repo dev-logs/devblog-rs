@@ -4,7 +4,6 @@ pub mod base;
 pub mod create_discussion;
 #[cfg(feature = "ssr")]
 pub mod migration_services;
-#[cfg(feature = "ssr")]
 pub mod create_guess_user;
 pub mod get_discussions;
 pub(crate) mod user_default_avatar;

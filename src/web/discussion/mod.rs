@@ -18,24 +18,36 @@ pub fn Discussion () -> impl IntoView {
     let context = use_context::<BlogPostContext>().expect("Expect inside a blog to be comment");
     let (show_login_modal, set_show_login_modal) = create_signal(false);
 
-    let create_discussion = create_action(move |event: &(String, String, String)| {
-        WebInjector::service_injector().get_create_discussion_service().execute(
-            Params {
-                content: (&event.1).to_string(),
-                blog_title: event.0.clone(),
-                display_name: String::from(&event.2),
-            }
-        )
-    });
-
     let fetch_all_discussions = create_action(|title: &String| {
         let title = title.clone();
         (move || async {
             WebInjector::service_injector().get_get_discussions_service().execute(GetDiscussionParams {
-                blog_title: Some(title)
+                blog_title: title
             }).await
         })()
     });
+
+    let create_discussion = {
+        let fetch_all_discussions = fetch_all_discussions.clone();
+        let context = context.clone();
+
+        create_action(move |event: &(String, String, String)| {
+            let event = event.clone();
+            let context = context.clone();
+            async move {
+                let result = WebInjector::service_injector().get_create_discussion_service().execute(
+                    Params {
+                        content: event.1.clone(),
+                        blog_title: event.0.clone(),
+                        display_name: String::from(event.2),
+                    }
+                ).await;
+
+                fetch_all_discussions.dispatch(context.get_selected_blog().title.clone());
+                result
+            }
+        })
+    };
 
     {
         let context = context.clone();
@@ -59,7 +71,7 @@ pub fn Discussion () -> impl IntoView {
     };
 
     return view! {
-        <div class="flex flex-col antialiased w-full">
+        <div id="Discussions" class="flex flex-col antialiased w-full">
             {move || view!{<LoginModal is_show={show_login_modal.get()}/>}}
             <EditText callback=callback/>
             {move || {

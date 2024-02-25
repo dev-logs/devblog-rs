@@ -4,7 +4,7 @@ use crate::services::base::service::Service;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Params {
-    pub blog_title: Option<String>
+    pub blog_title: String
 }
 
 pub trait GetDiscussionsService: Service<Params, Vec<Discussion>> {}

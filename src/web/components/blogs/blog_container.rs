@@ -24,7 +24,7 @@ pub fn BlogContainer<E, F>(
                 <ThumbUpRive blog=blog/>
             </div>
             <div class="overflow-auto col-span-4">
-                <article class="mt-8 prose prose-lg flex flex-col h-full items-start justify-start overflow-auto">
+                <article class="prose prose-lg flex flex-col h-full items-start justify-start overflow-auto">
                     {children()}
                     <BlogHeader>Discussions</BlogHeader>
                     <Discussion/>
