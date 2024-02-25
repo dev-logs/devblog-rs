@@ -37,11 +37,12 @@ pub fn ThumbUpRive(
                 let like_count = how_many_new_like.get_untracked();
                 set_new_like_count(0);
                 let user_storage = UserStorage::new();
-                let user = user_storage.data.expect("You must signin first");
+                let user = user_storage.data;
+
                 let service = WebInjector::service_injector().get_like_blog_service();
                 let result = service.execute(LikeBlogParam {
                     blog_title: blog.title.clone(),
-                    display_name: user.display_name.clone(),
+                    display_name: user.map(|u| u.display_name),
                     count: like_count
                 }).await;
                 log!("Performed {:?}", result);

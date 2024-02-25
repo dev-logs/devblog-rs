@@ -1,5 +1,6 @@
 use std::fmt::{Debug, format};
 use leptos::html::form;
+use leptos::tracing::instrument::WithSubscriber;
 use surreal_derive_plus::surreal_quote;
 use surrealdb::opt::RecordId;
 use crate::core_services::surrealdb::adaptive_relation::AdaptiveRelation;
@@ -19,12 +20,22 @@ pub struct LikeBlogServiceApiImpl {
 
 impl Service<LikeBlogParam, Relation<Like, User, Blog>> for LikeBlogServiceApiImpl {
     async fn execute(self, params: LikeBlogParam) -> Resolve<Relation<Like, User, Blog>> {
-        let user_relation: AdaptiveRelation<User> = AdaptiveRelation::<User>::new(params.display_name.as_str());
+        let user = match params.display_name {
+            None => {User::noone()}
+            Some(_) => {
+                let user_relation: AdaptiveRelation<User> = AdaptiveRelation::<User>::new(params.display_name.as_ref().unwrap());
+                let user_id = user_relation.id();
+                let user: Option<User> = self.db.query(surreal_quote!("SELECT * from #val(&user_id)")).await?.take(0)?;
+                if user.is_none() {
+                    return Err(Errors::NotFound(format!("user name {}", params.display_name.unwrap())));
+                }
+
+                user.unwrap()
+            }
+        };
+
+        let user_relation: AdaptiveRelation<User> = AdaptiveRelation::<User>::new(user.display_name.as_str());
         let user_id = user_relation.id();
-        let user: Option<User> = self.db.query(surreal_quote!("SELECT * from #val(&user_id)")).await?.take(0)?;
-        if user.is_none() {
-            return Err(Errors::NotFound(format!("user name {}", params.display_name)));
-        }
 
         let blog_relation:  AdaptiveRelation<Blog> = AdaptiveRelation::<Blog>::new(params.blog_title.as_str());
         let blog_id = blog_relation.id();

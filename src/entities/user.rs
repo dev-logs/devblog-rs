@@ -23,6 +23,16 @@ impl User {
             display_name: display_name.to_string()
         }
     }
+
+    pub fn noone() -> Self {
+        let id = AdaptiveRelation::<User>::new("noone");
+        Self {
+            email: None,
+            avatar_url: Some("/assets/images/avatars/avatar_9.png".to_owned()),
+            id: id.into(),
+            display_name: "noone".to_string()
+        }
+    }
 }
 
 impl Into<RecordId> for User {

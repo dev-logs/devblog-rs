@@ -10,7 +10,7 @@ use crate::services::base::service::Service;
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LikeBlogParam {
     pub blog_title: String,
-    pub display_name: String,
+    pub display_name: Option<String>,
     pub count: u32
 }
 
