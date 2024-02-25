@@ -3,9 +3,10 @@ use leptos::logging::log;
 use web_sys::MouseEvent;
 use crate::core_services::web_di::*;
 use crate::entities::blog::Blog;
-use crate::services::like::service::LikeBlogParam;
+use crate::services::like::perform::service::LikeBlogParam;
 use crate::web::local_storage::user::UserStorage;
 use crate::services::base::service::*;
+use crate::services::like::counting::service::CountBlogLikeParams;
 
 #[component]
 pub fn ThumbUpRive(
@@ -23,6 +24,24 @@ pub fn ThumbUpRive(
         Callback::new(move |e: MouseEvent| {
             set_total_like_count(how_many_like_total.get_untracked() + 1);
             set_new_like_count(how_many_new_like.get_untracked() + 1);
+        })
+    };
+
+    let fetch_likes = {
+        let blog = blog.clone();
+        let set_total_like_count = set_total_like_count.clone();
+        create_action(move |e: &()| {
+            let blog = blog.clone();
+
+            async move {
+                let service = WebInjector::service_injector().get_count_blog_like_Service();
+                let result = service.execute(CountBlogLikeParams {
+                    title: blog.title.clone()
+                }).await;
+
+                set_total_like_count(result.unwrap());
+                ()
+            }
         })
     };
 
@@ -56,6 +75,10 @@ pub fn ThumbUpRive(
             perform_like.dispatch(());
         })
     };
+
+    create_effect(move |_| {
+        fetch_likes.dispatch(());
+    });
 
     let author_name = blog.author.display_name.clone().unwrap();
     view! {

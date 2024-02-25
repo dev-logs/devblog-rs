@@ -2,12 +2,12 @@ use std::any::type_name;
 use leptos::{provide_context, ReadSignal, use_context, WriteSignal};
 
 #[derive(Debug, Clone)]
-pub struct AppSignal<T> where T: Clone + 'static + Default {
+pub struct AppSignal<T> where T: Clone + 'static {
     write_signal: WriteSignal<T>,
     read_signal: ReadSignal<T>
 }
 
-impl <T> AppSignal<T> where T: Clone + 'static + Default {
+impl <T> AppSignal<T> where T: Clone + 'static {
     pub fn new (read: ReadSignal<T>, write: WriteSignal<T>) -> Self {
         Self {
             read_signal: read,

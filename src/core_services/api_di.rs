@@ -11,8 +11,10 @@ use crate::services::create_guess_user::api_impl::CreateGuestUserApiImpl;
 use crate::services::create_guess_user::service::CreateGuestUserService;
 use crate::services::get_discussions::api_impl::GetDiscussionsApiImpl;
 use crate::services::get_discussions::service::GetDiscussionsService;
-use crate::services::like::api_impl::LikeBlogServiceApiImpl;
-use crate::services::like::service::LikeBlogService;
+use crate::services::like::counting::api_impl::CountBlogLikeApiImpl;
+use crate::services::like::counting::service::CountBlogLikeService;
+use crate::services::like::perform::api_impl::LikeBlogServiceApiImpl;
+use crate::services::like::perform::service::LikeBlogService;
 use crate::services::migration_services::author_impl::AuthorMigrationServiceImpl;
 use crate::services::migration_services::blog_post_impl::BlogPostMigrationServiceImpl;
 use crate::services::migration_services::service::{AuthorMigrationService, BlogPostMigrationService};
@@ -37,6 +39,8 @@ pub trait ApiServicesInjector {
     fn get_generate_random_avatar_url_service(&self) -> impl RandomUserDefaultAvatarService;
 
     fn get_like_blog_service(&self) -> impl LikeBlogService;
+
+    fn get_counting_like_blog_service(&self) -> impl CountBlogLikeService;
 }
 
 pub struct ApiInjector;
@@ -86,6 +90,10 @@ impl ApiServicesInjector for ApiInjector {
         LikeBlogServiceApiImpl {
             db: DB.clone()
         }
+    }
+
+    fn get_counting_like_blog_service(&self) -> impl CountBlogLikeService {
+        CountBlogLikeApiImpl { db: DB.clone() }
     }
 }
 

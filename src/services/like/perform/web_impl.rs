@@ -4,7 +4,7 @@ use crate::entities::like::Like;
 use crate::entities::relation::relation::Relation;
 use crate::entities::user::User;
 use crate::services::base::service::{Resolve, Service};
-use crate::services::like::service::{LikeBlogParam, LikeBlogService};
+use crate::services::like::perform::service::{LikeBlogParam, LikeBlogService};
 
 pub struct LikeBlogServiceWebImpl {}
 

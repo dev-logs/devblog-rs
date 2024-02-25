@@ -12,7 +12,7 @@ use crate::entities::relation::r#trait::IntoRelation;
 use crate::entities::relation::relation::Relation;
 use crate::entities::user::User;
 use crate::services::base::service::{Resolve, Service};
-use crate::services::like::service::{LikeBlogService, LikeBlogParam};
+use crate::services::like::perform::service::{LikeBlogService, LikeBlogParam};
 
 pub struct LikeBlogServiceApiImpl {
    pub db: Db

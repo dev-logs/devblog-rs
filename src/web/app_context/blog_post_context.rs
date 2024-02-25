@@ -1,19 +1,22 @@
+use leptos::{create_signal, SignalGet, SignalGetUntracked};
 use crate::entities::blog::Blog;
-use crate::web::app_context::signal_context::AppContext;
+use crate::web::app_context::signal_context::{AppContext, AppSignal};
+use crate::web::home::navigation::HomeNavigationTab;
 
 #[derive(Debug, Clone)]
 pub struct BlogPostContext {
-    blog: Blog
+    blog: AppSignal<Blog>
 }
 
 impl AppContext for BlogPostContext {}
 
 impl BlogPostContext {
     pub fn new(selected_blog: Blog) -> Self {
-        Self { blog: selected_blog }
+        let (read, write) = create_signal(selected_blog);
+        Self { blog: AppSignal::new(read, write) }
     }
 
-    pub fn get_selected_blog(&self) -> &Blog {
-        &self.blog
+    pub fn get_selected_blog(&self) -> Blog {
+       self.blog.read().get().clone()
     }
 }

@@ -193,7 +193,7 @@ class RiveComponent extends HTMLElement {
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
-        console.log(`Attribute ${name} has changed.`);
+        console.log(`Attribute ${name} has changed to.`, newValue);
         this[name] = newValue
     }
 
@@ -264,8 +264,9 @@ class RiveText extends RiveComponent {
     set text(value) {
         this._text = value
         if (this._stateMachine) {
+            console.log('text run', this._text)
             const textRun = this._artboard.textRun("text_run")
-            textRun.text = this.text
+            textRun.text = this._text
             const triggerSetTextAnimation = this._stateMachine.input(0).asTrigger()
             triggerSetTextAnimation.fire()
         }
