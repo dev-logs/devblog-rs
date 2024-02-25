@@ -10,14 +10,11 @@ async fn main() -> std::io::Result<()> {
     use leptos_actix::{generate_route_list, LeptosRoutes};
     use devblog_rs::app::*;
     use devblog_rs::core_services::surrealdb::connect::connect_surrealdb;
-    use devblog_rs::core_services::logger::setup_logger;
-    use log::info;
 
-    setup_logger();
     connect_surrealdb().await;
 
     start_migration().await.map_err(|e| {
-        info!(target: "api", "Failed to perform migration {:?}", e)
+        log!("Failed to perform migration {:?}", e)
     }).unwrap();
 
     let conf = get_configuration(None).await.unwrap();

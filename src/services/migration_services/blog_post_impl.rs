@@ -1,4 +1,4 @@
-use log::info;
+use leptos::logging::log;
 use surreal_derive_plus::surreal_quote;
 use surrealdb::Response;
 use crate::core_services::surrealdb::Db;
@@ -31,11 +31,11 @@ impl<T> Service<BlogPostMigrationParams, VoidResponse> for BlogPostMigrationServ
             .collect();
 
        if not_migrated_posts.is_empty() {
-            info!(target: &ns, "All blogs has been migrated successfully");
+            log!("{ns} All blogs has been migrated successfully");
             return Ok(())
         }
 
-        info!(target: &ns, "Migrating blog post into db {:?}", not_migrated_posts);
+        log!( "{ns} Migrating blog post into db {:?}", not_migrated_posts);
         let mut migrated_response: Response = self.db
             .query(surreal_quote!("CREATE #multi(&not_migrated_posts)"))
             .await?;
@@ -43,7 +43,7 @@ impl<T> Service<BlogPostMigrationParams, VoidResponse> for BlogPostMigrationServ
         let result_handler = UniformSurrealResult::<Blog>::try_from(&mut migrated_response)?;
         let complete_migrated_posts = result_handler.0;
 
-        info!(target: &ns, "Migrated posts: {:?}", &complete_migrated_posts);
+        log!( "{ns} Migrated posts: {:?}", &complete_migrated_posts);
 
         Ok(())
     }

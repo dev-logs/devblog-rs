@@ -1,4 +1,4 @@
-use log::info;
+use leptos::logging::log;
 use surreal_derive_plus::surreal_quote;
 use surrealdb::Response;
 use crate::core_services::surrealdb::Db;
@@ -28,11 +28,11 @@ impl<T> Service<AuthorMigrationParams, VoidResponse> for AuthorMigrationServiceI
         }).collect();
 
         if not_migrated_authors.is_empty() {
-            info!(target: &ns, "All authors has been migrated successfully");
+            log!( "{ns} All authors has been migrated successfully");
             return Ok(())
         }
 
-        info!(target: ns.as_str(), "Start migrating for authors: {:?}", &not_migrated_authors);
+        log!("{ns} Start migrating for authors: {:?}", &not_migrated_authors);
 
         let mut complete_authors: Response = self.db.query(surreal_quote!(r#"
             CREATE #multi(&not_migrated_authors)
@@ -41,7 +41,7 @@ impl<T> Service<AuthorMigrationParams, VoidResponse> for AuthorMigrationServiceI
         let result_handler = UniformSurrealResult::<Author>::try_from(&mut complete_authors)?;
         let complete_migrated_authors = result_handler.0;
 
-        info!(target: &ns, "Complete migrated authors: {:?}", complete_migrated_authors);
+        log!( "{ns}Complete migrated authors: {:?}", complete_migrated_authors);
 
         Ok(())
     }
