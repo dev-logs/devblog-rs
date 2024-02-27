@@ -8,3 +8,4 @@ pub mod create_guess_user;
 pub mod get_discussions;
 pub mod user_default_avatar;
 pub mod like;
+pub mod blog_detail;

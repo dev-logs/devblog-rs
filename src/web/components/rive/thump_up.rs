@@ -6,6 +6,7 @@ use crate::entities::blog::Blog;
 use crate::services::like::perform::service::LikeBlogParam;
 use crate::web::local_storage::user::UserStorage;
 use crate::services::base::service::*;
+use crate::services::blog_detail::min_read::service::Params;
 use crate::services::like::counting::service::CountBlogLikeParams;
 
 #[component]
@@ -34,7 +35,7 @@ pub fn ThumbUpRive(
             let blog = blog.clone();
 
             async move {
-                let service = WebInjector::service_injector().get_count_blog_like_Service();
+                let service = WebInjector::service_injector().get_count_blog_like_service();
                 let result = service.execute(CountBlogLikeParams {
                     title: blog.title.clone()
                 }).await;
@@ -81,7 +82,16 @@ pub fn ThumbUpRive(
         fetch_likes.dispatch(());
     });
 
+    let min_read_action = create_action(|e: &()| async {
+        WebInjector::service_injector().get_count_read_minutes_service().execute(Params {}).await.unwrap()
+    });
+
+    create_effect(move |e| {
+        min_read_action.dispatch(());
+    });
+
     let author_name = blog.author.display_name.clone().unwrap();
+
     view! {
         <div class="grid grid-rows-10 divide-y divide-gray-700 mx-5 h-80 h-72 border border-gray-700 mt-10 rounded-xl max-w-64">
             <div class="row-span-6 flex-col justify-between flex p-2 pl-5">
@@ -89,7 +99,7 @@ pub fn ThumbUpRive(
                    <p class="font-main text-lg">{blog.title.clone()}</p>
                    <p class="font-main-bold text-md mt-2">{author_name}</p>
                 </div>
-                <p class="font-main text-gray-600 mb-2 text-sm">1 min read</p>
+                <p class="font-main text-gray-600 mb-2 text-sm">{move || {format!("{} minutes", min_read_action.value().get().as_ref().map(|it| it.to_string()).unwrap_or("...".to_owned()))}}</p>
             </div>
             <div class="flex flex-row row-span-2">
                 <rive-thumb-up id="riveThumbUpLike" class="block w-full h-full" on:LikeEvent=on_like on:LikeConfirmEvent=on_like_confirm likeCount=10></rive-thumb-up>

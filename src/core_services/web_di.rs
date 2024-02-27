@@ -2,6 +2,8 @@ use std::ops::Deref;
 use once_cell::sync::Lazy;
 use crate::services::author_provider_service::author_provider::AuthorProviderService;
 use crate::services::author_provider_service::author_provider_impl::AuthorProviderServiceImpl;
+use crate::services::blog_detail::min_read::service::CountReadMinutesService;
+use crate::services::blog_detail::min_read::web_impl::CountReadMinutesServiceWebImpl;
 use crate::services::blog_provider_service::blog_provider_service::BlogProviderService;
 use crate::services::blog_provider_service::blog_provider_service_impl::BlogProviderServiceImpl;
 use crate::services::create_discussion::service::CreateDiscussionService;
@@ -28,7 +30,8 @@ pub trait WebServicesInjector {
 
     fn get_like_blog_service(&self) -> impl LikeBlogService;
 
-    fn get_count_blog_like_Service(&self) -> impl CountBlogLikeService;
+    fn get_count_blog_like_service(&self) -> impl CountBlogLikeService;
+    fn get_count_read_minutes_service(&self) -> impl CountReadMinutesService;
 }
 
 pub struct WebInjector;
@@ -58,8 +61,12 @@ impl WebServicesInjector for WebInjector {
         LikeBlogServiceWebImpl {}
     }
 
-    fn get_count_blog_like_Service(&self) -> impl CountBlogLikeService {
+    fn get_count_blog_like_service(&self) -> impl CountBlogLikeService {
         CountBlogLikeWebImpl {}
+    }
+
+    fn get_count_read_minutes_service(&self) -> impl CountReadMinutesService {
+        CountReadMinutesServiceWebImpl {}
     }
 }
 
