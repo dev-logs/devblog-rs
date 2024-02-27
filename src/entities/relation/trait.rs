@@ -12,9 +12,9 @@ pub trait IntoRelation<I, O> where
 }
 
 impl<T, I, O> IntoRelation<I, O> for T where
-T: Debug + Clone,
-I: Clone + Sized + Into<RecordId>,
-O: Clone + Sized + Into<RecordId>
+    T: Debug + Clone,
+    I: Clone + Sized + Into<RecordId>,
+    O: Clone + Sized + Into<RecordId>
 {
     fn into_relation(&self, i: AdaptiveRelation<I>, o: AdaptiveRelation<O>) -> Relation<Self, I, O> {
         Relation {

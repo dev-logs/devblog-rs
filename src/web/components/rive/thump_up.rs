@@ -76,7 +76,8 @@ pub fn ThumbUpRive(
         })
     };
 
-    create_effect(move |_| {
+    let on_rive_loaded: Callback<MouseEvent> = Callback::new(move |_| {
+        log!("Fetching the likes");
         fetch_likes.dispatch(());
     });
 
@@ -96,7 +97,7 @@ pub fn ThumbUpRive(
             </div>
             <div class="flex flex-row row-span-2">
                 <rive-emoji-face-love id="riveEmojiView" class="block w-full h-full m-1"></rive-emoji-face-love>
-                <rive-text id="riveTextView" class="block w-full h-full" text={move || {format!("{} views", how_many_like_total.get().to_string())}}></rive-text>
+                <rive-text id="riveTextView" class="block w-full h-full" on:LoadComplete=on_rive_loaded text={move || {format!("{} views", how_many_like_total.get().to_string())}}></rive-text>
             </div>
             <script src="/assets/js/rive/index.js"></script>
         </div>

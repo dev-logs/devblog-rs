@@ -68,6 +68,12 @@ class RiveComponent extends HTMLElement {
             this._artboard
         )
 
+        this.dispatchEvent(new CustomEvent('LoadComplete', {
+            detail: {target: this},
+            bubbles: true,
+            cancelable: true
+        }))
+
         await this.render()
     }
 
