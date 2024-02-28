@@ -2,8 +2,12 @@ use std::ops::Deref;
 use once_cell::sync::Lazy;
 use crate::services::author_provider_service::author_provider::AuthorProviderService;
 use crate::services::author_provider_service::author_provider_impl::AuthorProviderServiceImpl;
+use crate::services::blog_detail::count_read::service::CountReadService;
+use crate::services::blog_detail::count_read::web_impl::CountReadServiceWebImpl;
 use crate::services::blog_detail::min_read::service::CountReadMinutesService;
 use crate::services::blog_detail::min_read::web_impl::CountReadMinutesServiceWebImpl;
+use crate::services::blog_detail::read::mark_read_service::MarkReadService;
+use crate::services::blog_detail::read::web_impl::MarkReadSerivceWebImpl;
 use crate::services::blog_provider_service::blog_provider_service::BlogProviderService;
 use crate::services::blog_provider_service::blog_provider_service_impl::BlogProviderServiceImpl;
 use crate::services::create_discussion::service::CreateDiscussionService;
@@ -32,6 +36,10 @@ pub trait WebServicesInjector {
 
     fn get_count_blog_like_service(&self) -> impl CountBlogLikeService;
     fn get_count_read_minutes_service(&self) -> impl CountReadMinutesService;
+
+    fn get_mark_read_service(&self) -> impl MarkReadService;
+
+    fn get_count_read_service(&self) -> impl CountReadService;
 }
 
 pub struct WebInjector;
@@ -67,6 +75,14 @@ impl WebServicesInjector for WebInjector {
 
     fn get_count_read_minutes_service(&self) -> impl CountReadMinutesService {
         CountReadMinutesServiceWebImpl {}
+    }
+
+    fn get_mark_read_service(&self) -> impl MarkReadService {
+        return MarkReadSerivceWebImpl {}
+    }
+
+    fn get_count_read_service(&self) -> impl CountReadService {
+        CountReadServiceWebImpl {}
     }
 }
 

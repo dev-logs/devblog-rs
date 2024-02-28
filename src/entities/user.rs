@@ -33,6 +33,14 @@ impl User {
             display_name: "noone".to_string()
         }
     }
+
+    pub fn is_noone(&self) -> bool {
+        self.display_name.eq("noone")
+    }
+
+    pub fn is_someone(&self) -> bool {
+        !self.is_noone()
+    }
 }
 
 impl Into<RecordId> for User {

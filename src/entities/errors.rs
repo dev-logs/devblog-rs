@@ -2,6 +2,7 @@ use leptos::{ServerFnError};
 use serde_derive::{Deserialize, Serialize};
 use surrealdb::Error;
 use thiserror::Error;
+use wasm_bindgen::JsValue;
 
 #[derive(Error, Debug, Serialize, Deserialize, Clone)]
 pub enum Errors {
@@ -12,7 +13,15 @@ pub enum Errors {
     #[error("Already exist {}", .0)]
     AlreadyExist(String),
     #[error("Not found {}", .0)]
-    NotFound(String)
+    NotFound(String),
+    #[error("Error in client {}", .0)]
+    WebError(String)
+}
+
+impl From<JsValue> for Errors {
+    fn from(value: JsValue) -> Self {
+        Self::WebError(value.as_string().unwrap_or("Unknown error".to_string()))
+    }
 }
 
 impl From<serde_json::Error> for Errors {

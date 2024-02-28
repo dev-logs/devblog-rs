@@ -3,6 +3,10 @@ use once_cell::sync::Lazy;
 use crate::core_services::surrealdb::DB;
 use crate::services::author_provider_service::author_provider::AuthorProviderService;
 use crate::services::author_provider_service::author_provider_impl::AuthorProviderServiceImpl;
+use crate::services::blog_detail::count_read::api_impl::CountReadServiceApiImpl;
+use crate::services::blog_detail::count_read::service::CountReadService;
+use crate::services::blog_detail::read::api_impl::MarkReadServiceApiImpl;
+use crate::services::blog_detail::read::mark_read_service::MarkReadService;
 use crate::services::blog_provider_service::blog_provider_service::BlogProviderService;
 use crate::services::blog_provider_service::blog_provider_service_impl::BlogProviderServiceImpl;
 use crate::services::create_discussion::api_impl::CreateDiscussionApiImpl;
@@ -41,6 +45,10 @@ pub trait ApiServicesInjector {
     fn get_like_blog_service(&self) -> impl LikeBlogService;
 
     fn get_counting_like_blog_service(&self) -> impl CountBlogLikeService;
+
+    fn get_mark_read_service(&self) -> impl MarkReadService;
+
+    fn get_count_read_service(&self) -> impl CountReadService;
 }
 
 pub struct ApiInjector;
@@ -94,6 +102,16 @@ impl ApiServicesInjector for ApiInjector {
 
     fn get_counting_like_blog_service(&self) -> impl CountBlogLikeService {
         CountBlogLikeApiImpl { db: DB.clone() }
+    }
+
+    fn get_mark_read_service(&self) -> impl MarkReadService {
+        MarkReadServiceApiImpl { db: DB.clone() }
+    }
+
+    fn get_count_read_service(&self) -> impl CountReadService {
+        return CountReadServiceApiImpl {
+            db: DB.clone()
+        }
     }
 }
 

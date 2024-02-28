@@ -2,12 +2,15 @@ use leptos::*;
 use leptos::logging::log;
 use web_sys::MouseEvent;
 use crate::core_services::web_di::*;
+use crate::entities::blog;
 use crate::entities::blog::Blog;
 use crate::services::like::perform::service::LikeBlogParam;
 use crate::web::local_storage::user::UserStorage;
 use crate::services::base::service::*;
 use crate::services::blog_detail::min_read::service::Params;
+use crate::services::blog_detail::read;
 use crate::services::like::counting::service::CountBlogLikeParams;
+use crate::services::blog_detail::count_read::service::Params as CountReadParams;
 
 #[component]
 pub fn ThumbUpRive(
@@ -77,17 +80,48 @@ pub fn ThumbUpRive(
         })
     };
 
-    let on_rive_loaded: Callback<MouseEvent> = Callback::new(move |_| {
-        log!("Fetching the likes");
-        fetch_likes.dispatch(());
-    });
-
     let min_read_action = create_action(|e: &()| async {
         WebInjector::service_injector().get_count_read_minutes_service().execute(Params {}).await.unwrap()
     });
 
+    let count_read_action = {
+        let blog = blog.clone();
+        create_action(move |e: &()| {
+            let blog = blog.clone();
+            async move {
+                WebInjector::service_injector().get_count_read_service().execute(CountReadParams {
+                    blog_title: blog.title.clone()
+                }).await.unwrap()
+            }
+        })
+    };
+
+    let on_rive_loaded: Callback<MouseEvent> = {
+        let count_read_action = count_read_action.clone();
+        Callback::new(move |_| {
+            log!("Fetching the likes");
+            fetch_likes.dispatch(());
+            count_read_action.dispatch(());
+        })
+    };
+
+    let mark_read_action = {
+        let blog = blog.clone();
+        create_action(move |e: &()| {
+            let blog = blog.clone();
+            async move {
+                let user = UserStorage::new().get().map(|it| it.clone());
+                WebInjector::service_injector().get_mark_read_service().execute(read::mark_read_service::Params {
+                    blog_title: blog.title.clone(),
+                    user
+                }).await.unwrap()
+            }
+        })
+    };
+
     create_effect(move |e| {
         min_read_action.dispatch(());
+        mark_read_action.dispatch(());
     });
 
     let author_name = blog.author.display_name.clone().unwrap();
@@ -107,7 +141,7 @@ pub fn ThumbUpRive(
             </div>
             <div class="flex flex-row row-span-2">
                 <rive-emoji-face-love id="riveEmojiView" class="block w-full h-full m-1"></rive-emoji-face-love>
-                <rive-text id="riveTextView" class="block w-full h-full" on:LoadComplete=on_rive_loaded text={move || {format!("{} views", how_many_like_total.get().to_string())}}></rive-text>
+                <rive-text id="riveTextView" class="block w-full h-full" on:LoadComplete=on_rive_loaded text={move || {format!("{} views", count_read_action.value().get().as_ref().map(|it| it.to_string()).unwrap_or("...".to_string()))}}></rive-text>
             </div>
             <script src="/assets/js/rive/index.js"></script>
         </div>
