@@ -9,9 +9,9 @@ use crate::services::base::service::{Resolve, Service, VoidResponse};
 use crate::services::blog_detail::read::mark_read_service::{MarkReadService, Params};
 use crate::web::utils::delay::delay;
 
-pub struct MarkReadSerivceWebImpl {}
+pub struct MarkReadServiceWithTimeoutWebImpl {}
 
-impl Service<Params, VoidResponse> for MarkReadSerivceWebImpl {
+impl Service<Params, VoidResponse> for MarkReadServiceWithTimeoutWebImpl {
     async fn execute(self, params: Params) -> Resolve<VoidResponse> {
         let current_url = window().location().href()?;
 
@@ -27,4 +27,15 @@ impl Service<Params, VoidResponse> for MarkReadSerivceWebImpl {
     }
 }
 
-impl MarkReadService for MarkReadSerivceWebImpl {}
+impl MarkReadService for MarkReadServiceWithTimeoutWebImpl {}
+
+pub struct MarkReadServiceWebImpl {}
+
+impl Service<Params, VoidResponse> for MarkReadServiceWebImpl {
+    async fn execute(self, params: Params) -> Resolve<VoidResponse> {
+        mark_read(params).await?;
+        Ok(())
+    }
+}
+
+impl MarkReadService for MarkReadServiceWebImpl {}

@@ -7,7 +7,7 @@ use crate::services::blog_detail::count_read::web_impl::CountReadServiceWebImpl;
 use crate::services::blog_detail::min_read::service::CountReadMinutesService;
 use crate::services::blog_detail::min_read::web_impl::CountReadMinutesServiceWebImpl;
 use crate::services::blog_detail::read::mark_read_service::MarkReadService;
-use crate::services::blog_detail::read::web_impl::MarkReadSerivceWebImpl;
+use crate::services::blog_detail::read::web_impl::{MarkReadServiceWebImpl, MarkReadServiceWithTimeoutWebImpl};
 use crate::services::blog_provider_service::blog_provider_service::BlogProviderService;
 use crate::services::blog_provider_service::blog_provider_service_impl::BlogProviderServiceImpl;
 use crate::services::create_discussion::service::CreateDiscussionService;
@@ -36,6 +36,7 @@ pub trait WebServicesInjector {
 
     fn get_count_blog_like_service(&self) -> impl CountBlogLikeService;
     fn get_count_read_minutes_service(&self) -> impl CountReadMinutesService;
+    fn get_mark_read_service_with_duration(&self) -> impl MarkReadService;
 
     fn get_mark_read_service(&self) -> impl MarkReadService;
 
@@ -77,8 +78,12 @@ impl WebServicesInjector for WebInjector {
         CountReadMinutesServiceWebImpl {}
     }
 
+    fn get_mark_read_service_with_duration(&self) -> impl MarkReadService {
+        return MarkReadServiceWithTimeoutWebImpl {}
+    }
+
     fn get_mark_read_service(&self) -> impl MarkReadService {
-        return MarkReadSerivceWebImpl {}
+        return MarkReadServiceWebImpl {}
     }
 
     fn get_count_read_service(&self) -> impl CountReadService {

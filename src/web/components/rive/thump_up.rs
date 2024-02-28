@@ -15,7 +15,11 @@ use crate::services::blog_detail::count_read::service::Params as CountReadParams
 #[component]
 pub fn ThumbUpRive(
     #[prop()]
-    blog: Blog
+    blog: Blog,
+    #[prop(default = "")]
+    class: &'static str,
+    #[prop(default = false)]
+    is_mobile: bool
 ) -> impl IntoView {
     let (how_many_like_total, set_total_like_count) = create_signal::<u32>(0);
     let (how_many_new_like, set_new_like_count) = create_signal::<u32>(0);
@@ -96,22 +100,13 @@ pub fn ThumbUpRive(
         })
     };
 
-    let on_rive_loaded: Callback<MouseEvent> = {
-        let count_read_action = count_read_action.clone();
-        Callback::new(move |_| {
-            log!("Fetching the likes");
-            fetch_likes.dispatch(());
-            count_read_action.dispatch(());
-        })
-    };
-
     let mark_read_action = {
         let blog = blog.clone();
         create_action(move |e: &()| {
             let blog = blog.clone();
             async move {
                 let user = UserStorage::new().get().map(|it| it.clone());
-                WebInjector::service_injector().get_mark_read_service().execute(read::mark_read_service::Params {
+                WebInjector::service_injector().get_mark_read_service_with_duration().execute(read::mark_read_service::Params {
                     blog_title: blog.title.clone(),
                     user
                 }).await.unwrap()
@@ -125,6 +120,22 @@ pub fn ThumbUpRive(
     });
 
     let author_name = blog.author.display_name.clone().unwrap();
+
+    if is_mobile {
+        return view! {
+            <div class="grid grid-cols-10 h-20 border border-gray-700 rounded-md w-full bg-gray-400">
+                <div class="flex flex-row col-span-5">
+                    <rive-thumb-up id="riveThumbUpLike" class="block w-full h-full" on:LikeEvent=on_like on:LikeConfirmEvent=on_like_confirm likeCount=10></rive-thumb-up>
+                    <rive-text id="riveTextLike" class="block w-full h-full" text={move || {format!("{} likes", how_many_like_total.get().to_string())}}></rive-text>
+                </div>
+                <div class="flex flex-row col-span-5">
+                    <rive-emoji-face-love id="riveEmojiView" class="block w-full h-full m-1" on:LoadComplete={move |e: MouseEvent| {fetch_likes.dispatch(())}}></rive-emoji-face-love>
+                    <rive-text id="riveTextView" class="block w-full h-full" on:LoadComplete={move |e: MouseEvent| {count_read_action.dispatch(())}} text={move || {format!("{} views", count_read_action.value().get().as_ref().map(|it| it.to_string()).unwrap_or("...".to_string()))}}></rive-text>
+                </div>
+                <script src="/assets/js/rive/index.js"></script>
+            </div>
+        }
+    }
 
     view! {
         <div class="grid grid-rows-10 divide-y divide-gray-700 mx-5 h-80 h-72 border border-gray-700 mt-10 rounded-xl max-w-64">
@@ -140,8 +151,8 @@ pub fn ThumbUpRive(
                 <rive-text id="riveTextLike" class="block w-full h-full" text={move || {format!("{} likes", how_many_like_total.get().to_string())}}></rive-text>
             </div>
             <div class="flex flex-row row-span-2">
-                <rive-emoji-face-love id="riveEmojiView" class="block w-full h-full m-1"></rive-emoji-face-love>
-                <rive-text id="riveTextView" class="block w-full h-full" on:LoadComplete=on_rive_loaded text={move || {format!("{} views", count_read_action.value().get().as_ref().map(|it| it.to_string()).unwrap_or("...".to_string()))}}></rive-text>
+                <rive-emoji-face-love id="riveEmojiView" class="block w-full h-full m-1" on:LoadComplete={move |e: MouseEvent| {fetch_likes.dispatch(())}}></rive-emoji-face-love>
+                <rive-text id="riveTextView" class="block w-full h-full" on:LoadComplete={move |e: MouseEvent| {count_read_action.dispatch(())}} text={move || {format!("{} views", count_read_action.value().get().as_ref().map(|it| it.to_string()).unwrap_or("...".to_string()))}}></rive-text>
             </div>
             <script src="/assets/js/rive/index.js"></script>
         </div>
