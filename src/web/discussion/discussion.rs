@@ -1,4 +1,6 @@
+use chrono::{DateTime, Utc};
 use leptos::*;
+use crate::core_services::date_time::display_local_time;
 use crate::entities::discussion::{Discussion};
 use crate::entities::user::User;
 
@@ -10,7 +12,7 @@ pub fn UserDiscussion(
 
     view! {
         <div class="flex flex-col">
-            <Header user={(*discussion.owner.clone()).clone()}/>
+            <Header user={(*discussion.owner.clone()).clone()} datetime={discussion.created_at.clone()}/>
             <p class="text-gray-500 dark:text-gray-400">{discussion.content}</p>
             <div class="flex items-center mt-4 space-x-4">
                 <button
@@ -29,6 +31,7 @@ pub fn UserDiscussion(
 #[component]
 fn Header(
     user: User,
+    datetime: DateTime<Utc>
 ) -> impl IntoView {
     view! {
         <div class="flex items-center">
@@ -37,7 +40,7 @@ fn Header(
                 {&user.display_name}
             </p>
             <p class="text-sm text-gray-600 dark:text-gray-400">
-               <time pubdate datetime="2022-02-08" title="February 8th, 2022">Feb. 8, 2022</time>
+               <time pubdate datetime="2022-02-08" title="February 8th, 2022">{display_local_time(datetime)}</time>
             </p>
         </div>
     }

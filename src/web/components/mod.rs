@@ -7,3 +7,4 @@ pub mod code_blog;
 pub mod modals;
 pub mod avatars;
 pub mod rive;
+pub mod pagination;

@@ -1,9 +1,10 @@
 use leptos::*;
 use crate::entities::discussion::Discussion;
+use crate::services::base::service::PageResponse;
 use crate::services::get_discussions::service::Params;
 
 #[server(GetDiscussions, "/web")]
-pub async fn get_discussions(params: Params) -> Result<Vec<Discussion>, ServerFnError> {
+pub async fn get_discussions(params: Params) -> Result<PageResponse<Discussion>, ServerFnError> {
     use crate::services::base::service::*;
     use crate::core_services::api_di::*;
 

@@ -1,9 +1,33 @@
 use std::ops::Deref;
+use std::vec::IntoIter;
+use serde_derive::{Deserialize, Serialize};
 use crate::entities::errors::Errors;
 
 pub type NoParam = ();
 
 pub type VoidResponse = ();
+
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct PagingParam {
+    pub page: i32
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct PageResponse<T> {
+    pub data: Vec<T>,
+    pub page: i32,
+    pub total_page: i32,
+    pub total_record: i32
+}
+
+impl<T> IntoIterator for PageResponse<T> {
+    type Item = T;
+    type IntoIter = std::vec::IntoIter<Self::Item>;
+
+    fn into_iter(self) -> Self::IntoIter {
+        self.data.into_iter()
+    }
+}
 
 pub type Resolve<T> = Result<T, Errors>;
 
