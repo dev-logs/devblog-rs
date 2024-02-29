@@ -123,16 +123,9 @@ pub fn ThumbUpRive(
 
     if is_mobile {
         return view! {
-            <div class="grid grid-cols-10 h-20 border border-gray-700 rounded-md w-full bg-gray-400">
-                <div class="flex flex-row col-span-5">
-                    <rive-thumb-up id="riveThumbUpLike" class="block w-full h-full" on:LikeEvent=on_like on:LikeConfirmEvent=on_like_confirm likeCount=10></rive-thumb-up>
-                    <rive-text id="riveTextLike" class="block w-full h-full" text={move || {format!("{} likes", how_many_like_total.get().to_string())}}></rive-text>
-                </div>
-                <div class="flex flex-row col-span-5">
-                    <rive-emoji-face-love id="riveEmojiView" class="block w-full h-full m-1" on:LoadComplete={move |e: MouseEvent| {fetch_likes.dispatch(())}}></rive-emoji-face-love>
-                    <rive-text id="riveTextView" class="block w-full h-full" on:LoadComplete={move |e: MouseEvent| {count_read_action.dispatch(())}} text={move || {format!("{} views", count_read_action.value().get().as_ref().map(|it| it.to_string()).unwrap_or("...".to_string()))}}></rive-text>
-                </div>
-                <script src="/assets/js/rive/index.js"></script>
+            <div class="flex flex-row h-14 w-full bg-neutral-950 shadow shadow-gray-300 shadow-lg pb-2">
+                <rive-thumb-up id="riveThumbUpLike" class="block w-16 h-full ml-4" on:LikeEvent=on_like on:LikeConfirmEvent=on_like_confirm likeCount=10></rive-thumb-up>
+                <rive-text id="riveTextLike" class="block w-32 h-full pr-10" on:LoadComplete={move |e: MouseEvent| {fetch_likes.dispatch(())}} text={move || {format!("{} likes", how_many_like_total.get().to_string())}}></rive-text>
             </div>
         }
     }
@@ -154,7 +147,6 @@ pub fn ThumbUpRive(
                 <rive-emoji-face-love id="riveEmojiView" class="block w-full h-full m-1" on:LoadComplete={move |e: MouseEvent| {fetch_likes.dispatch(())}}></rive-emoji-face-love>
                 <rive-text id="riveTextView" class="block w-full h-full" on:LoadComplete={move |e: MouseEvent| {count_read_action.dispatch(())}} text={move || {format!("{} views", count_read_action.value().get().as_ref().map(|it| it.to_string()).unwrap_or("...".to_string()))}}></rive-text>
             </div>
-            <script src="/assets/js/rive/index.js"></script>
         </div>
     }
 }

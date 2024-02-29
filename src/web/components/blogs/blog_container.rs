@@ -17,29 +17,31 @@ pub fn BlogContainer<E, F>(
     where E: IntoView, F: Fn() -> E + 'static
 {
     view! {
-        <div class="grid grid-cols-10 justify-start bg-gray-950">
-            // {header()}
-            <link rel="stylesheet" href="https://unpkg.com/prismjs@1.29.0/themes/prism-twilight.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
-            <div class="sticky top-0 right-0 h-screen col-span-1 sm:col-span-3 flex flex-row w-full items-start justify-center collapse sm:visible">
-                <ThumbUpRive blog={blog.clone()} class="collapse sm:visible"/>
+        <div>
+            <div class="grid grid-cols-10 justify-start bg-gray-950">
+                // {header()}
+                <link rel="stylesheet" href="https://unpkg.com/prismjs@1.29.0/themes/prism-twilight.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+                <div class="sticky top-0 right-0 h-screen col-span-1 sm:col-span-3 flex flex-row w-full items-start justify-center collapse sm:visible">
+                    <ThumbUpRive blog={blog.clone()} class="collapse sm:visible"/>
+                </div>
+                <div class="overflow-auto col-span-8 sm:col-span-4">
+                    <article class="prose prose-lg flex flex-col h-full items-start justify-start overflow-auto">
+                        {children()}
+                        <BlogHeader>Discussions</BlogHeader>
+                        <Discussion/>
+                    </article>
+                </div>
+                <div class="sticky bottom-0 right-0 pt-10 justify-end items-end text-start h-screen pl-12 overflow-auto sm:col-span-3 collapse sm:visible">
+                    <TableOfContents class=""/>
+                </div>
+                <script src="https://unpkg.com/prismjs@1.29.0/components/prism-core.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	            <script src="https://unpkg.com/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+                <script src="/assets/js/rive/index.js"></script>
             </div>
-            <div class="overflow-auto col-span-8 sm:col-span-4">
-                <article class="prose prose-lg flex flex-col h-full items-start justify-start overflow-auto">
-                    {children()}
-                    <BlogHeader>Discussions</BlogHeader>
-                    <Discussion/>
-                    <nav class="py-4 px-6 flex justify-between items-center text-white bg-gray-800 fixed bottom-0 w-full">
-                        <ThumbUpRive blog={blog.clone()} class="" is_mobile=true/>
-                    </nav>
-                </article>
+            <div class="fixed bottom-0 w-full h-14 sm:collapse border-t border-gray-900">
+               <ThumbUpRive blog={blog.clone()} class="" is_mobile=true/>
             </div>
-            <div class="sticky bottom-0 right-0 pt-10 justify-end items-end text-start h-screen pl-12 overflow-auto sm:col-span-3 collapse sm:visible">
-                <TableOfContents class=""/>
-            </div>
-            <script src="https://unpkg.com/prismjs@1.29.0/components/prism-core.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-	        <script src="https://unpkg.com/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-            <script src="/assets/js/rive/index.js"></script>
         </div>
     }
 }
