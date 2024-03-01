@@ -1,4 +1,5 @@
 use leptos::{ServerFnError};
+use leptos::logging::log;
 use serde_derive::{Deserialize, Serialize};
 use surrealdb::Error;
 use thiserror::Error;
@@ -39,7 +40,9 @@ impl From<surrealdb::Error> for Errors {
 impl From<ServerFnError> for Errors {
     fn from(value: ServerFnError) -> Self {
         match value {
-            ServerFnError::ServerError(body) => body.parse().unwrap_or_else(|e| Errors::from(e)),
+            ServerFnError::ServerError(body) => {
+                Errors::InternalServerError(body)
+            },
             _ => Self::InternalServerError(String::from(""))
         }
     }

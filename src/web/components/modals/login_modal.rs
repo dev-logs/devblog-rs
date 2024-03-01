@@ -30,9 +30,12 @@ pub fn login_modal(
                     display_name: display_name.clone()
                 }).await;
 
-                show_welcome_toast(display_name.as_str());
-                set_show(false);
-                ()
+                if result.is_ok() {
+                    show_welcome_toast(display_name.as_str());
+                    set_show(false);
+                }
+
+                result
             }
         })
     };
@@ -55,7 +58,7 @@ pub fn login_modal(
     view ! {
         {move || {
             if show.get() {
-                view!{<div><LoginForm on_dismiss_click=on_dismiss_click on_submit=on_submit_clicked/></div>}
+                view!{<div><LoginForm error_message={error_message(create_user_action.value().get())} on_dismiss_click=on_dismiss_click on_submit=on_submit_clicked/></div>}
             }
             else {
                 view!{<div/>}
@@ -69,7 +72,9 @@ fn LoginForm(
     #[prop()]
     on_dismiss_click: Callback<MouseEvent>,
     #[prop()]
-    on_submit: Callback<SubmitEvent>
+    on_submit: Callback<SubmitEvent>,
+    #[prop(default = None)]
+    error_message: Option<String>
 ) -> impl IntoView {
     view! {
         <div class="fixed top-0 left-0 w-full h-full bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-lg z-10 justify-center items-center">
@@ -83,6 +88,7 @@ fn LoginForm(
                         <div>
                             <label class="block mb-2 text-indigo-500 text-md font-main" for="displayname">Display name</label>
                             <input class="w-full p-2 mb-4 text-indigo-700 border-b-2 font-main border-indigo-500 outline-none focus:bg-gray-300" type="text" name="displayname" required/>
+                            <p class="text-red-800 font-main">{error_message.unwrap_or("".to_string())}</p>
                         </div>
                         <div>
                             <button class="w-full text-indigo-700 font-main hover:text-indigo-300 text-md font-main-bold px-4" type="submit">

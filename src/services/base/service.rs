@@ -31,6 +31,14 @@ impl<T> IntoIterator for PageResponse<T> {
 
 pub type Resolve<T> = Result<T, Errors>;
 
+pub fn error_message<T>(resolve: Option<Resolve<T>>) -> Option<String> {
+    if (resolve.is_none()) {
+        return None;
+    }
+
+    resolve.unwrap().err().map(|it| it.to_string())
+}
+
 #[derive(Clone, Debug)]
 pub struct ClonedResult<T, E> where T: Clone, E: Clone {
     result: Result<T, E>
