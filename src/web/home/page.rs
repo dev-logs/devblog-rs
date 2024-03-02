@@ -3,7 +3,6 @@ use crate::core_services::web_di::*;
 use crate::services::blog_provider_service::blog_provider_service::BlogProviderService;
 use crate::web::app_context::home_navigation_context::HomeNavigationSignalContext;
 use crate::web::blogs::deploy_flutter_web::item::DeployFlutterWebBlogItem;
-use crate::web::home::header::SearchHeader;
 use crate::web::home::navigation::{HomeNavigation, HomeNavigationTab};
 
 #[component]
@@ -46,7 +45,6 @@ fn Content() -> impl IntoView {
 
     view! {
         <div class="flex-col justify-center w-full h-full pt-2">
-            <SearchHeader/>
             {ContentView}
         </div>
     }

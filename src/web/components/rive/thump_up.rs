@@ -131,12 +131,12 @@ pub fn ThumbUpRive(
     }
 
     view! {
-        <div class="grid grid-rows-10 divide-y divide-gray-700 mx-5 h-80 h-72 border border-gray-700 mt-10 rounded-xl max-w-64">
+        <div class="grid grid-rows-10 mx-5 h-80 h-72 mt-10 rounded-xl max-w-64">
             <div class="row-span-6 flex-col justify-between flex p-2 pl-5">
                 <div>
-                   <p class="font-main text-lg">{blog.title.clone()}</p>
-                   <p class="font-main-bold text-md mt-2">{author_name}</p>
+                   <p class="font-main-bold text-3xl">{blog.title.clone()}</p>
                 </div>
+                <p class="font-main text-md mt-2">{author_name}</p>
                 <p class="font-main text-gray-600 mb-2 text-sm">{move || {format!("{} minutes", min_read_action.value().get().as_ref().map(|it| it.to_string()).unwrap_or("...".to_owned()))}}</p>
             </div>
             <div class="flex flex-row row-span-2">

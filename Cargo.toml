@@ -24,8 +24,8 @@ icondata = "0.3.0"
 chrono = { version = "0.4.33", features = ["serde"] }
 surrealdb = { version = "1.1.1" }
 axum = { version = "0.7.4", optional = true }
-surreal_derive_plus = { path = "../surreal-derive", optional = true }
-surreal_devl = { path = "../surreal-devl", optional = true }
+surreal_derive_plus = { version = "1.0.9", optional = true }
+surreal_devl = { version = "1.0.4", optional = true }
 serde = "1.0.196"
 serde_json = "1.0.113"
 serde_derive = "1.0.196"

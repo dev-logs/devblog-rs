@@ -4,7 +4,9 @@ use leptos_router::*;
 use crate::web::app_context::home_navigation_context::HomeNavigationSignalContext;
 use crate::web::app_context::signal_context::{AppContextProvider};
 use crate::web::blogs::deploy_flutter_web::page::DeployFlutterWebPage;
+use crate::web::footer::main_footer::MainFooter;
 use crate::web::home::page::Home;
+use crate::web::header::main_header::MainHeader;
 
 #[component]
 pub fn App() -> impl IntoView {
@@ -14,6 +16,7 @@ pub fn App() -> impl IntoView {
     view! {
         <Stylesheet id="leptos" href="/pkg/leptos_start.css"/>
         <Title text="Welcome to Leptos"/>
+        <MainHeader/>
         <Router>
             <main>
                 <Routes>
@@ -23,6 +26,7 @@ pub fn App() -> impl IntoView {
                 </Routes>
             </main>
         </Router>
+        <MainFooter/>
     }
 }
 

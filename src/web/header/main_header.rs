@@ -1,9 +1,12 @@
 use leptos::*;
 
-#[component]
-pub fn SearchHeader() -> impl IntoView {
+#[component()]
+pub fn MainHeader(
+    #[prop(default = "")]
+    class: &'static str
+) -> impl IntoView {
     view! {
-       <div class="flex flex-row justify-start space-x-1/6 w-full pt-8 pl-4 pb-2 pr-1.5">
+       <nav class=format!("flex flex-row justify-around space-x-1/6 w-full border-gray-200 px-4 lg:px-6 py-4 bg-gray-950 {class}")>
             <a href="/" class="flex flex-row items-center">
                 <img class="w-10 rounded" src="/assets/images/ic_devlog.png"/>
                 <p class="font-main-bold ml-2 text-xl">Devlog Studio</p>
@@ -13,6 +16,6 @@ pub fn SearchHeader() -> impl IntoView {
                 <button type="submit" class="ml-4 text-gray-200 w-44 font-black rounded-lg text-sm bg-secondaryC text-onSecondaryC">Search</button>
             </form>
             <div class="empty"></div>
-        </div>
+        </nav>
     }
 }

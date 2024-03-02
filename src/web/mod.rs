@@ -6,3 +6,5 @@ pub mod blogs;
 pub mod discussion;
 pub mod utils;
 pub mod local_storage;
+pub mod header;
+pub mod footer;
