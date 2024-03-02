@@ -18,7 +18,7 @@ pub fn BlogContainer<E, F>(
 {
     view! {
         <div>
-            <div class="grid grid-cols-10 justify-start bg-gray-950">
+            <div class="grid grid-cols-10 justify-start bg-gray-950 pb-12">
                 // {header()}
                 <link rel="stylesheet" href="https://unpkg.com/prismjs@1.29.0/themes/prism-twilight.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
                 <div class="sticky top-0 right-0 h-screen col-span-1 sm:col-span-3 flex flex-row w-full items-start justify-center collapse sm:visible">

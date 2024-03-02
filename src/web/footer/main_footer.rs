@@ -6,8 +6,23 @@ pub fn MainFooter(
     class: &'static str
 ) -> impl IntoView {
     view! {
-        <footer class=format!("flex flex-row rounded-lg shadow pt-12 h-screen {class} p-4 pt-12 justify-center")>
-            <div class="grid grid-cols-10 gap-8 max-w-screen-2xl">
+        <footer class=format!("flex flex-col rounded-lg shadow h-1/2 {class} justify-start items-center bg-gray-950")>
+            <div class="bg-blue-800 rounded rounded-xl h-1 w-screen mb-24"></div>
+            <div class="flex flex-col justify-center items-center">
+                <p class="font-main-bold text-4xl">Thanks for your visiting</p>
+                <div class="flex flex-col justify-center mt-12">
+                    <h2 class="text-xl font-main-bold mb-4 text-white">Subscribe to our Newsletter</h2>
+                    <form class="w-full max-w-sm">
+                        <div class="flex rounded-full mb-4 h-12">
+                            <input class="bg-white rounded rounded-md w-full font-main text-lg text-gray-950 py-1 h-full px-2 leading-tight focus:outline-none" type="email" placeholder="Enter your email" aria-label="Email"/>
+                            <button class="flex-shrink-0 font-main bg-blue-500 h-full hover:bg-blue-700 border-blue-500 hover:border-blue-700 text-sm border-4 text-white py-1 px-2 rounded ml-4" type="button">
+                                Subscribe
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="grid grid-cols-10 gap-8 max-w-screen-2xl mt-24">
                 <div class="col-span-4 flex flex-col justify-between items-center p-4">
                     <div class="flex flex-col justify-start items-start p-4">
                         <div class="flex flex-row justify-center items-center h-40">
@@ -41,6 +56,9 @@ pub fn MainFooter(
                         <li class="text-lg font-main text-gray-500">Assistant to advance your brain</li>
                     </ul>
                 </div>
+            </div>
+            <div class="max-w-screen-2xl justify-start items-start py-4 px-24">
+                <p class="font-main font-lg text-gray-600"> {"©"} 2024 Devlog{"™"}. All Rights Reserved.</p>
             </div>
         </footer>
     }
