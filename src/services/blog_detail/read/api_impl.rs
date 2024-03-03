@@ -30,7 +30,7 @@ impl Service<Params, VoidResponse> for MarkReadServiceApiImpl {
         let blog_relation = AdaptiveRelation::<Blog>::new(params.blog_title.as_str());
         let blog_id = blog_relation.id();
         let view = View { view_at: Default::default() };
-        let result: Option<Relation<View, User, Blog>> = self.db.query(surreal_quote!("SELECT * FROM RELATE #id(&user) -> view -> #val(&blog_id) #set(&view)")).await?.take(0)?;
+        let _: Option<Relation<View, User, Blog>> = self.db.query(surreal_quote!("SELECT * FROM RELATE #id(&user) -> view -> #val(&blog_id) #set(&view)")).await?.take(0)?;
 
         Ok(())
     }

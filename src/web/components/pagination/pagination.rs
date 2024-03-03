@@ -5,8 +5,6 @@ use crate::web::utils::callback::*;
 #[component]
 pub fn Pagination(
     #[prop()]
-    total_page: i32,
-    #[prop()]
     current_page: i32,
     #[prop(default = 10)]
     rows_per_page: i32,
@@ -28,10 +26,10 @@ pub fn Pagination(
                 Showing <span class="font-semibold text-gray-900 dark:text-white">{start_index}</span> to <span class="font-semibold text-gray-900 dark:text-white">{to_index}</span> of <span class="font-semibold text-gray-900 dark:text-white">{total}</span> Entries
             </span>
             <div class="inline-flex mt-4 xs:mt-0">
-                <button class="flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-gray-800 rounded-s hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white" on:click={on_prev}>
+                <button class="flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-gray-800 rounded-s hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white" on:click=on_prev>
                     Prev
                 </button>
-                <button class="flex ml-2 items-center justify-center px-3 h-8 text-sm font-medium text-white bg-gray-800 rounded-s hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white" on:click={on_next}>
+                <button class="flex ml-2 items-center justify-center px-3 h-8 text-sm font-medium text-white bg-gray-800 rounded-s hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white" on:click=on_next>
                     Next
                 </button>
             </div>

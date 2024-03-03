@@ -2,7 +2,6 @@ use surreal_derive_plus::surreal_quote;
 use crate::core_services::surrealdb::adaptive_relation::AdaptiveRelation;
 use crate::core_services::surrealdb::Db;
 use crate::entities::blog::Blog;
-use crate::entities::view::View;
 use crate::services::base::service::{Resolve, Service};
 use crate::services::blog_detail::count_read::service::{CountReadService, Params};
 

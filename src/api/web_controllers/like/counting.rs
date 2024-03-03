@@ -1,10 +1,5 @@
 use leptos::*;
-use crate::entities::blog::Blog;
-use crate::entities::discussion::Discussion;
-use crate::entities::like::Like;
-use crate::entities::relation::relation::Relation;
-use crate::entities::user::User;
-use crate::services::like::counting::service::{CountBlogLikeService, CountBlogLikeParams};
+use crate::services::like::counting::service::CountBlogLikeParams;
 
 #[server(CountBlogLike, "/web")]
 pub async fn count_blog_like(params: CountBlogLikeParams) -> Result<u32, ServerFnError> {

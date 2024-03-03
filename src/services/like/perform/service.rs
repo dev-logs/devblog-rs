@@ -1,6 +1,5 @@
 use std::fmt::Debug;
 use serde_derive::{Deserialize, Serialize};
-use surrealdb::opt::RecordId;
 use crate::entities::blog::Blog;
 use crate::entities::like::Like;
 use crate::entities::relation::relation::Relation;

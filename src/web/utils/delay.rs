@@ -8,7 +8,7 @@ pub async fn delay(duration: Duration) {
     let (tx, rx) = oneshot::channel::<()>();
 
     let callback = Closure::once(move || {
-        tx.send(());
+        tx.send(()).expect("Failed to send timeout signal");
     });
 
     window()

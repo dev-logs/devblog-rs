@@ -1,5 +1,4 @@
 use std::ops::Deref;
-use std::vec::IntoIter;
 use serde_derive::{Deserialize, Serialize};
 use crate::entities::errors::Errors;
 
@@ -32,7 +31,7 @@ impl<T> IntoIterator for PageResponse<T> {
 pub type Resolve<T> = Result<T, Errors>;
 
 pub fn error_message<T>(resolve: Option<Resolve<T>>) -> Option<String> {
-    if (resolve.is_none()) {
+    if resolve.is_none() {
         return None;
     }
 

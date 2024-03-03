@@ -8,8 +8,10 @@ pub fn BlogTitle(
     children: Children
 ) -> impl IntoView {
     return view! {
-        <div class={format!("{class} m-16 rounded-3xl border-gray-700 p-16 border-2")} style:background-color="#070F2B">
-            {children()}
+        <div class=format!("{class} justify-center items-center w-screen overflow-hidden")>
+            <div class="max-w-screen-3xl" style:height="50svh">
+                {children()}
+            </div>
         </div>
     }
 }

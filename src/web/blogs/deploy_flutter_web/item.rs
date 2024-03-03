@@ -1,12 +1,7 @@
 use leptos::*;
-use web_sys::MouseEvent;
 use crate::core_services::web_di::*;
-use crate::services::blog_detail::min_read::service::Params;
 use crate::services::blog_provider_service::blog_provider_service::BlogProviderService;
 use crate::web::components::blogs::blog_item_container::BlogItemContainer;
-use crate::web::components::blogs::blog_item_description::BlogItemDescription;
-use crate::web::components::blogs::blog_item_title::BlogItemTitle;
-use crate::web::components::read_more_button::ReadMoreButton;
 
 #[component]
 pub fn DeployFlutterWebBlogItem() -> impl IntoView {

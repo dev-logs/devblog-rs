@@ -5,7 +5,7 @@ use crate::core_services::web_di::*;
 use crate::services::author_provider_service::author_provider::AuthorProviderService;
 use crate::web::app_context::home_navigation_context::HomeNavigationSignalContext;
 use crate::web::components::author_avatar::AuthorAvatar;
-use crate::web::components::icons::{bookshelf::BookShelf, product::Product , light_bulb::LightBulb};
+use crate::web::components::icons::light_bulb::LightBulb;
 
 #[derive(Clone, Debug)]
 pub enum HomeNavigationTab {

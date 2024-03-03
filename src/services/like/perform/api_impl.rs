@@ -1,14 +1,9 @@
-use std::fmt::{Debug, format};
-use leptos::html::form;
-use leptos::tracing::instrument::WithSubscriber;
 use surreal_derive_plus::surreal_quote;
-use surrealdb::opt::RecordId;
 use crate::core_services::surrealdb::adaptive_relation::AdaptiveRelation;
 use crate::core_services::surrealdb::Db;
 use crate::entities::blog::Blog;
 use crate::entities::errors::Errors;
 use crate::entities::like::Like;
-use crate::entities::relation::r#trait::IntoRelation;
 use crate::entities::relation::relation::Relation;
 use crate::entities::user::User;
 use crate::services::base::service::{Resolve, Service};
@@ -45,7 +40,6 @@ impl Service<LikeBlogParam, Relation<Like, User, Blog>> for LikeBlogServiceApiIm
         }
 
         let like = Like { count: params.count };
-        let relation = like.into_relation(user_relation, blog_relation);
 
         let result: Option<Relation<Like, User, Blog>> = self.db.query(surreal_quote!("SELECT * FROM RELATE #val(&user_id) -> like -> #val(&blog_id) #set(&like)")).await?.take(0)?;
 

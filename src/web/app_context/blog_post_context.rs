@@ -1,7 +1,6 @@
-use leptos::{create_signal, SignalGet, SignalGetUntracked};
+use leptos::{create_signal, SignalGet};
 use crate::entities::blog::Blog;
 use crate::web::app_context::signal_context::{AppContext, AppSignal};
-use crate::web::home::navigation::HomeNavigationTab;
 
 #[derive(Debug, Clone)]
 pub struct BlogPostContext {

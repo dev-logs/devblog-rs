@@ -1,5 +1,4 @@
 use chrono::Utc;
-use serde_json::Value;
 use surreal_derive_plus::surreal_quote;
 use surrealdb::opt::RecordId;
 use surrealdb::sql::Id;
@@ -13,7 +12,7 @@ use crate::entities::user::User;
 use crate::services::base::service::{Resolve, Service};
 use crate::services::create_discussion::service;
 use crate::services::create_discussion::service::CreateDiscussionService;
-use crate::services::create_guess_user::service::{CreateGuestUserService, Params as CreateGuestUserParams};
+use crate::services::create_guess_user::service::CreateGuestUserService;
 
 pub struct CreateDiscussionApiImpl<T> where T: CreateGuestUserService {
     pub db: Db,

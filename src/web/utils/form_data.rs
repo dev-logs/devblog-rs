@@ -2,7 +2,6 @@ use std::ops::Deref;
 use leptos::logging::log;
 use wasm_bindgen::JsCast;
 use web_sys::{FormData, HtmlFormElement, HtmlInputElement, HtmlTextAreaElement, SubmitEvent};
-use web_sys::js_sys::eval;
 
 pub struct FormDataWrapper {
     form_data: FormData,

@@ -1,8 +1,6 @@
 use std::time::Duration;
 use leptos::logging::log;
-use tokio::time::{sleep};
 use leptos::window;
-use surrealdb::key::root::all::new;
 use crate::api::web_controllers::blog::mark_read::mark_read;
 use crate::entities::errors::Errors;
 use crate::services::base::service::{Resolve, Service, VoidResponse};

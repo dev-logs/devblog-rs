@@ -22,13 +22,8 @@ fn Header(
     blog: Blog
 ) -> impl IntoView {
     view! {
-        <BlogTitle class={"flex flex-row items-start justify-start space-x-10 min-h-0.5 bg-gray-200"}>
-            <BlogImage border=true class="basis-1 flex-1" src="/assets/images/document/computer1.jpg"/>
-            <div class="basis-1/4 flex-col space-y-2">
-                <BlogHeader class="text-5xl font-main-bold text-gray-200">Deploy Flutter Web</BlogHeader>
-                <BlogDescription>{blog.description}</BlogDescription>
-            </div>
-            <div class="basis-1/4"></div>
+        <BlogTitle>
+            <img src="/assets/images/document/computer1.jpg"/>
         </BlogTitle>
     }
 }
@@ -42,7 +37,7 @@ pub fn DeployFlutterWebPage() -> impl IntoView {
     let blog = blog_context.get_selected_blog().clone();
 
     view! {
-        <BlogContainer class="flex flex-col pt-10 my-10 font-main" blog={blog.clone()} header={move || view! {<Header blog={blog.clone()}/>}}>
+        <BlogContainer class="flex flex-col pt-10 py-10 font-main" blog={blog.clone()} header={move || view! {<Header blog={blog.clone()}/>}}>
             <BlogHeader>Introduction</BlogHeader>
             <BlogBody>
                 <BlogLink href="https://flutter.dev/multi-platform/web">Flutter Web</BlogLink> brings the power of Flutter declarative approach to web development, enabling developers to construct high-quality.

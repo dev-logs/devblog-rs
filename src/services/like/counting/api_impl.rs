@@ -3,7 +3,6 @@ use surreal_derive_plus::surreal_quote;
 use crate::core_services::surrealdb::adaptive_relation::AdaptiveRelation;
 use crate::core_services::surrealdb::Db;
 use crate::entities::blog::Blog;
-use crate::entities::like::Like;
 use crate::services::base::service::{Resolve, Service};
 use crate::services::like::counting::service::{CountBlogLikeParams, CountBlogLikeService};
 

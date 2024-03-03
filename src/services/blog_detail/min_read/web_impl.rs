@@ -1,4 +1,3 @@
-use leptos::logging::log;
 use reqwest::{Client};
 use web_sys::{DomParser, SupportedType, window};
 use crate::entities::errors::Errors;
@@ -23,10 +22,9 @@ impl Service<Params, usize> for CountReadMinutesServiceWebImpl {
             return Err(Errors::InternalServerError("".to_string()));
         }
 
-
-        let htmlSource = response.text().await.unwrap();
+        let html_source = response.text().await.unwrap();
         let parser = DomParser::new().unwrap();
-        let document = parser.parse_from_string(&htmlSource, SupportedType::TextHtml).expect("Unable to parse html source to document");
+        let document = parser.parse_from_string(&html_source, SupportedType::TextHtml).expect("Unable to parse html source to document");
         let texts = document.document_element().unwrap().text_content().expect("Can not get the text content from document");
 
         let words: Vec<&str> = texts.split_whitespace().collect();

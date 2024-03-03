@@ -24,7 +24,7 @@ pub fn Discussion () -> impl IntoView {
     let fetch_next_discussions = {
         let paging_param = paging_param.clone();
         let title = context.get_selected_blog().title.clone();
-        create_action(move |e: &()| {
+        create_action(move |_: &()| {
             let title = title.clone();
             let paging_param = paging_param.clone();
             async move {
@@ -38,7 +38,7 @@ pub fn Discussion () -> impl IntoView {
 
     let next_page: Callback<MouseEvent> = {
         let paging_param = paging_param.clone();
-        Callback::new(move |e| {
+        Callback::new(move |_| {
             let total_page = fetch_next_discussions.value().get_untracked().unwrap().unwrap().total_page;
             let page = paging_param.get_untracked().page + 1;
             if page <= total_page {
@@ -54,7 +54,7 @@ pub fn Discussion () -> impl IntoView {
     let prev_page: Callback<MouseEvent> = {
         let paging_param = paging_param.clone();
         let fetch_next_discussions = fetch_next_discussions.clone();
-        Callback::new(move |e| {
+        Callback::new(move |_| {
             let page = paging_param.get_untracked().page - 1;
             if page >= 1 {
                 set_paging_param(PagingParam {
@@ -68,11 +68,9 @@ pub fn Discussion () -> impl IntoView {
 
     let create_discussion = {
         let fetch_all_discussions = fetch_next_discussions.clone();
-        let context = context.clone();
 
         create_action(move |event: &(String, String, String)| {
             let event = event.clone();
-            let context = context.clone();
             async move {
                 let result = WebInjector::service_injector().get_create_discussion_service().execute(
                     Params {
@@ -131,7 +129,7 @@ pub fn Discussion () -> impl IntoView {
                                     </div>
                                 }
                             }}
-                            <Pagination class="pt-10" total={discussions.total_record} total_page={discussions.total_page.clone()} current_page={discussions.page.clone()} on_next=next_page on_prev=prev_page/>
+                            <Pagination class="pt-10" total={discussions.total_record} current_page={discussions.page.clone()} on_next=next_page on_prev=prev_page/>
                         </div>
                     }}
                     else {

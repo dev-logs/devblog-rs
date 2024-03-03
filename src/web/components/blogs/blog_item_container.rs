@@ -4,7 +4,6 @@ use crate::services::base::service::Service;
 use crate::core_services::web_di::*;
 use crate::entities::blog::Blog;
 use crate::services::blog_detail::min_read::service::Params;
-use crate::services::blog_provider_service::blog_provider_service::BlogProviderService;
 use crate::web::components::blogs::blog_item_description::BlogItemDescription;
 use crate::web::components::blogs::blog_item_title::BlogItemTitle;
 use crate::web::components::read_more_button::ReadMoreButton;
@@ -29,7 +28,7 @@ pub fn BlogItemContainer(
 
     let min_read_action = {
         let blog = blog.clone();
-        create_action(move |e: &()| {
+        create_action(move |_: &()| {
             let blog = blog.clone();
             async move {
                 let service = WebInjector::service_injector().get_count_read_minutes_service();
@@ -38,12 +37,12 @@ pub fn BlogItemContainer(
         })
     };
 
-    create_effect(move |e| {
+    create_effect(move |_| {
        min_read_action.dispatch(());
     });
 
     view! {
-        <div on:click={on_item_clicked.clone()} class={format!("cursor-pointer flex flex-col m-5 {}", class)} style={style}>
+        <div on:click=on_item_clicked.clone() class=format!("cursor-pointer flex flex-col m-5 {}", class) style={style}>
             <div class="body flex flex-col">
                 <BlogItemTitle>{title}</BlogItemTitle>
                 <BlogItemDescription class="mt-8">{description}</BlogItemDescription>

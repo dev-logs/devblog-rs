@@ -1,6 +1,4 @@
 use leptos::*;
-use crate::entities::blog::Blog;
-use crate::entities::discussion::Discussion;
 use crate::services::blog_detail::read::mark_read_service::Params;
 
 #[server(MarkRead, "/web")]

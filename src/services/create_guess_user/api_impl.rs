@@ -24,7 +24,7 @@ impl<T> Service<Params, User> for CreateGuestUserApiImpl<T> where T: RandomUserD
                     .take(0)?;
                 Ok(created_user.unwrap())
             }
-            Some(user) => {Err(Errors::AlreadyExist(format!("User {}", params.display_name)))}
+            Some(_) => {Err(Errors::AlreadyExist(format!("User {}", params.display_name)))}
         }
     }
 }

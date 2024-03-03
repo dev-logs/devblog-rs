@@ -2,7 +2,6 @@ use leptos::*;
 use leptos::logging::log;
 use web_sys::MouseEvent;
 use crate::core_services::web_di::*;
-use crate::entities::blog;
 use crate::entities::blog::Blog;
 use crate::services::like::perform::service::LikeBlogParam;
 use crate::web::local_storage::user::UserStorage;
@@ -29,7 +28,7 @@ pub fn ThumbUpRive(
         let set_total_like_count = set_total_like_count.clone();
         let how_many_new_like = how_many_new_like.clone();
         let set_new_like_count = set_new_like_count.clone();
-        Callback::new(move |e: MouseEvent| {
+        Callback::new(move |_: MouseEvent| {
             set_total_like_count(how_many_like_total.get_untracked() + 1);
             set_new_like_count(how_many_new_like.get_untracked() + 1);
         })
@@ -38,7 +37,7 @@ pub fn ThumbUpRive(
     let fetch_likes = {
         let blog = blog.clone();
         let set_total_like_count = set_total_like_count.clone();
-        create_action(move |e: &()| {
+        create_action(move |_: &()| {
             let blog = blog.clone();
 
             async move {
@@ -79,14 +78,14 @@ pub fn ThumbUpRive(
     };
 
     let on_like_confirm = {
-        Callback::new(move |e: MouseEvent| {
+        Callback::new(move |_: MouseEvent| {
             perform_like.dispatch(());
         })
     };
 
     let min_read_action = {
         let blog = blog.clone();
-        create_action(move |e: &()| {
+        create_action(move |_: &()| {
             let blog = blog.clone();
             async move {
                 WebInjector::service_injector().get_count_read_minutes_service().execute(Params {blog}).await.unwrap()
@@ -96,7 +95,7 @@ pub fn ThumbUpRive(
 
     let count_read_action = {
         let blog = blog.clone();
-        create_action(move |e: &()| {
+        create_action(move |_: &()| {
             let blog = blog.clone();
             async move {
                 WebInjector::service_injector().get_count_read_service().execute(CountReadParams {
@@ -108,7 +107,7 @@ pub fn ThumbUpRive(
 
     let mark_read_action = {
         let blog = blog.clone();
-        create_action(move |e: &()| {
+        create_action(move |_: &()| {
             let blog = blog.clone();
             async move {
                 let user = UserStorage::new().get().map(|it| it.clone());
@@ -120,7 +119,7 @@ pub fn ThumbUpRive(
         })
     };
 
-    create_effect(move |e| {
+    create_effect(move |_| {
         min_read_action.dispatch(());
         mark_read_action.dispatch(());
     });
@@ -131,13 +130,13 @@ pub fn ThumbUpRive(
         return view! {
             <div class="flex flex-row h-14 w-full bg-neutral-950 shadow shadow-gray-300 shadow-lg pb-2">
                 <rive-thumb-up id="riveThumbUpLike" class="block w-16 h-full ml-4" on:LikeEvent=on_like on:LikeConfirmEvent=on_like_confirm likeCount=10></rive-thumb-up>
-                <rive-text id="riveTextLike" class="block w-32 h-full pr-10" on:LoadComplete={move |e: MouseEvent| {fetch_likes.dispatch(())}} text={move || {format!("{} likes", how_many_like_total.get().to_string())}}></rive-text>
+                <rive-text id="riveTextLike" class="block w-32 h-full pr-10" on:LoadComplete=move |_: MouseEvent| {fetch_likes.dispatch(())} text={move || {format!("{} likes", how_many_like_total.get().to_string())}}></rive-text>
             </div>
         }
     }
 
     view! {
-        <div class="grid grid-rows-10 mx-5 h-80 h-72 mt-10 rounded-xl max-w-64">
+        <div class=format!("grid grid-rows-10 mx-5 h-80 h-72 mt-10 rounded-xl max-w-64 {class}")>
             <div class="row-span-6 flex-col justify-between flex p-2 pl-5">
                 <div>
                    <p class="font-main-bold text-3xl">{blog.title.clone()}</p>
@@ -150,8 +149,8 @@ pub fn ThumbUpRive(
                 <rive-text id="riveTextLike" class="block w-full h-full" text={move || {format!("{} likes", how_many_like_total.get().to_string())}}></rive-text>
             </div>
             <div class="flex flex-row row-span-2">
-                <rive-emoji-face-love id="riveEmojiView" class="block w-full h-full m-1" on:LoadComplete={move |e: MouseEvent| {fetch_likes.dispatch(())}}></rive-emoji-face-love>
-                <rive-text id="riveTextView" class="block w-full h-full" on:LoadComplete={move |e: MouseEvent| {count_read_action.dispatch(())}} text={move || {format!("{} views", count_read_action.value().get().as_ref().map(|it| it.to_string()).unwrap_or("...".to_string()))}}></rive-text>
+                <rive-emoji-face-love id="riveEmojiView" class="block w-full h-full m-1" on:LoadComplete=move |_: MouseEvent| {fetch_likes.dispatch(())}></rive-emoji-face-love>
+                <rive-text id="riveTextView" class="block w-full h-full" on:LoadComplete=move |_: MouseEvent| {count_read_action.dispatch(())} text={move || {format!("{} views", count_read_action.value().get().as_ref().map(|it| it.to_string()).unwrap_or("...".to_string()))}}></rive-text>
             </div>
         </div>
     }

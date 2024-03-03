@@ -12,7 +12,7 @@ use crate::services::blog_provider_service::blog_provider_service::BlogProviderS
 use crate::services::blog_provider_service::blog_provider_service_impl::BlogProviderServiceImpl;
 use crate::services::create_discussion::service::CreateDiscussionService;
 use crate::services::create_discussion::web_impl::CreateDiscussionWebImpl;
-use crate::services::create_guess_user::service::{CreateGuestUserService, Params};
+use crate::services::create_guess_user::service::CreateGuestUserService;
 use crate::services::create_guess_user::web_impl::CreateGuestUserWebImpl;
 use crate::services::get_discussions::service::GetDiscussionsService;
 use crate::services::get_discussions::web_impl::GetDiscussionsWebImpl;
