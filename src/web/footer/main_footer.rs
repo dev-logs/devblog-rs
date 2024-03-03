@@ -6,13 +6,13 @@ pub fn MainFooter(
     class: &'static str
 ) -> impl IntoView {
     view! {
-        <footer class=format!("flex flex-col rounded-lg shadow h-1/2 {class} justify-start items-center bg-gray-950")>
-            <div class="bg-blue-800 rounded rounded-xl h-1 w-screen mb-24"></div>
-            <div class="flex flex-col justify-start items-center mt-2">
+        <footer class=format!("flex flex-col rounded-lg shadow h-1/2 {class} justify-start items-center bg-gray-950 pb-10")>
+            <div class="bg-blue-900 rounded rounded-xl h-1 w-screen mb-24"></div>
+            <div class="flex flex-col justify-start items-center mt-40">
                 <p class="font-main-bold text-4xl">Thanks for your visiting</p>
-                <div class="flex flex-col justify-center mt-12">
+                <div class="flex flex-col justify-center mt-12 mb-20">
                     <h2 class="text-xl font-main mb-4 text-white">Subscribe to our Newsletter</h2>
-                    <form class="w-full max-w-sm">
+                    <form class="w-96">
                         <div class="flex rounded-full mb-4 h-12">
                             <input class="bg-white rounded rounded-md w-full font-main text-lg text-gray-950 py-1 h-full px-2 leading-tight focus:outline-none" type="email" placeholder="Enter your email" aria-label="Email"/>
                             <button class="flex-shrink-0 font-main bg-blue-500 h-full hover:bg-blue-700 border-blue-500 hover:border-blue-700 text-sm border-4 text-white py-1 px-2 rounded ml-4" type="button">
@@ -22,7 +22,7 @@ pub fn MainFooter(
                     </form>
                 </div>
             </div>
-            <div class="grid grid-cols-10 gap-8 max-w-screen-2xl mt-24">
+            <div class="grid grid-cols-10 gap-8 max-w-screen-3xl mt-24">
                 <div class="col-span-4 flex flex-col justify-between items-center p-4">
                     <div class="flex flex-col justify-start items-start">
                         <div class="flex flex-row mb-4">
@@ -57,7 +57,7 @@ pub fn MainFooter(
                     </ul>
                 </div>
             </div>
-            <div class="max-w-screen-2xl justify-start items-start py-4 px-24">
+            <div class="max-w-screen-3xl justify-start items-start py-4 px-24">
                 <p class="font-main font-lg text-gray-600"> {"©"} 2024 Devlog{"™"}. All Rights Reserved.</p>
             </div>
         </footer>
