@@ -84,9 +84,15 @@ pub fn ThumbUpRive(
         })
     };
 
-    let min_read_action = create_action(|e: &()| async {
-        WebInjector::service_injector().get_count_read_minutes_service().execute(Params {}).await.unwrap()
-    });
+    let min_read_action = {
+        let blog = blog.clone();
+        create_action(move |e: &()| {
+            let blog = blog.clone();
+            async move {
+                WebInjector::service_injector().get_count_read_minutes_service().execute(Params {blog}).await.unwrap()
+            }
+        })
+    };
 
     let count_read_action = {
         let blog = blog.clone();

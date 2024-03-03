@@ -33,7 +33,7 @@ impl Blog {
             title: title.to_string(),
             description: description.to_string(),
             created_at,
-            author: AdaptiveRelation::<Author>::Record(author)
+            author: AdaptiveRelation::<Author>::Record(author),
         }
     }
 }

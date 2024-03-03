@@ -22,7 +22,7 @@ leptos_icons = "0.2.1"
 icondata_core = "0.1.0"
 icondata = "0.3.0"
 chrono = { version = "0.4.33", features = ["serde"] }
-surrealdb = { version = "1.1.1" }
+surrealdb = { version = "1.1.1", features = ["protocol-ws"] }
 axum = { version = "0.7.4", optional = true }
 surreal_derive_plus = { version = "1.0.9", optional = true }
 surreal_devl = { version = "1.0.4", optional = true }
@@ -36,10 +36,11 @@ tokio = { version = "1.35.1", features = ["sync"] }
 ring = "0.17.7"
 rand = "0.8.5"
 console = "0.15.8"
+reqwest = "0.11.24"
 
 [dependencies.web-sys]
 version = "0.3"
-features = ["Storage"]
+features = ["Storage", "DomParser", "Document", "SupportedType"]
 
 [features]
 csr = ["leptos/csr", "leptos_meta/csr", "leptos_router/csr"]

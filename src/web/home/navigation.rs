@@ -21,7 +21,7 @@ impl Default for HomeNavigationTab {
 }
 
 #[component]
-fn NavigationItem(
+pub fn NavigationItem(
     tab: HomeNavigationTab,
 ) -> impl IntoView {
     let navigation_context = use_context::<HomeNavigationSignalContext>().unwrap();
@@ -30,25 +30,23 @@ fn NavigationItem(
         HomeNavigationTab::Blog => {
             let mut context = navigation_context.clone();
             view! {
-                <div class="flex flex-row mt-1 items-center pt-4 pb-1/4 w-full justify-between p-3">
-                    <button class=format!("item-{:?}", tab) on:click=move |_| {context.set_tab(HomeNavigationTab::Blog)} class="text-xl font-black">Blogs</button>
-                    <BookShelf color="white"/>
+                <div class="flex flex-row items-center w-full justify-between p-3">
+                    <button class=format!("font-main text-md item-{:?}", tab) on:click=move |_| {context.set_tab(HomeNavigationTab::Blog)}>Blogs</button>
                 </div>
             }
         }
         HomeNavigationTab::Products => {
             let mut context = navigation_context.clone();
             view! {
-                <div class="flex flex-row mt-1 items-center pt-4 pb-1/4 w-full justify-between p-3">
-                    <button class=format!("item-{:?} text-xl font-black", tab) on:click=move |_| {context.set_tab(HomeNavigationTab::Products)} class="text-xl font-black">Products</button>
-                    <Product color="white"/>
+                <div class="flex flex-row items-center w-full justify-between p-3">
+                    <button class=format!("font-main text-md item-{:?}", tab) on:click=move |_| {context.set_tab(HomeNavigationTab::Products)}>Products</button>
                 </div>
             }
         }
         HomeNavigationTab::Services => {
             let mut context = navigation_context.clone();
             view! {
-                <div class="flex flex-row mt-1 items-center pt-4 pb-1/4 w-full justify-between p-3">
+                <div class="flex flex-row items-center pt-4 pb-1/4 w-full justify-between p-3">
                     <button class=format!("item-{:?}", tab) on:click=move |_| {context.set_tab(HomeNavigationTab::Services)} class="text-xl font-black">Services</button>
                     <LightBulb color="white"/>
                 </div>
