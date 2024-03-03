@@ -22,8 +22,8 @@ fn Header(
     blog: Blog
 ) -> impl IntoView {
     view! {
-        <BlogTitle>
-            <img src="/assets/images/document/computer1.jpg"/>
+        <BlogTitle class="">
+            <BlogImage src="/assets/images/document/computer1.jpg" blended=true/>
         </BlogTitle>
     }
 }

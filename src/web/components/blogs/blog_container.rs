@@ -21,17 +21,17 @@ pub fn BlogContainer<E, F>(
             {header()}
             <div class="grid grid-cols-10 justify-start pb-12">
                 <link rel="stylesheet" href="https://unpkg.com/prismjs@1.29.0/themes/prism-twilight.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
-                <div class="sticky top-0 right-0 h-screen col-span-1 sm:col-span-3 flex flex-row w-full items-start justify-center collapse sm:visible">
+                <div class="sticky top-0 right-0 h-screen col-span-1 sm:col-span-3 flex flex-row w-full items-start justify-end pr-12 collapse sm:visible">
                     <ThumbUpRive blog={blog.clone()} class="collapse sm:visible"/>
                 </div>
-                <div class="overflow-auto col-span-8 sm:col-span-4 flex flex-col justify-center">
+                <div class="overflow-auto col-span-8 sm:col-span-4 flex flex-row justify-center">
                     <article class="prose prose-lg w-full flex flex-col h-full items-start justify-start overflow-auto">
                         {children()}
                         <BlogHeader>Discussions</BlogHeader>
                         <Discussion/>
                     </article>
                 </div>
-                <div class="sticky top-0 right-0 pt-10 justify-end items-end text-start h-screen pl-12 overflow-auto col-span-3 collapse sm:visible">
+                <div class="sticky top-0 right-0 pt-10 justify-center flex-flex-row w-full items-end pl-12 text-start h-screen overflow-auto col-span-3 collapse sm:visible">
                     <TableOfContents class=""/>
                 </div>
                 <script src="https://unpkg.com/prismjs@1.29.0/components/prism-core.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
