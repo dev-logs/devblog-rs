@@ -24,7 +24,7 @@ pub fn BlogContainer<E, F>(
                 <div class="sticky top-0 right-0 h-screen col-span-1 sm:col-span-3 flex flex-row w-full items-start justify-end pr-12 collapse sm:visible">
                     <ThumbUpRive blog={blog.clone()} class="collapse sm:visible"/>
                 </div>
-                <div class="overflow-auto col-span-8 sm:col-span-4 flex flex-row justify-center">
+                <div class="my-coverflow-auto col-span-8 sm:col-span-4 flex flex-col items-center">
                     <article class="prose prose-lg w-full flex flex-col h-full items-start justify-start overflow-auto">
                         {children()}
                         <BlogHeader>Discussions</BlogHeader>
@@ -118,7 +118,6 @@ fn TableOfContents(
             headers.forEach((item) => observer.observe(item))
         "###)
     });
-    
     view! {
         <div class=format!("relative p-2 {class}")>
             <div class="flex flex-col">

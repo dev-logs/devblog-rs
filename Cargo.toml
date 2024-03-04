@@ -3,12 +3,15 @@ name = "devblog-rs"
 version = "0.1.0"
 edition = "2021"
 
+[profile.dev]
+split-debuginfo = "unpacked"
+
 [lib]
 crate-type = ["cdylib", "rlib"]
 
 [dependencies]
 actix-files = { version = "0.6", optional = true }
-actix-web = { version = "4", optional = true, features = ["macros"] }
+actix-web = { version = "4", optional = true, features = ["compress-brotli", "compress-gzip", "cookies", "http2", "macros"], default-features = false }
 console_error_panic_hook = "0.1"
 cfg-if = "1"
 http = { version = "0.2", optional = true }
@@ -18,11 +21,8 @@ leptos_actix = { version = "0.5", optional = true }
 leptos_axum = { version = "0.6.5", optional = true }
 leptos_router = { version = "0.5", features = ["nightly"] }
 wasm-bindgen = "=0.2.89"
-leptos_icons = "0.2.1"
-icondata_core = "0.1.0"
-icondata = "0.3.0"
 chrono = { version = "0.4.33", features = ["serde"] }
-surrealdb = { version = "1.1.1", features = ["protocol-ws"], optional = true }
+surrealdb = { version = "1.1.1", default-features = false, optional = true , features = ["protocol-ws"] }
 axum = { version = "0.7.4", optional = true }
 surreal_derive_plus = { version = "1.0.9", optional = true }
 surreal_devl = { version = "1.0.4", optional = true }
@@ -40,7 +40,7 @@ reqwest = "0.11.24"
 
 [dependencies.web-sys]
 version = "0.3"
-features = ["Storage", "DomParser", "Document", "SupportedType"]
+features = ["Document", "DomParser", "Storage", "SupportedType"]
 
 [features]
 csr = ["leptos/csr", "leptos_meta/csr", "leptos_router/csr", "surrealdb"]
