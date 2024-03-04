@@ -126,5 +126,5 @@ lib-profile-release = "wasm-release"
 surreal_use_camel_case = false
 surreal_enable_log = true
 surreal_namespace = "surrealql"
-surreal_enable_compile_log = true
+surreal_enable_compile_log = false
 surreal_info_log_macro = "leptos::logging::log"
