@@ -14,27 +14,30 @@ By default, `cargo-leptos` uses `nightly` Rust, `cargo-generate`, and `sass`. If
 `$ cargo install cargo-leptos`
 
 ## Coding workflows
-Then install dependencies by
+### Build
 
-`yarn install --frozen-lockfile`
+Install dev dependencies:`yarn install --frozen-lockfile`
 
-And
-
-`cargo build`
-
+Install cargo dependencies:`cargo build`
+### Dev workflow
 Then, to run project
 
-`cargo leptos watch`
+Compiler check: `yarn test`
 
-And, start another task for compiling tailwind on the fly
+Launch web:`yarn web`
 
-`yarn tailwindcss -i ./global.scss -o style/main.css --watch`
+Launch tailwind: `yarn style`
 
-By default, you can access your local project at `http://localhost:3000`
+You can access your local project at `http://localhost:9121`
 
 ## Environments
 Set the following environment variables (updating for your project as needed):
 ```sh
+export DEVLOGS_SURREAL_DB_SOCKET_ADDRESS="127.0.0.1:8181"
+export DEVLOGS_SURREAL_DB_NAME="devlog"
+export DEVLOGS_SURREAL_DB_NAMESPACE="test"
+export DEVLOGS_SURREAL_DB_USERNAME="root"
+export DEVLOGS_SURREAL_DB_PASSWORD="root"
 export LEPTOS_OUTPUT_NAME="leptos_start"
 export LEPTOS_SITE_ROOT="site"
 export LEPTOS_SITE_PKG_DIR="pkg"

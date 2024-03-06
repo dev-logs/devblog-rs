@@ -22,6 +22,8 @@ use crate::services::like::perform::service::LikeBlogService;
 use crate::services::migration_services::author_impl::AuthorMigrationServiceImpl;
 use crate::services::migration_services::blog_post_impl::BlogPostMigrationServiceImpl;
 use crate::services::migration_services::service::{AuthorMigrationService, BlogPostMigrationService};
+use crate::services::subscribe::api_impl::SubscribeServiceApiImpl;
+use crate::services::subscribe::service::SubscribeService;
 use crate::services::user_default_avatar::api_impl::RandomUserAvatarServiceApiImpl;
 use crate::services::user_default_avatar::service::RandomUserDefaultAvatarService;
 
@@ -49,6 +51,8 @@ pub trait ApiServicesInjector {
     fn get_mark_read_service(&self) -> impl MarkReadService;
 
     fn get_count_read_service(&self) -> impl CountReadService;
+
+    fn get_subscribe_service(&self) -> impl SubscribeService;
 }
 
 pub struct ApiInjector;
@@ -112,6 +116,10 @@ impl ApiServicesInjector for ApiInjector {
         return CountReadServiceApiImpl {
             db: DB.clone()
         }
+    }
+
+    fn get_subscribe_service(&self) -> impl SubscribeService {
+        return SubscribeServiceApiImpl { db: DB.clone() }
     }
 }
 

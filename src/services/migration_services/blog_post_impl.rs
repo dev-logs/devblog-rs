@@ -16,7 +16,7 @@ pub struct BlogPostMigrationServiceImpl<T> where T: BlogProviderService {
 
 impl<T> Service<BlogPostMigrationParams, VoidResponse> for BlogPostMigrationServiceImpl<T> where T: BlogProviderService {
     async fn execute(self, _: BlogPostMigrationParams) -> Resolve<VoidResponse> {
-        let ns = format!("{}-blog-post-migration-service", self.ns);
+        let ns = format!("{}-blog-post-migraion-service", self.ns);
 
         let all_posts = self.post_provider.list();
         let migrated_posts: Vec<Blog> = self.db

@@ -3,6 +3,7 @@ use serde_derive::{Deserialize, Serialize};
 #[cfg(feature = "ssr")]
 use surreal_derive_plus::SurrealDerive;
 use surrealdb::opt::RecordId;
+#[cfg(feature = "ssr")]
 use surrealdb::sql::Thing;
 use crate::core_services::surrealdb::adaptive_relation::AdaptiveRelation;
 use crate::entities::blog::Blog;

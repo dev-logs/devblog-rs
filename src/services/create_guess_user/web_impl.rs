@@ -11,7 +11,7 @@ impl Service<Params, User> for CreateGuestUserWebImpl {
         let created_guest = create_guest_user(params).await?;
         let mut user_storage = UserStorage::new();
         user_storage.update(created_guest.clone());
-        
+
         Ok(created_guest)
     }
 }

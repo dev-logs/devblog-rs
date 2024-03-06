@@ -1,10 +1,39 @@
 use leptos::*;
+use web_sys::SubmitEvent;
+use crate::core_services::web_di::*;
+use crate::services::base::service::*;
+use crate::services::subscribe::service::Params;
+use crate::web::utils::form_data::FormDataWrapper;
+use crate::web::utils::toast::show_welcome_toast;
 
 #[component()]
 pub fn MainFooter(
     #[prop(default = "")]
     class: &'static str
 ) -> impl IntoView {
+    let subscribe = {
+        create_action(move |e: &String| {
+            let email = e.clone();
+            async move {
+                let result = WebInjector::service_injector()
+                    .get_subscribe_service()
+                    .execute(Params {email: email.clone()})
+                    .await;
+                show_welcome_toast(email.clone().as_str());
+                result
+            }
+
+        })
+    };
+
+    let on_submit: Callback<SubmitEvent> = Callback::new(move |e: SubmitEvent| {
+        e.prevent_default();
+        let form_data = FormDataWrapper::from(e);
+        let email = form_data.get("email").as_string().unwrap();
+        subscribe.dispatch(email.clone());
+        form_data.clear();
+    });
+
     view! {
         <footer class=format!("flex flex-col rounded-lg shadow h-1/2 {class} justify-start items-center bg-gray-950 pb-10")>
             <div class="bg-blue-900 rounded rounded-xl h-1 w-screen mb-24"></div>
@@ -12,14 +41,17 @@ pub fn MainFooter(
                 <p class="font-main-bold text-4xl">Thanks for your visiting</p>
                 <div class="flex flex-col justify-center mt-12 mb-20">
                     <h2 class="text-xl font-main mb-4 text-white">Subscribe to our Newsletter</h2>
-                    <form class="w-96">
+                    <form class="w-96" on:submit=on_submit>
                         <div class="flex rounded-full mb-4 h-12">
-                            <input class="bg-white rounded rounded-md w-full font-main text-lg text-gray-950 py-1 h-full px-2 leading-tight focus:outline-none" type="email" placeholder="Enter your email" aria-label="Email"/>
-                            <button class="flex-shrink-0 font-main bg-blue-500 h-full hover:bg-blue-700 border-blue-500 hover:border-blue-700 text-sm border-4 text-white py-1 px-2 rounded ml-4" type="button">
+                            <input class="bg-white rounded rounded-md w-full font-main text-lg text-gray-950 py-1 h-full px-2 leading-tight focus:outline-none" type="email" placeholder="Enter your email" aria-label="Email" name="email"/>
+                            <button
+                                type="submit"
+                                class="flex-shrink-0 font-main bg-blue-500 h-full hover:bg-blue-700 border-blue-500 hover:border-blue-700 text-sm border-4 text-white py-1 px-2 rounded ml-4" type="button">
                                 Subscribe
                             </button>
                         </div>
                     </form>
+                    <p class="font-main text-sm text-red800">{move || {error_message(subscribe.value().get())}}</p>
                 </div>
             </div>
             <div class="grid grid-cols-10 gap-8 max-w-screen-3xl mt-24">

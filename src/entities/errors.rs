@@ -15,7 +15,9 @@ pub enum Errors {
     #[error("Not found {}", .0)]
     NotFound(String),
     #[error("Error in client {}", .0)]
-    WebError(String)
+    WebError(String),
+    #[error("{}", .0)]
+    BadRequest(String)
 }
 
 impl From<JsValue> for Errors {

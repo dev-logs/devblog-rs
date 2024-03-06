@@ -21,19 +21,19 @@ pub fn Discussion () -> impl IntoView {
     let (show_login_modal, set_show_login_modal) = create_signal(false);
     let (paging_param, set_paging_param) = create_signal(PagingParam {page: 1});
 
-    let fetch_next_discussions = {
-        let paging_param = paging_param.clone();
-        let title = context.get_selected_blog().title.clone();
-        create_action(move |_: &()| {
-            let title = title.clone();
-            let paging_param = paging_param.clone();
-            async move {
-                WebInjector::service_injector().get_get_discussions_service().execute(GetDiscussionParams {
-                    blog_title: title,
-                    paging: paging_param.get()
-                }).await
-            }
-        })
+   let fetch_next_discussions = {
+       let paging_param = paging_param.clone();
+       let title = context.get_selected_blog().title.clone();
+       create_action(move |_: &()| {
+           let title = title.clone();
+           let paging_param = paging_param.clone();
+           async move {
+               WebInjector::service_injector().get_get_discussions_service().execute(GetDiscussionParams {
+                   blog_title: title,
+                   paging: paging_param.get()
+               }).await
+           }
+       })
     };
 
     let next_page: Callback<MouseEvent> = {

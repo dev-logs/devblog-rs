@@ -20,6 +20,8 @@ use crate::services::like::counting::service::CountBlogLikeService;
 use crate::services::like::counting::web_impl::CountBlogLikeWebImpl;
 use crate::services::like::perform::service::LikeBlogService;
 use crate::services::like::perform::web_impl::LikeBlogServiceWebImpl;
+use crate::services::subscribe::service::SubscribeService;
+use crate::services::subscribe::web_impl::SubscribeServiceWebImpl;
 
 pub trait WebServicesInjector {
     fn get_author_service(&self) -> impl AuthorProviderService;
@@ -41,6 +43,8 @@ pub trait WebServicesInjector {
     fn get_mark_read_service(&self) -> impl MarkReadService;
 
     fn get_count_read_service(&self) -> impl CountReadService;
+
+    fn get_subscribe_service(&self) -> impl SubscribeService;
 }
 
 pub struct WebInjector;
@@ -88,6 +92,10 @@ impl WebServicesInjector for WebInjector {
 
     fn get_count_read_service(&self) -> impl CountReadService {
         CountReadServiceWebImpl {}
+    }
+
+    fn get_subscribe_service(&self) -> impl SubscribeService {
+        SubscribeServiceWebImpl {}
     }
 }
 
