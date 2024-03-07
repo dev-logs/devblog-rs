@@ -3,6 +3,9 @@ name = "devblog-rs"
 version = "0.1.0"
 edition = "2021"
 
+[toolchain]
+channel = "nightly"
+
 [profile.dev]
 split-debuginfo = "unpacked"
 

@@ -8,13 +8,13 @@ use wasm_bindgen::JsValue;
 pub enum Errors {
     #[error("You are not authorized to access/perform this resource/action")]
     UnAuthorization,
-    #[error("Internal server error {}", .0)]
+    #[error("{}", .0)]
     InternalServerError(String),
-    #[error("Already exist {}", .0)]
+    #[error("{}", .0)]
     AlreadyExist(String),
-    #[error("Not found {}", .0)]
+    #[error("{}", .0)]
     NotFound(String),
-    #[error("Error in client {}", .0)]
+    #[error("{}", .0)]
     WebError(String),
     #[error("{}", .0)]
     BadRequest(String)

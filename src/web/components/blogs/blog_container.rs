@@ -31,7 +31,7 @@ pub fn BlogContainer<E, F>(
                         <Discussion/>
                     </article>
                 </div>
-                <div class="sticky top-0 right-0 pt-10 justify-center flex-flex-row w-full items-end pl-12 text-start h-screen overflow-auto col-span-3 collapse sm:visible">
+                <div class="sticky top-0 right-0 pt-10 justify-start sm:flex sm:flex-row hidden w-full items-start pl-12 text-start h-screen overflow-auto col-span-3">
                     <TableOfContents class=""/>
                 </div>
                 <script src="https://unpkg.com/prismjs@1.29.0/components/prism-core.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
