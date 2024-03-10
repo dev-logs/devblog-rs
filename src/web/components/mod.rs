@@ -8,3 +8,4 @@ pub mod modals;
 pub mod avatars;
 pub mod rive;
 pub mod pagination;
+pub mod supported;

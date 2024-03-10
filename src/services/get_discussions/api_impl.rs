@@ -1,5 +1,6 @@
 use serde_json::Value;
 use surreal_derive_plus::surreal_quote;
+use surrealdb::opt::RecordId;
 use crate::core_services::surrealdb::adaptive_relation::AdaptiveRelation;
 use crate::core_services::surrealdb::Db;
 use crate::entities::blog::Blog;
@@ -14,7 +15,7 @@ pub struct GetDiscussionsApiImpl {
 impl Service<Params, PageResponse<Discussion>> for GetDiscussionsApiImpl {
     async fn execute(self, params: Params) -> Resolve<PageResponse<Discussion>> {
         let blog_relation = AdaptiveRelation::<Blog>::new(params.blog_title.as_str());
-        let blog_id = blog_relation.id();
+        let blog_id: RecordId = blog_relation.id();
 
         let row_per_page = 10;
         let total_page_query: Option<Value> = self.db.query(surreal_quote!("SELECT count(), out FROM #val(&blog_id)<-discuss group by out")).await?.take(0)?;

@@ -1,4 +1,5 @@
 use leptos::*;
+use crate::web::components::supported::cracking::CrackingBackground;
 use crate::web::home::navigation::{HomeNavigationTab, NavigationItem};
 
 #[component()]
@@ -7,7 +8,8 @@ pub fn MainHeader(
     class: &'static str
 ) -> impl IntoView {
     view! {
-       <nav class=format!("flex flex-row justify-around items-center space-x-1/6 w-full border-gray-200 px-4 h-24 lg:px-6 py-4 bg-gray-950 {class}")>
+        <star-sky-3d class="flex flex-col justify-between" style:height="40vh">
+        <nav class=format!("flex flex-row justify-around items-center space-x-1/6 w-full border-gray-200 px-4 h-24 lg:px-6 py-4 {class}")>
             <a href="/" class="flex flex-row items-center justify-center">
                 <img class="w-10 rounded" src="/assets/images/ic_devlog.png"/>
                 <div class="flex flex-col">
@@ -22,6 +24,9 @@ pub fn MainHeader(
                 <NavigationItem tab={HomeNavigationTab::Blog}/>
                 <NavigationItem tab={HomeNavigationTab::Products}/>
             </div>
+            <script type="module" src="/assets/js/threejs/index.js"></script>
         </nav>
+        <CrackingBackground width="100%" height="250px"/>
+        </star-sky-3d>
     }
 }

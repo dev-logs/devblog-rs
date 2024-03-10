@@ -3,6 +3,7 @@ use web_sys::SubmitEvent;
 use crate::core_services::web_di::*;
 use crate::services::base::service::*;
 use crate::services::subscribe::service::Params;
+use crate::web::local_storage::user::UserStorage;
 use crate::web::utils::form_data::FormDataWrapper;
 use crate::web::utils::toast::show_welcome_toast;
 
@@ -15,9 +16,13 @@ pub fn MainFooter(
         create_action(move |e: &String| {
             let email = e.clone();
             async move {
+                let user = UserStorage::new().data.clone();
                 let result = WebInjector::service_injector()
                     .get_subscribe_service()
-                    .execute(Params {email: email.clone()})
+                    .execute(Params {
+                        email: email.clone(),
+                        display_name: user.map(|it| it.display_name)
+                    })
                     .await;
                 show_welcome_toast(email.clone().as_str());
                 result
