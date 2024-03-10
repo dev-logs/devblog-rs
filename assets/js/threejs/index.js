@@ -50,7 +50,7 @@ class StarSky3d extends HTMLElement {
         this._starGeo = new three.BufferGeometry().setFromPoints(this._geoStars)
         const sprite = new three.TextureLoader().load("/assets/images/circle.png")
         const starMaterial = new three.PointsMaterial({
-            color: "gray",
+            color: "cyan",
             size: 0.3,
             map: sprite
         })

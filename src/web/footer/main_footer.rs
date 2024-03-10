@@ -40,7 +40,7 @@ pub fn MainFooter(
     });
 
     view! {
-        <footer class=format!("flex flex-col rounded-lg shadow sm:h-1/2 h-fit {class} justify-start items-center bg-gray-950 pb-10")>
+        <footer class=format!("flex flex-col rounded-lg shadow sm:h-1/2 h-fit {class} justify-start items-center bg-backgroundC pb-10")>
             <div class="bg-blue-900 rounded rounded-xl h-1 w-screen mb-24"></div>
             <div class="flex flex-col justify-start sm:items-center items-start sm:mt-40 mt-2">
                 <p class="sm:font-main-bold sm:text-4xl font-main text-2xl">Thank you for your visiting</p>

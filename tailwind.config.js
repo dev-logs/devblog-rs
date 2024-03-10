@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+
 module.exports = {
     content: {
         files: ["*.html", "./src/**/*.rs"],
@@ -14,7 +15,7 @@ module.exports = {
             colors: {
                 primaryC: '#18181b',          // primaryContainerColor
                 onPrimaryC: '#F5F7F8',          // onPrimaryContainerColor
-                backgroundC: '#000',            // backgroundColor
+                backgroundC: '#12141d',            // backgroundColor
                 onBackgroundC: '#F5F7F8',       // onBackgroundColor
                 secondaryC: '#191919',          // secondaryContainerColor
                 onSecondaryC: '#F4CE14',        // onSecondaryContainerColor
@@ -54,6 +55,8 @@ module.exports = {
         },
     },
     plugins: [
-        require('@tailwindcss/typography')
+        require('@tailwindcss/typography'),
+        require('./plugins/glow'),
+        require('./plugins/glow-capture')
     ],
 }

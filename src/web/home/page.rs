@@ -8,8 +8,9 @@ use crate::web::home::navigation::HomeNavigationTab;
 #[component]
 pub fn Home() -> impl IntoView {
     view! {
-        <div class="home-screen h-screen flex flex-row w-full justify-center items-start bg-gray-950">
+        <div class="home-screen h-screen flex flex-row w-full justify-center items-start bg-backgroundC">
             <Content/>
+            <script type="module" src="/assets/js/support/index.js"></script>
         </div>
     }
 }
