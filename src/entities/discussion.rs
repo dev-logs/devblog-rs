@@ -5,23 +5,23 @@ use surreal_derive_plus::SurrealDerive;
 use surrealdb::opt::RecordId;
 #[cfg(feature = "ssr")]
 use surrealdb::sql::Thing;
-use crate::core_services::surrealdb::adaptive_relation::AdaptiveRelation;
+use surrealdb_id::link::Link;
+use crate::core_services::surrealdb::discussion_relation::DiscussionId;
 use crate::entities::blog::Blog;
 use crate::entities::user::User;
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
 #[cfg_attr(feature = "ssr", derive(SurrealDerive))]
 pub struct Discussion {
-    pub id: RecordId,
-    pub owner: AdaptiveRelation<User>,
+    pub owner: Link<User>,
     pub content: String,
     pub created_at: DateTime<Utc>,
-    pub blog: AdaptiveRelation<Blog>
+    pub blog: Link<Blog>
 }
 
 #[cfg(feature = "ssr")]
 impl Into<Thing> for Discussion {
     fn into(self) -> Thing {
-        self.id.clone()
+        DiscussionId(self.created_at).into()
     }
 }

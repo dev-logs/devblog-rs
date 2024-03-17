@@ -1,12 +1,12 @@
 use leptos::*;
+use surrealdb_id::relation::{LinkRelation, Relation};
 use crate::entities::blog::Blog;
 use crate::entities::like::Like;
-use crate::entities::relation::relation::Relation;
 use crate::entities::user::User;
 use crate::services::like::perform::service::LikeBlogParam;
 
 #[server(LikeBlog, "/web")]
-pub async fn like_blog(params: LikeBlogParam) -> Result<Relation<Like, User, Blog>, ServerFnError> {
+pub async fn like_blog(params: LikeBlogParam) -> Result<LinkRelation<User, Like, Blog>, ServerFnError> {
     use crate::services::base::service::*;
     use crate::core_services::api_di::*;
 

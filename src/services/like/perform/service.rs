@@ -1,8 +1,8 @@
 use std::fmt::Debug;
 use serde_derive::{Deserialize, Serialize};
+use surrealdb_id::relation::{LinkRelation};
 use crate::entities::blog::Blog;
 use crate::entities::like::Like;
-use crate::entities::relation::relation::Relation;
 use crate::entities::user::User;
 use crate::services::base::service::Service;
 
@@ -13,4 +13,4 @@ pub struct LikeBlogParam {
     pub count: u32
 }
 
-pub trait LikeBlogService: Service<LikeBlogParam, Relation<Like, User, Blog>> {}
+pub trait LikeBlogService: Service<LikeBlogParam, LinkRelation<User, Like, Blog>> {}

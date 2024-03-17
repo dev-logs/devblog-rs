@@ -13,6 +13,6 @@ pub struct View {
 
 impl Into<RecordId> for View {
     fn into(self) -> RecordId {
-        ("view", Id::uuid()).into()
+        View { view_at: self.view_at }.into()
     }
 }

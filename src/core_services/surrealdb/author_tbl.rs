@@ -1,9 +1,19 @@
+use serde_derive::{Deserialize, Serialize};
 use surrealdb::opt::RecordId;
-use crate::core_services::surrealdb::adaptive_relation::AdaptiveRelation;
+use surrealdb_id::link::{Link};
 use crate::entities::author::Author;
 
-impl AdaptiveRelation<Author> {
-    pub fn new (email: &str) -> Self {
-        Self::Id(RecordId::from(("author", email)))
+pub trait NewAuthorId {
+   fn new(email: String) -> Link<Author>;
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct AuthorId {
+    pub email: String
+}
+
+impl From<AuthorId> for RecordId {
+    fn from(value: AuthorId) -> Self {
+        RecordId::from(("author", value.email.as_str()))
     }
 }

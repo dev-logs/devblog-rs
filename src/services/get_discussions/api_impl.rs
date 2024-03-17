@@ -1,7 +1,8 @@
 use serde_json::Value;
 use surreal_derive_plus::surreal_quote;
 use surrealdb::opt::RecordId;
-use crate::core_services::surrealdb::adaptive_relation::AdaptiveRelation;
+use surrealdb_id::link::Link;
+use crate::core_services::surrealdb::blog_tbl::BlogId;
 use crate::core_services::surrealdb::Db;
 use crate::entities::blog::Blog;
 use crate::entities::discussion::Discussion;
@@ -14,7 +15,7 @@ pub struct GetDiscussionsApiImpl {
 
 impl Service<Params, PageResponse<Discussion>> for GetDiscussionsApiImpl {
     async fn execute(self, params: Params) -> Resolve<PageResponse<Discussion>> {
-        let blog_relation = AdaptiveRelation::<Blog>::new(params.blog_title.as_str());
+        let blog_relation = Link::<Blog>::from(BlogId { title: params.blog_title.clone() });
         let blog_id: RecordId = blog_relation.id();
 
         let row_per_page = 10;

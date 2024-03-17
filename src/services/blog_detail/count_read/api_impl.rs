@@ -1,5 +1,5 @@
 use surreal_derive_plus::surreal_quote;
-use crate::core_services::surrealdb::adaptive_relation::AdaptiveRelation;
+use surrealdb_id::link::{Link, NewLink};
 use crate::core_services::surrealdb::Db;
 use crate::entities::blog::Blog;
 use crate::services::base::service::{Resolve, Service};
@@ -11,7 +11,7 @@ pub struct CountReadServiceApiImpl {
 
 impl Service<Params, usize> for CountReadServiceApiImpl {
     async fn execute(self, params: Params) -> Resolve<usize> {
-        let blog_relation = AdaptiveRelation::<Blog>::new(params.blog_title.as_str());
+        let blog_relation = Link::<Blog>::new(params.blog_title);
         let blog_id = blog_relation.id();
         let view_count: Option<usize>= self.db.query(surreal_quote!("COUNT(SELECT out FROM #val(&blog_id)<-view)")).await?.take(0)?;
 

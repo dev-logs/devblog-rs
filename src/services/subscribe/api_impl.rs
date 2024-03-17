@@ -1,6 +1,6 @@
 use surreal_derive_plus::surreal_quote;
 use surrealdb::opt::RecordId;
-use crate::core_services::surrealdb::adaptive_relation::AdaptiveRelation;
+use surrealdb_id::link::{Link, NewLink};
 use crate::core_services::surrealdb::Db;
 use crate::entities::errors::Errors;
 use crate::entities::user::User;
@@ -18,7 +18,7 @@ impl Service<Params, VoidResponse> for SubscribeServiceApiImpl {
                 self.db.query(surreal_quote!("SELECT * FROM user WHERE email=#val(&params.email)")).await?.take(0)?
             }
             Some(it) => {
-                let user_id: RecordId = AdaptiveRelation::<User>::new(it.as_str()).id().clone();
+                let user_id: RecordId = Link::<User>::new(it.clone()).id().clone();
                 let user: Option<User> = self.db.query(surreal_quote!("SELECT * FROM #val(&user_id)")).await?.take(0)?;
                 user
             }

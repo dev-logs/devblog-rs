@@ -1,6 +1,8 @@
 use leptos::logging::log;
 use surreal_derive_plus::surreal_quote;
+use surrealdb::opt::RecordId;
 use surrealdb::Response;
+use surrealdb::sql::Thing;
 use crate::core_services::surrealdb::Db;
 use crate::core_services::surrealdb::result_handler::UniformSurrealResult;
 use crate::entities::blog::Blog;
@@ -27,7 +29,7 @@ impl<T> Service<BlogPostMigrationParams, VoidResponse> for BlogPostMigrationServ
         let not_migrated_posts: Vec<&Blog> = all_posts
             .iter()
             .filter(|post|
-                migrated_posts.iter().find(|migrated_post| migrated_post.id.eq(&post.id)).is_none())
+                migrated_posts.iter().find(|migrated_post| Into::<RecordId>::into(migrated_post.clone()).eq(&Into::<RecordId>::into(post.clone()))).is_none())
             .collect();
 
        if not_migrated_posts.is_empty() {

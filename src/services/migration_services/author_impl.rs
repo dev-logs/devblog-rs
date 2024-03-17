@@ -1,5 +1,7 @@
+use std::ops::Deref;
 use leptos::logging::log;
 use surreal_derive_plus::surreal_quote;
+use surrealdb::opt::RecordId;
 use surrealdb::Response;
 use crate::core_services::surrealdb::Db;
 use crate::core_services::surrealdb::result_handler::UniformSurrealResult;
@@ -24,7 +26,7 @@ impl<T> Service<AuthorMigrationParams, VoidResponse> for AuthorMigrationServiceI
             .take::<Vec<Author>>(0)?;
 
         let not_migrated_authors: Vec<&Author> = all_authors.iter().filter(|author| {
-            migrated_authors.iter().find(|migrated_author| migrated_author.id.eq(&author.id)).is_none()
+            migrated_authors.iter().find(|migrated_author| Into::<RecordId>::into(migrated_author.clone()).eq(&Into::<RecordId>::into(author.clone()))).is_none()
         }).collect();
 
         if not_migrated_authors.is_empty() {
