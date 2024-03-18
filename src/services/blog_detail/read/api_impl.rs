@@ -3,6 +3,7 @@ use surreal_derive_plus::surreal_quote;
 use surrealdb::opt::Resource;
 use surrealdb_id::link::{Link, NewLink};
 use surrealdb_id::relation::{LinkRelation, Relation};
+use surrealdb_id::relation::r#trait::IntoRelation;
 use crate::core_services::surrealdb::Db;
 use crate::entities::blog::Blog;
 use crate::entities::errors::Errors;
@@ -32,7 +33,8 @@ impl Service<Params, VoidResponse> for MarkReadServiceApiImpl {
         let blog_relation = Link::<Blog>::new(params.blog_title);
         let blog_id = blog_relation.id();
         let view = View { view_at: Utc::now() };
-        let x: Option<LinkRelation<User, View, Blog>> = self.db.query(surreal_quote!("SELECT * FROM RELATE #id(&user) -> view -> #id(&blog_id) #set(&view)")).await?.take(0)?;
+        let relation = view.relate(user, blog_id);
+        let x: Option<LinkRelation<User, View, Blog>> = self.db.query(surreal_quote!("SELECT * FROM #relate(&relation)")).await?.take(0)?;
 
         Ok(())
     }

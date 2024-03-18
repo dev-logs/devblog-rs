@@ -18,7 +18,7 @@ pub struct BlogPostMigrationServiceImpl<T> where T: BlogProviderService {
 
 impl<T> Service<BlogPostMigrationParams, VoidResponse> for BlogPostMigrationServiceImpl<T> where T: BlogProviderService {
     async fn execute(self, _: BlogPostMigrationParams) -> Resolve<VoidResponse> {
-        let ns = format!("{}-blog-post-migraion-service", self.ns);
+        let ns = format!("{}-blog-post-migration-service", self.ns);
 
         let all_posts = self.post_provider.list();
         let migrated_posts: Vec<Blog> = self.db
@@ -29,7 +29,10 @@ impl<T> Service<BlogPostMigrationParams, VoidResponse> for BlogPostMigrationServ
         let not_migrated_posts: Vec<&Blog> = all_posts
             .iter()
             .filter(|post|
-                migrated_posts.iter().find(|migrated_post| Into::<RecordId>::into(migrated_post.clone()).eq(&Into::<RecordId>::into(post.clone()))).is_none())
+                migrated_posts.iter().find(|migrated_post| {
+                    Into::<RecordId>::into(migrated_post.clone())
+                        .eq(&post.clone().into())
+                }).is_none())
             .collect();
 
        if not_migrated_posts.is_empty() {

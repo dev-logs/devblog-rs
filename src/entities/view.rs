@@ -13,6 +13,6 @@ pub struct View {
 
 impl Into<RecordId> for View {
     fn into(self) -> RecordId {
-        View { view_at: self.view_at }.into()
+       RecordId::from(("view", Id::Number(self.view_at.timestamp_millis())))
     }
 }

@@ -1,5 +1,5 @@
 use leptos::*;
-use surrealdb_id::relation::{LinkRelation, Relation};
+use surrealdb_id::relation::LinkRelation;
 use crate::entities::blog::Blog;
 use crate::entities::like::Like;
 use crate::entities::user::User;

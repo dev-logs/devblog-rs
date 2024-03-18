@@ -29,7 +29,7 @@ impl Service<Params, VoidResponse> for SubscribeServiceApiImpl {
                 return Err(Errors::AlreadyExist("This email already exist".to_string()));
             }
 
-            let updatedUser: Option<User> = self.db.query(surreal_quote!("UPDATE #id(user.as_ref().unwrap()) SET email=#val(&params.email)")).await?.take(0)?;
+            let _: Option<User> = self.db.query(surreal_quote!("UPDATE #id(user.as_ref().unwrap()) SET email=#val(&params.email)")).await?.take(0)?;
             return Ok(());
         }
 

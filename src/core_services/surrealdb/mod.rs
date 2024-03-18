@@ -1,7 +1,6 @@
 use surrealdb::Surreal;
 use once_cell::sync::Lazy;
 use surrealdb::engine::remote::ws::Client;
-use surrealdb::opt::RecordId;
 
 #[cfg(feature = "ssr")]
 pub type Db = Surreal<Client>;

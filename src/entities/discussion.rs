@@ -2,7 +2,6 @@ use chrono::{DateTime, Utc};
 use serde_derive::{Deserialize, Serialize};
 #[cfg(feature = "ssr")]
 use surreal_derive_plus::SurrealDerive;
-use surrealdb::opt::RecordId;
 #[cfg(feature = "ssr")]
 use surrealdb::sql::Thing;
 use surrealdb_id::link::Link;
