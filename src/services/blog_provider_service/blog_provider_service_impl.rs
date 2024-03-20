@@ -26,9 +26,20 @@ impl<APS: AuthorProviderService> BlogProviderService for BlogProviderServiceImpl
         );
     }
 
+    fn flutter_and_backend_notification_management(&self) -> Blog {
+        return Blog::new(
+            "blogs/flutter-notification",
+            "Flutter and backend notification management",
+            "",
+            self.author_provider.tiendang(),
+            DateTime::default()
+        )
+    }
+
     fn list(&self) -> Vec<Blog> {
         vec![
-            self.deploy_flutter_web()
+            self.deploy_flutter_web(),
+            self.flutter_and_backend_notification_management()
         ]
     }
 }

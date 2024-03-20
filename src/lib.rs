@@ -6,6 +6,7 @@ pub mod entities;
 pub mod services;
 pub mod core_services;
 pub mod api;
+pub mod macros;
 
 use cfg_if::cfg_if;
 

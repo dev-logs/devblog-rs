@@ -35,7 +35,7 @@ impl<T> Service<BlogPostMigrationParams, VoidResponse> for BlogPostMigrationServ
                 }).is_none())
             .collect();
 
-       if not_migrated_posts.is_empty() {
+        if not_migrated_posts.is_empty() {
             log!("{ns} All blogs has been migrated successfully");
             return Ok(())
         }

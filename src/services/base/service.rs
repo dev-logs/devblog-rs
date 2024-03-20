@@ -2,6 +2,12 @@ use std::ops::Deref;
 use serde_derive::{Deserialize, Serialize};
 use crate::entities::errors::Errors;
 
+macro_rules! include_js {
+    ($($tt:tt)*) => {
+        stringify!($($tt)*)
+    };
+}
+
 pub type NoParam = ();
 
 pub type VoidResponse = ();

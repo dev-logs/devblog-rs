@@ -1,6 +1,8 @@
 use leptos::*;
+use leptos::logging::log;
 use web_sys::js_sys::eval;
 use crate::entities::blog::Blog;
+use crate::include_js;
 use crate::web::components::blogs::blog_header::BlogHeader;
 use crate::web::components::rive::thump_up::ThumbUpRive;
 use crate::web::discussion::Discussion;
@@ -52,71 +54,74 @@ fn TableOfContents(
     class: &'static str
 ) -> impl IntoView {
     create_effect(move |_| {
-        eval(r###"
-            const headers = document.querySelectorAll('.blog-header1, .blog-header2')
+        let x = include_js! {
+            const headers = document.querySelectorAll(".blog-header1, .blog-header2");
 
             const handleItemClick = () => (event) => {
-                const className = event.target.getAttribute('data-header-class')
-                const headerElement = document.querySelector(`.${className}`)
+                const className = event.target.getAttribute("data-header-class");
+                const headerElement = document.querySelector("." + className);
                 if (headerElement) {
-                    headerElement.scrollIntoView()
+                    headerElement.scrollIntoView();
                 }
-            }
+            };
 
             headers.forEach((header, index) => {
-                const listItem = document.createElement('button')
-                const isSub = header.className.includes('blog-header2')
+                const listItem = document.createElement("button");
+                const isSub = header.className.includes("blog-header2");
                 const tailwind = isSub
-                    ? 'text-sm button pl-4 text-gray-400 z-20'
-                    : 'text-sm text-gray-200 pl-2 z-20'
-                listItem.className = `list list-none text-start ${tailwind}` // tailwind styling
-                const uniqueClassName = `c-${index}`
-                header.className = `${header.className} ${uniqueClassName}`
-                const headerText = header.innerText
-                listItem.innerText = headerText
-                listItem.setAttribute('data-header-class', uniqueClassName)
-                listItem.addEventListener('click', handleItemClick())
-                const item = document.createElement('li')
-                item.className = `${uniqueClassName}-toc highlight-target z-10 w-fit py-1`
-                item.appendChild(listItem)
-                header.setAttribute('tocClass', `${uniqueClassName}-toc`)
-                document.querySelector('.table-of-contents').appendChild(item);
-            })
+                    ? "text-sm button pl-4 text-gray-400 z-20"
+                    : "text-sm text-gray-200 pl-2 z-20";
+                listItem.className = "list list-none text-start" + tailwind; // tailwind styling
+                const uniqueClassName = "c-" + index;
+                header.className = header.className + " " + uniqueClassName;
+                const headerText = header.innerText;
+                listItem.innerText = headerText;
+                listItem.setAttribute("data-header-class", uniqueClassName);
+                listItem.addEventListener("click", handleItemClick());
+                const item = document.createElement("li");
+                item.className = uniqueClassName + "-toc highlight-target z-10 w-fit py-1";
+                item.appendChild(listItem);
+                header.setAttribute("tocClass", uniqueClassName + "-toc");
+                document.querySelector(".table-of-contents").appendChild(item);
+            });
 
             const handleIntersection = (entries, observer) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        const element = document.querySelector(`.${entry.target.getAttribute('tocClass')}`)
-                        const bounding = element.getBoundingClientRect()
-                        const tableOfContents = document.querySelector('.table-of-contents').parentElement.parentElement
-                        const parentBounding = tableOfContents.getBoundingClientRect()
+                        const selector = "." + entry.target.getAttribute("tocClass");
+                        const element = document.querySelector(selector);
+                        const bounding = element.getBoundingClientRect();
+                        const tableOfContents = document.querySelector(".table-of-contents").parentElement.parentElement;
+                        const parentBounding = tableOfContents.getBoundingClientRect();
                         if (bounding.top > parentBounding.height || (element.offsetTop - tableOfContents.scrollTop) < 0) {
-                            tableOfContents.scrollTo({top: element.offsetTop})
+                            tableOfContents.scrollTo({top: element.offsetTop});
                         }
 
-                        const selectorElement = document.querySelector('.selector')
-                        const selectorInitialBound = selectorElement.savedBounding || selectorElement.getBoundingClientRect()
-                        selectorElement.savedBounding = selectorInitialBound
+                        const selectorElement = document.querySelector(".selector");
+                        const selectorInitialBound = selectorElement.savedBounding || selectorElement.getBoundingClientRect();
+                        selectorElement.savedBounding = selectorInitialBound;
 
                         gsap.to(selectorElement, {
                             y: element.offsetTop,
                             width: bounding.width + 20,
                             height: bounding.height,
                             duration:  0.1,
-                            ease: 'bounce.inOut'
-                        })
+                            ease: "bounce.inOut"
+                        });
                     }
-                })
-           }
+                });
+           };
 
             const observer = new IntersectionObserver(handleIntersection, {
                 root: null,
-                rootMargin: '0px 0px -80% 0px', // Adjust the top margin as needed
+                rootMargin: "0px 0px -80% 0px", // Adjust the top margin as needed
                 threshold: 0
             });
 
-            headers.forEach((item) => observer.observe(item))
-        "###)
+            headers.forEach((item) => observer.observe(item));
+        };
+
+        eval(x).expect("TODO: panic message");
     });
     view! {
         <div class=format!("relative p-2 {class}")>
