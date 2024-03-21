@@ -1269,6 +1269,7 @@ dependencies = [
  "leptos_router 0.5.7",
  "once_cell",
  "rand",
+ "regex",
  "reqwest",
  "ring 0.17.7",
  "serde",

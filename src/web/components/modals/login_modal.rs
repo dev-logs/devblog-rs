@@ -9,6 +9,7 @@ use crate::web::components::icons::github::Github;
 use crate::web::components::icons::google::Google;
 use crate::web::utils::form_data::FormDataWrapper;
 use crate::web::utils::toast::show_welcome_toast;
+use crate::include_js;
 
 #[component]
 pub fn login_modal(
@@ -48,11 +49,9 @@ pub fn login_modal(
     });
 
     create_effect(move |_| {
-        let animation = "{y: '70vh'}, {y: '0', duration: 2.5, ease: 'elastic.inOut(0.5,0.4)'}";
-
-        eval(format!(r#"
-            gsap.fromTo('.modal', {animation})
-        "#).as_str()).unwrap();
+        eval(include_js! {
+            gsap.fromTo(".modal", {y: "70vh"}, {y: "0", duration: 2.5, ease: "elastic.inOut(0.5,0.4)"})
+        }.as_str()).unwrap();
     });
 
     view ! {

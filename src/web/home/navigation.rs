@@ -2,6 +2,7 @@ use std::fmt::Debug;
 use leptos::*;
 use web_sys::js_sys::eval;
 use crate::core_services::web_di::*;
+use crate::include_js;
 use crate::services::author_provider_service::author_provider::AuthorProviderService;
 use crate::web::app_context::home_navigation_context::HomeNavigationSignalContext;
 use crate::web::components::author_avatar::AuthorAvatar;
@@ -70,22 +71,23 @@ pub fn HomeNavigation() -> impl IntoView {
     let authors_provider = provider.get_author_service();
 
     create_effect(move |_| {
-        let selected_item_selector = format!(".item-{:?}", selected_tab.get());
-        let animation = "{
-            y: y - initialHandRect.top,
-            duration: 0.1,
-            ease: 'bounce.inOut'
-        }";
+        // let selected_tab = selected_tab.get();
+        eval(include_js! {
+           // let selected_item_selector = b".item-${}", selected_tab.get());
+           let animation = {
+                y: y - initialHandRect.top,
+                duration: 0.1,
+                ease: "bounce.inOut"
+            };
 
-        eval(&*format!(r#"
-            const hand = document.querySelector('.selection-hand');
+            const hand = document.querySelector(".selection-hand");
             hand.initialRect = hand.initialRect || hand.getBoundingClientRect()
             const initialHandRect = hand.initialRect
-            const selectedElement = document.querySelector("{selected_item_selector}")
+            const selectedElement = document.querySelector("selected_item_selector")
             const rect = selectedElement.getBoundingClientRect()
             const y = rect.top + rect.height / 2 - initialHandRect.height / 2
-            gsap.to('.selection-hand', {animation})
-        "#)).unwrap();
+            gsap.to(".selection-hand", animation)
+        }.as_str()).unwrap();
     });
 
     view! {

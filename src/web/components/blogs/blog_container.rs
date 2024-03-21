@@ -54,12 +54,13 @@ fn TableOfContents(
     class: &'static str
 ) -> impl IntoView {
     create_effect(move |_| {
-        let x = include_js! {
+        eval(include_js! {
             const headers = document.querySelectorAll(".blog-header1, .blog-header2");
 
             const handleItemClick = () => (event) => {
                 const className = event.target.getAttribute("data-header-class");
-                const headerElement = document.querySelector("." + className);
+                console.log("tiendang-debug", className);
+                const headerElement = document.querySelector(b".${className}");
                 if (headerElement) {
                     headerElement.scrollIntoView();
                 }
@@ -71,24 +72,24 @@ fn TableOfContents(
                 const tailwind = isSub
                     ? "text-sm button pl-4 text-gray-400 z-20"
                     : "text-sm text-gray-200 pl-2 z-20";
-                listItem.className = "list list-none text-start" + tailwind; // tailwind styling
-                const uniqueClassName = "c-" + index;
-                header.className = header.className + " " + uniqueClassName;
+                listItem.className = b"list list-none text-start ${tailwind}"; // tailwind styling
+                const uniqueClassName = b"c-${index}";
+                header.classList.add(uniqueClassName);
                 const headerText = header.innerText;
                 listItem.innerText = headerText;
                 listItem.setAttribute("data-header-class", uniqueClassName);
                 listItem.addEventListener("click", handleItemClick());
                 const item = document.createElement("li");
-                item.className = uniqueClassName + "-toc highlight-target z-10 w-fit py-1";
+                item.className = b"${uniqueClassName}-toc highlight-target z-10 w-fit py-1";
                 item.appendChild(listItem);
-                header.setAttribute("tocClass", uniqueClassName + "-toc");
+                header.setAttribute("tocClass", b"${uniqueClassName}-toc");
                 document.querySelector(".table-of-contents").appendChild(item);
             });
 
             const handleIntersection = (entries, observer) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        const selector = "." + entry.target.getAttribute("tocClass");
+                        const selector = b".${entry.target.getAttribute('tocClass')}";
                         const element = document.querySelector(selector);
                         const bounding = element.getBoundingClientRect();
                         const tableOfContents = document.querySelector(".table-of-contents").parentElement.parentElement;
@@ -119,9 +120,7 @@ fn TableOfContents(
             });
 
             headers.forEach((item) => observer.observe(item));
-        };
-
-        eval(x).expect("TODO: panic message");
+        }.as_str());
     });
     view! {
         <div class=format!("relative p-2 {class}")>
