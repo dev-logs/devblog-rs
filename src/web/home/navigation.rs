@@ -1,8 +1,9 @@
+use std::collections::HashMap;
 use std::fmt::Debug;
 use leptos::*;
 use web_sys::js_sys::eval;
 use crate::core_services::web_di::*;
-use crate::include_js;
+use crate::{js_context, include_js};
 use crate::services::author_provider_service::author_provider::AuthorProviderService;
 use crate::web::app_context::home_navigation_context::HomeNavigationSignalContext;
 use crate::web::components::author_avatar::AuthorAvatar;
@@ -70,10 +71,11 @@ pub fn HomeNavigation() -> impl IntoView {
     let provider = WebInjector::service_injector();
     let authors_provider = provider.get_author_service();
 
+    let mut context = HashMap::<&str, String>::new();
+    context.insert("selectedTab", format!("{:?}", selected_tab.get_untracked()));
     create_effect(move |_| {
-        // let selected_tab = selected_tab.get();
-        eval(include_js! {
-           // let selected_item_selector = b".item-${}", selected_tab.get());
+        eval(js_context! ({
+           let selected_item_selector = b".item-${context.selected_tab}";
            let animation = {
                 y: y - initialHandRect.top,
                 duration: 0.1,
@@ -87,7 +89,7 @@ pub fn HomeNavigation() -> impl IntoView {
             const rect = selectedElement.getBoundingClientRect()
             const y = rect.top + rect.height / 2 - initialHandRect.height / 2
             gsap.to(".selection-hand", animation)
-        }.as_str()).unwrap();
+        }, context).as_str()).unwrap();
     });
 
     view! {

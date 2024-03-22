@@ -7,7 +7,7 @@ use crate::{include_js, js_context};
 pub fn show_toast(html: String) {
     let mut context = HashMap::<String, String>::new();
     context.insert("html".to_string(), html);
-    
+
     let script = js_context! ({
         const toastContainer = document.createElement("div");
         toastContainer.style.position = "fixed";

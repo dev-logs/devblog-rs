@@ -4,7 +4,7 @@ use serde_json::json;
 use wasm_bindgen::JsValue;
 use web_sys::js_sys::{eval};
 use crate::entities::blog::Blog;
-use crate::{include_js, js_context};
+use crate::{js_context};
 use crate::web::components::blogs::blog_header::BlogHeader;
 use crate::web::components::rive::thump_up::ThumbUpRive;
 use crate::web::discussion::Discussion;

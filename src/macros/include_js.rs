@@ -15,7 +15,11 @@ macro_rules! include_js {
 
 #[macro_export]
 macro_rules! js_context {
-    ($js:tt, $json:tt) => {{
-        format!("((context) => {{{}}})({})", include_js!($js), json!($json))
-    }};
+    ($js:tt, $json:tt) => {
+        {
+            use serde_json::json;
+            use crate::include_js;
+            format!("((context) => {{{}}})({})", include_js!($js), json!($json))
+        }
+    };
 }
