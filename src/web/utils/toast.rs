@@ -1,45 +1,50 @@
+use std::collections::HashMap;
 use leptos::leptos_dom::log;
+use serde_json::json;
 use web_sys::js_sys::eval;
+use crate::{include_js, js_context};
 
 pub fn show_toast(html: String) {
-    let script = format!(r#"
-        const toastContainer = document.createElement('div');
-        toastContainer.style.position = "fixed"
-        toastContainer.style.top = "0px"
-        toastContainer.style.zIndex = "100"
-        toastContainer.style.right = "0px"
-        toastContainer.className = 'toast-container'
-        document.body.appendChild(toastContainer)
+    let mut context = HashMap::<String, String>::new();
+    context.insert("html".to_string(), html);
+    
+    let script = js_context! ({
+        const toastContainer = document.createElement("div");
+        toastContainer.style.position = "fixed";
+        toastContainer.style.top = "0px";
+        toastContainer.style.zIndex = "100";
+        toastContainer.style.right = "0px";
+        toastContainer.className = "toast-container";
+        document.body.appendChild(toastContainer);
 
-        toastContainer.innerHTML = `{html}`;
-        gsap.set(toastContainer, {{x: '100%', y: '20px', opacity: 0}});
-        gsap.to(toastContainer, {{x: '0%', opacity: 1, duration: 0.5, ease: 'power2.out'}});
+        toastContainer.innerHTML = b"${context.html}";
+        gsap.set(toastContainer, {x: "100%", y: "20px", opacity: 0});
+        gsap.to(toastContainer, {x: "0%", opacity: 1, duration: 0.5, ease: "power2.out"});
 
-        setTimeout(() => {{
+        setTimeout(() => {
             gsap.to(
                 toastContainer,
-                {{
-                    x: '100%',
+                {
+                    x: "100%",
                     opacity: 0,
                     duration: 0.5,
-                    ease: 'power2.in',
-                    onComplete: () => {{
+                    ease: "power2.in",
+                    onComplete: () => {
                         toastContainer.remove();
-                    }}
-                }}
+                    }
+                }
             )
-        }}, 3000);
-    "#);
+        }, 3000);
+    }, context);
 
-    log!("Executing script {script}");
-    eval(script.as_str()).expect("TODO: panic message");
+    eval(script.as_str()).unwrap();
 }
 
 pub fn show_welcome_toast(display_name: &str) {
     // HTML content
     let html_content = format!(r###"
         <div id='toast-message-cta' class='w-full max-w-xs p-4 text-gray-500 bg-white rounded-lg shadow dark:bg-gray-800 dark:text-gray-400' role='alert'>
-            <div class="flex'>
+            <div class='flex'>
                 <img class='w-8 h-8 rounded-full' src='/assets/images/ic_devlog_transparent.png' alt='logo'/>
                 <div class='ms-3 text-sm font-normal'>
                     <span class='mb-1 text-sm font-semibold text-gray-900 dark:text-gray-200'>devlog.studio</span>

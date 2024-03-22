@@ -1,8 +1,10 @@
 use leptos::*;
 use leptos::logging::log;
-use web_sys::js_sys::eval;
+use serde_json::json;
+use wasm_bindgen::JsValue;
+use web_sys::js_sys::{eval};
 use crate::entities::blog::Blog;
-use crate::include_js;
+use crate::{include_js, js_context};
 use crate::web::components::blogs::blog_header::BlogHeader;
 use crate::web::components::rive::thump_up::ThumbUpRive;
 use crate::web::discussion::Discussion;
@@ -54,12 +56,11 @@ fn TableOfContents(
     class: &'static str
 ) -> impl IntoView {
     create_effect(move |_| {
-        eval(include_js! {
+        let script = js_context!({
             const headers = document.querySelectorAll(".blog-header1, .blog-header2");
 
             const handleItemClick = () => (event) => {
                 const className = event.target.getAttribute("data-header-class");
-                console.log("tiendang-debug", className);
                 const headerElement = document.querySelector(b".${className}");
                 if (headerElement) {
                     headerElement.scrollIntoView();
@@ -120,7 +121,9 @@ fn TableOfContents(
             });
 
             headers.forEach((item) => observer.observe(item));
-        }.as_str());
+        }, {"t": "i"});
+
+        eval(script.as_str());
     });
     view! {
         <div class=format!("relative p-2 {class}")>
