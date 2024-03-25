@@ -169,7 +169,7 @@ api {
                     </li>
                 </ul>
             <BlogBody>Copy and paste this into your Dockerfile</BlogBody>
-            <CodeBlock language="Dockerfile" code=r#"
+            <CodeBlock language="Dockerfile" code=r##"
 FROM ubuntu:16.04 as builder
 USER root
 # Install Flutter build-time dependencies
@@ -209,7 +209,7 @@ COPY --from=builder /src/build/web .
 COPY nginx.conf /etc/nginx/sites-available/default
 RUN service nginx stop
 ENTRYPOINT ["/bin/bash", "-c", "echo 'Start nginx...'; nginx -g 'daemon off;'"]
-"#/>
+"##/>
             <BlogHeader2>
                 3 - Test on your local machine
             </BlogHeader2>
