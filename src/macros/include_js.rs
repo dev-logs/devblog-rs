@@ -24,6 +24,7 @@ macro_rules! include_js {
 /// - ! Can not use backtick (`), replace any backtick block (``) with (b"").
 /// - ! When use string literal, the code inside block ${} can not contain double quote "".
 /// - ! JS code might be not parsed correctly.
+///
 /// 3. Example:
 /// ```rust
 /// use web_sys::js_sys::eval;

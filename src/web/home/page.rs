@@ -1,5 +1,6 @@
 use leptos::*;
 use crate::core_services::web_di::*;
+use crate::js_context;
 use crate::services::blog_provider_service::blog_provider_service::BlogProviderService;
 use crate::web::app_context::home_navigation_context::HomeNavigationSignalContext;
 use crate::web::blogs::deploy_flutter_web::item::DeployFlutterWebBlogItem;
@@ -22,8 +23,9 @@ fn Content() -> impl IntoView {
     let ContentView = move || match home_navigation_context.signal.read().get() {
         HomeNavigationTab::Blog => {
             view! {
-                <div>
-                    <BlogList/>
+                <div class="w-full h-full">
+                    <react-root class="w-full h-full">
+                    </react-root>
                 </div>
             }
         }

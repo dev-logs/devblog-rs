@@ -41,16 +41,15 @@ impl<T> Service<BlogPostMigrationParams, VoidResponse> for BlogPostMigrationServ
         }
 
         log!( "{ns} Migrating blog post into db {:?}", not_migrated_posts);
-        let mut migrated_response: Response = self.db
-            .query(surreal_quote!("CREATE #multi(&not_migrated_posts)"))
-            .await?;
+        for post in not_migrated_posts {
+            let migrated_response: Response = self.db
+                .query(surreal_quote!("CREATE #record(&post)"))
+                .await?;
 
-        let result_handler = UniformSurrealResult::<Blog>::try_from(&mut migrated_response)?;
-        let complete_migrated_posts = result_handler.0;
+            log!( "{ns} Migrated posts: {:?}", &migrated_response);
+        }
 
-        log!( "{ns} Migrated posts: {:?}", &complete_migrated_posts);
-
-        Ok(())
+       Ok(())
     }
 }
 

@@ -74,6 +74,9 @@ pub fn HomeNavigation() -> impl IntoView {
     let mut context = HashMap::<&str, String>::new();
     context.insert("selectedTab", format!("{:?}", selected_tab.get_untracked()));
     create_effect(move |_| {
+    });
+
+    create_effect(move |_| {
         eval(js_context! ({
            let selected_item_selector = b".item-${context.selected_tab}";
            let animation = {

@@ -20,7 +20,12 @@ impl Service<Params, PageResponse<Discussion>> for GetDiscussionsApiImpl {
 
         let row_per_page = 10;
         let total_page_query: Option<Value> = self.db.query(surreal_quote!("SELECT count(), out FROM #val(&blog_id)<-discuss group by out")).await?.take(0)?;
-        let total_items = total_page_query.unwrap().as_object().unwrap().get("count").unwrap().as_i64().unwrap() as i32;
+
+        let total_items = match total_page_query {
+            Some(data) => data.as_object().unwrap().get("count").unwrap().as_i64().unwrap() as i32,
+            None => 0
+        };
+
         let total_page: f64 = total_items as f64 / row_per_page as f64;
         let total_page = total_page.ceil() as i32;
         let start_index = row_per_page * (params.paging.page - 1);

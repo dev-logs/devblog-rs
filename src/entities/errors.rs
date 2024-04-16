@@ -1,3 +1,4 @@
+use std::str::FromStr;
 use leptos::{ServerFnError};
 use serde_derive::{Deserialize, Serialize};
 use surrealdb::Error;
@@ -6,9 +7,9 @@ use wasm_bindgen::JsValue;
 
 #[derive(Error, Debug, Serialize, Deserialize, Clone)]
 pub enum Errors {
-    #[error("You are not authorized to access/perform this resource/action")]
-    UnAuthorization,
-    #[error("500 {}", .0)]
+    #[error("You are not authorized to access/perform this resource/action {}", .0)]
+    UnAuthorization(String),
+    #[error("403 {}", .0)]
     InternalServerError(String),
     #[error("405 {}", .0)]
     AlreadyExist(String),
@@ -42,7 +43,19 @@ impl From<ServerFnError> for Errors {
     fn from(value: ServerFnError) -> Self {
         match value {
             ServerFnError::ServerError(body) => {
-                Errors::InternalServerError(body)
+                let result = Self::from_str(body.as_str()).unwrap();
+                result
+            },
+            _ => Self::InternalServerError(String::from(""))
+        }
+    }
+}
+
+impl From<&ServerFnError> for Errors {
+    fn from(value: &ServerFnError) -> Self {
+        match value {
+            ServerFnError::ServerError(body) => {
+                Self::from_str(body.as_str()).unwrap_or(Self::InternalServerError(body.clone()))
             },
             _ => Self::InternalServerError(String::from(""))
         }

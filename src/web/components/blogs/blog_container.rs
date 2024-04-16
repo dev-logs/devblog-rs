@@ -41,7 +41,6 @@ pub fn BlogContainer<E, F>(
                 <script src="https://unpkg.com/prismjs@1.29.0/components/prism-core.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	            <script src="https://unpkg.com/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-                <script src="/assets/js/rive/index.js"></script>
             </div>
             <div class="fixed bottom-0 w-full h-14 sm:collapse border-t border-gray-900">
                <ThumbUpRive blog={blog.clone()} class="" is_mobile=true/>

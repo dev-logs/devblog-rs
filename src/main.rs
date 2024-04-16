@@ -1,4 +1,5 @@
 use leptos::logging::log;
+use web_sys::HtmlElement;
 use devblog_rs::services::base::service::Resolve;
 use devblog_rs::services::base::service::Service;
 #[cfg(feature = "ssr")]

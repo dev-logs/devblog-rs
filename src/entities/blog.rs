@@ -26,7 +26,6 @@ impl Blog {
         author: Author,
         created_at: DateTime<Utc>
     ) -> Self {
-
         Self {
             url: url.to_string(),
             title: title.to_string(),

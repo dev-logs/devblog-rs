@@ -26,10 +26,7 @@ impl<T> Service<AuthorMigrationParams, VoidResponse> for AuthorMigrationServiceI
             .take::<Vec<Author>>(0)?;
 
         let not_migrated_authors: Vec<&Author> = all_authors.iter().filter(|author| {
-            migrated_authors.iter().find(|migrated_author| {
-                Into::<RecordId>::into(migrated_author.clone())
-                    .eq(&author.clone().into())
-            }).is_none()
+            migrated_authors.iter().any(|migrated_author| migrated_author.ne(*author))
         }).collect();
 
         if not_migrated_authors.is_empty() {

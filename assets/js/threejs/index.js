@@ -74,15 +74,6 @@ class StarSky3d extends HTMLElement {
 
     render() {
         if (this._canceled) {
-            this._canceled = false
-            return
-        }
-
-        const positions = this._starGeo.attributes.position.array
-
-        for (let i = 0; i < this._geoStars.length; i++) {
-            const zIndex = i * 3 + 2
-            this._geoStars[i].velocity += this._geoStars[i].acceleration
             positions[zIndex] += this._geoStars[i].velocity
             if (positions[zIndex] > 300) {
                 positions[zIndex] = -300

@@ -22,6 +22,9 @@ if #[cfg(feature = "hydrate")] {
 
       console_error_panic_hook::set_once();
 
+      mount_to(leptos::document().head().take().unwrap().into(), move || view! {
+        <script type="module" src="/assets/js/react/index.js"/>
+      });
       mount_to_body(App);
     }
 }

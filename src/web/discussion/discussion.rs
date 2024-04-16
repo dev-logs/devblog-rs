@@ -3,6 +3,7 @@ use leptos::*;
 use crate::core_services::date_time::display_local_time;
 use crate::entities::discussion::{Discussion};
 use crate::entities::user::User;
+use crate::js_context;
 
 #[component]
 pub fn UserDiscussion(
@@ -12,7 +13,7 @@ pub fn UserDiscussion(
 
     view! {
         <div class="flex flex-col">
-            <Header user={(*discussion.owner.clone()).clone()} datetime={discussion.created_at.clone()}/>
+            <Header user={(*discussion.owner).clone()} datetime={discussion.created_at.clone()}/>
             <p class="text-gray-500 dark:text-gray-400">{discussion.content}</p>
         </div>
     }
@@ -23,6 +24,12 @@ fn Header(
     user: User,
     datetime: DateTime<Utc>
 ) -> impl IntoView {
+    let js_code = js_context! ({
+        import THREE from "three"
+        const mesh = new THREE.BasicMesh(geometry, material);
+        mesh.position
+    }, {});
+
     view! {
         <div class="flex items-center">
             <p class="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-gray-200 font-semibold">

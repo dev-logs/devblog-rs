@@ -13,6 +13,19 @@ pub struct Author {
     pub display_name: Option<String>
 }
 
+impl PartialEq for Author {
+    fn eq(&self, other: &Self) -> bool {
+        let other_id: RecordId = AuthorId { email: other.email.to_string() }.into();
+        let my_id: RecordId = AuthorId { email: self.email.to_string() }.into();
+
+        my_id == other_id
+    }
+
+    fn ne(&self, other: &Self) -> bool {
+        !other.eq(self)
+    }
+}
+
 impl Into<RecordId> for Author {
     fn into(self) -> RecordId {
         AuthorId { email: self.email.clone() }.into()

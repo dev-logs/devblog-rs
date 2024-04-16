@@ -39,7 +39,7 @@ impl<T> Service<Params, Discussion> for CreateDiscussionApiImpl<T> where T: Crea
         let user: Option<User> = self.db.query(surreal_quote!("SELECT * from #val(&user_id)")).await?.take(0)?;
 
         if user.is_none() {
-            return Err(Errors::NotFound(format!("User with display name: {}", params.display_name)));
+            return Err(Errors::UnAuthorization(format!("User with display name: {}", params.display_name)));
         }
 
         let blog_id = BlogId { title: params.blog_title };
