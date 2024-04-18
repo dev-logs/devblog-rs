@@ -1,53 +1,77 @@
 import ReactDOM from 'react-dom'
-import React, {useRef, useState} from 'react'
-import {Canvas, useFrame, extend, useThree} from '@react-three/fiber'
+import {useRef, Suspense} from 'react'
+import * as React from 'react'
+import {Canvas, useFrame, useThree, useLoader} from '@react-three/fiber'
 import htm from 'htm'
-import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js'
 import * as THREE from "three"
+import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js'
+import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
+import {OrbitControls, PivotControls, Html} from '@react-three/drei'
+import {Hamburger} from './hamburger.js'
 
 const html = htm.bind(React.createElement)
-extend({OrbitControls})
 /**
  * The simple client side rendering to perform
  * react three fiber.
  * Currently, this is the only way to use React Three Fiber on Leptos
  */
-const TestMesh = () => {
+
+const Helmet = () => {
+    const model = useLoader(
+        GLTFLoader,
+        '/assets/models/FlightHelmet/glTF/FlightHelmet.gltf',
+        (loader) =>
+        {
+            const dracoLoader = new DRACOLoader()
+            dracoLoader.setDecoderPath('/assets/models/draco/')
+            loader.setDRACOLoader(dracoLoader)
+        }
+    )
+
+    return html`
+        <primitive object=${model.scene}/>
+    `
+}
+
+const TestMesh = React.forwardRef(() => {
     const sphereRef = useRef()
     const boxRef = useRef()
     const groupRef = useRef()
-    useFrame(({clock}) => {
-        if (!boxRef.current || !groupRef.current) return
-        const elapsed = clock.elapsedTime
-        boxRef.current.rotation.y = elapsed * 0.5
-        groupRef.current.rotation.y = elapsed * 0.1
-    })
+    const translateRef = useRef()
 
-    return html`
+    const three = useThree()
+    console.log(three)
+   return html`
         <group ref=${groupRef}>
-            <mesh ref=${boxRef} position-x=${-2} scale="1">
-                <boxGeometry/>
-                <meshBasicMaterial color="orange"/>
-            </mesh>
+            <directionalLight intensity=${3}/>
+            <${OrbitControls} makeDefault enableDamping=${true}/>
+            <${PivotControls} anchor=${[0, 0, 0]} depthTest=${false}>
+                <mesh position-x=${-2} scale="1">
+                    <boxGeometry/>
+                    <meshBasicMaterial color="orange"/>
+                </mesh>
+            </PivotControls>  
             <mesh ref=${sphereRef} position-x=${2} scale="1">
                 <sphereGeometry/>
                 <meshBasicMaterial color="mediumpurple"/>
             </mesh>
             <mesh position-y=${-1} rotation-x=${Math.PI * -0.4}>
                 <planeGeometry args=${[6, 4]}/>
-                    <meshBasicMaterial color="greenyellow" side=${THREE.DoubleSide}/>
+                <meshBasicMaterial color="greenyellow" side=${THREE.DoubleSide}/>
             </mesh>
-            </groupi>
+            <${Suspense}>
+                <${Hamburger} scale=${0.3}/>
+            </Suspense>    
+        </groupi>
     `
-}
+})
 
 const MainComponent = () => {
-    const {camera, gl} = useThree()
-
     return html`
         <AxesHelper args=${[10]}/>
-        <orbitControls args=${[camera, gl.domElement]}/>
-        <${TestMesh}/>
+        <${Suspense}>
+            <${TestMesh}/>
+        </Suspense>
     `
 }
 
@@ -60,16 +84,12 @@ class ReactThreeFiber extends HTMLElement {
         this[name] = newValue
     }
 
-    disconnectedCallback() {
-    }
-
     connectedCallback() {
         this.render()
     }
 
     render() {
         const shadowRoot = this.attachShadow({mode: 'open'})
-
         ReactDOM.render(html`
             <${Canvas}
             width="${this.width}"

@@ -3,6 +3,7 @@ use leptos::leptos_dom::log;
 use leptos_meta::*;
 use leptos_router::*;
 use serde_json::json;
+use crate::read_json;
 use crate::web::app_context::home_navigation_context::HomeNavigationSignalContext;
 use crate::web::app_context::signal_context::{AppContextProvider};
 use crate::web::blogs::deploy_flutter_web::page::DeployFlutterWebPage;
@@ -14,16 +15,18 @@ use crate::web::header::main_header::MainHeader;
 pub fn App() -> impl IntoView {
     provide_meta_context();
     HomeNavigationSignalContext::new().attach();
-    let import_map = json! ({
-        "imports": {
-            "three": "https://unpkg.com/three@0.162.0/build/three.module.js",
-            "three/": "https://unpkg.com/three@0.162.0/",
-            "@react-three/fiber": "https://esm.sh/@react-three/fiber",
-            "htm": "https://esm.sh/htm",
-            "react": "https://esm.sh/react",
-            "react-dom": "https://esm.sh/react-dom"
-        }
-    }).to_string();
+    let import_map = include_str!("../assets/js/react/deno.json");
+    // let import_map = json! ({
+    //     "imports": {
+    //         "three": "https://esm.sh/three@0.162.0",
+    //         "three/": "https://esm.sh/three@0.162.0/",
+    //         "@react-three/fiber": "https://esm.sh/@react-three/fiber@8.15.11?deps=three@0.162.0",
+    //         "@react-three/drei": "https://esm.sh/@react-three/drei@9.105.4?deps=@react-three/fiber@8.15.11&deps=react@18.2.0",
+    //         "htm": "https://esm.sh/htm",
+    //         "react": "https://esm.sh/react@18.2.0?deps=react-dom@18.2.0",
+    //         "react-dom": "https://esm.sh/react-dom?deps=react@18.2.0"
+    //     }
+    // }).to_string();
 
     view! {
         <Stylesheet id="leptos" href="/pkg/leptos_start.css"/>

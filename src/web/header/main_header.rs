@@ -22,7 +22,6 @@ pub fn MainHeader(
                 <NavigationItem tab={HomeNavigationTab::Blog}/>
                 <NavigationItem tab={HomeNavigationTab::Products}/>
             </div>
-            <script type="module" src="/assets/js/threejs/index.js"></script>
         </nav>
     }
 }
