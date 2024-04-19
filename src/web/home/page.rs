@@ -24,8 +24,7 @@ fn Content() -> impl IntoView {
         HomeNavigationTab::Blog => {
             view! {
                 <div class="w-full h-full">
-                    <react-root class="w-full h-full">
-                    </react-root>
+                    <r3f-header-1/>
                 </div>
             }
         }

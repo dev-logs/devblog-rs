@@ -33,7 +33,7 @@ pub fn NavigationItem(
             let mut context = navigation_context.clone();
             view! {
                 <div class="flex flex-row items-center w-full justify-between p-3">
-                    <button class=format!("font-main text-md item-{:?}", tab) on:click=move |_| {context.set_tab(HomeNavigationTab::Blog)}>Blogs</button>
+                    <button class=format!("font-main.jsx text-md item-{:?}", tab) on:click=move |_| {context.set_tab(HomeNavigationTab::Blog)}>Blogs</button>
                 </div>
             }
         }
@@ -41,7 +41,7 @@ pub fn NavigationItem(
             let mut context = navigation_context.clone();
             view! {
                 <div class="flex flex-row items-center w-full justify-between p-3">
-                    <button class=format!("font-main text-md item-{:?}", tab) on:click=move |_| {context.set_tab(HomeNavigationTab::Products)}>Products</button>
+                    <button class=format!("font-main.jsx text-md item-{:?}", tab) on:click=move |_| {context.set_tab(HomeNavigationTab::Products)}>Products</button>
                 </div>
             }
         }

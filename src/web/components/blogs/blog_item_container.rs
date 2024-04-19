@@ -48,7 +48,7 @@ pub fn BlogItemContainer(
                 <BlogItemDescription class="mt-8">{description}</BlogItemDescription>
                 <div class="flex flex-row justify-between mt-4">
                     <div>
-                        <p class="font-main text-md">{move || {min_read_action.value().get().unwrap_or(0)}} mins read</p>
+                        <p class="font-main.jsx text-md">{move || {min_read_action.value().get().unwrap_or(0)}} mins read</p>
                     </div>
                     <ReadMoreButton onclick=on_item_clicked class="right-4 top-2">Read more</ReadMoreButton>
                 </div>

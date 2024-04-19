@@ -8,7 +8,7 @@ pub fn BlogDescription(
 ) -> impl IntoView {
     view! {
         <div>
-            <p class={format!("text-gray-400 font-light font-main text-xl {}", class)}>{children()}</p>
+            <p class={format!("text-gray-400 font-light font-main.jsx text-xl {}", class)}>{children()}</p>
         </div>
     }
 }

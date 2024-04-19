@@ -139,10 +139,10 @@ pub fn ThumbUpRive(
         <div class=format!("grid grid-rows-10 mx-5 h-80 h-72 mt-10 rounded-xl max-w-64 {class}")>
             <div class="row-span-6 flex-col justify-between flex p-2 pl-5">
                 <div>
-                   <p class="font-main-bold text-3xl">{blog.title.clone()}</p>
+                   <p class="font-main.jsx-bold text-3xl">{blog.title.clone()}</p>
                 </div>
-                <p class="font-main text-md mt-2">{author_name}</p>
-                <p class="font-main text-gray-600 mb-2 text-sm">{move || {format!("{} minutes", min_read_action.value().get().as_ref().map(|it| it.to_string()).unwrap_or("...".to_owned()))}}</p>
+                <p class="font-main.jsx text-md mt-2">{author_name}</p>
+                <p class="font-main.jsx text-gray-600 mb-2 text-sm">{move || {format!("{} minutes", min_read_action.value().get().as_ref().map(|it| it.to_string()).unwrap_or("...".to_owned()))}}</p>
             </div>
             <div class="flex flex-row row-span-2">
                 <rive-thumb-up id="riveThumbUpLike" class="block w-full h-full" on:LikeEvent=on_like on:LikeConfirmEvent=on_like_confirm likeCount=10></rive-thumb-up>

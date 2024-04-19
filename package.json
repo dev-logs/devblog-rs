@@ -14,7 +14,11 @@
   "scripts": {
     "leptos": "RUSTFLAGS=\"-Z threads=8\" cargo leptos",
     "web": "nodemon --exec \"yarn leptos serve\" --ext not-exist",
+    "3d": "nodemon --exec \"yarn --cwd 3d build\" --watch ./3d/src",
     "test": "nodemon --exec \"reset; RUSTFLAGS=\\\"-Z threads=8\\\" cargo check --package=devblog-rs --no-default-features --features=ssr\" --watch src --ext rs",
-    "style": "tailwindcss -i ./global.scss -o style/main.css --watch"
+    "style": "tailwindcss -i ./global.scss -o style/main.css --watch",
+    "esm:add": "cd ./assets/js/react; deno task esm:add",
+    "esm:update": "cd ./assets/js/react; deno task esm:update",
+    "esm:remove": "cd ./assets/js/react; deno task esm:remove"
   }
 }

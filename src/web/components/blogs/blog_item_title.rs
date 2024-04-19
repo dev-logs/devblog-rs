@@ -7,7 +7,7 @@ pub fn BlogItemTitle(
     children: Children,
 ) -> impl IntoView {
     view! {
-        <p class={format!("text-2xl font-main-bold {}", class)}>
+        <p class={format!("text-2xl font-main.jsx-bold {}", class)}>
             {children()}
         </p>
     }

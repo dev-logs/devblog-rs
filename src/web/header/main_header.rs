@@ -15,7 +15,7 @@ pub fn MainHeader(
             <a href="/" class="flex flex-row items-center justify-center">
                 <img class="w-10 rounded" src="/assets/images/ic_devlog.png"/>
                 <div class="flex flex-col">
-                    <p class="font-main-bold ml-2 text-lg text-blue-600">Devlog Studio</p>
+                    <p class="font-main.jsx-bold ml-2 text-lg text-blue-600">Devlog Studio</p>
                 </div>
             </a>
             <div class="menu flex flex-row h-20 justify-center items-center">

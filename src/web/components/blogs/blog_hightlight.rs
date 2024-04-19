@@ -17,9 +17,9 @@ pub fn BlogHighLight(
     view! {
         <b class={
             format!(
-                "{} {} {} {} {} {} p-1 font-main",
+                "{} {} {} {} {} {} p-1 font-main.jsx",
                 if rounded { "rounded-lg p-2 ml-1" } else { "" },
-                if bold { "font-main-bold" } else { "" },
+                if bold { "font-main.jsx-bold" } else { "" },
                 if italic { "italic" } else { "" },
                 if bold { "text-gray-200" } else { "" },
                 if background { "bg-blue-800" } else { "" },

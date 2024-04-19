@@ -34,6 +34,8 @@ async fn main() -> std::io::Result<()> {
             .service(Files::new("/pkg", format!("{site_root}/pkg")))
             // serve other assets from the `assets` directory
             .service(Files::new("/assets", site_root))
+            // serve source code of 3d project under buildDir 3d/dist
+            .service(Files::new("/assets-3d", format!("{site_root}/3d-dist")))
             // serve the favicon from /favicon.ico
             .service(favicon)
             .leptos_routes(leptos_options.to_owned(), routes.to_owned(), App)
@@ -74,7 +76,7 @@ async fn favicon(
 
 #[cfg(not(any(feature = "ssr", feature = "csr")))]
 pub fn main() {
-    // no client-side main function
+    // no client-side main.jsx function
     // unless we want this to work with e.g., Trunk for pure client-side testing
     // see lib.rs for hydration function instead
     // see optional feature `csr` instead
@@ -82,7 +84,7 @@ pub fn main() {
 
 #[cfg(all(not(feature = "ssr"), feature = "csr"))]
 pub fn main() {
-    // a client-side main function is required for using `trunk serve`
+    // a client-side main.jsx function is required for using `trunk serve`
     // prefer using `cargo leptos serve` instead
     // to run: `trunk serve --open --features csr`
     use leptos::*;

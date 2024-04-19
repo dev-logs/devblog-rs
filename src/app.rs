@@ -2,7 +2,9 @@ use leptos::*;
 use leptos::leptos_dom::log;
 use leptos_meta::*;
 use leptos_router::*;
+use serde_derive::{Deserialize, Serialize};
 use serde_json::json;
+use surrealdb::sql::json;
 use crate::read_json;
 use crate::web::app_context::home_navigation_context::HomeNavigationSignalContext;
 use crate::web::app_context::signal_context::{AppContextProvider};
@@ -11,29 +13,22 @@ use crate::web::footer::main_footer::MainFooter;
 use crate::web::home::page::Home;
 use crate::web::header::main_header::MainHeader;
 
+#[derive(Serialize, Deserialize, Debug)]
+struct ViteBuildReport {
+   js_file: String
+}
+
 #[component]
 pub fn App() -> impl IntoView {
     provide_meta_context();
     HomeNavigationSignalContext::new().attach();
-    let import_map = include_str!("../assets/js/react/deno.json");
-    // let import_map = json! ({
-    //     "imports": {
-    //         "three": "https://esm.sh/three@0.162.0",
-    //         "three/": "https://esm.sh/three@0.162.0/",
-    //         "@react-three/fiber": "https://esm.sh/@react-three/fiber@8.15.11?deps=three@0.162.0",
-    //         "@react-three/drei": "https://esm.sh/@react-three/drei@9.105.4?deps=@react-three/fiber@8.15.11&deps=react@18.2.0",
-    //         "htm": "https://esm.sh/htm",
-    //         "react": "https://esm.sh/react@18.2.0?deps=react-dom@18.2.0",
-    //         "react-dom": "https://esm.sh/react-dom?deps=react@18.2.0"
-    //     }
-    // }).to_string();
+    let report_file = include_str!("../3d/build-report.json");
+    let build_report: ViteBuildReport = serde_json::from_str(report_file).expect("Failed to read vite build result");
+    log!("Vite build info {:?}", build_report);
 
     view! {
         <Stylesheet id="leptos" href="/pkg/leptos_start.css"/>
         <Title text="Welcome to Leptos"/>
-        <Script type_="importmap">
-            {import_map}
-        </Script>
         <MainHeader/>
         <Router>
             <main>
@@ -42,7 +37,7 @@ pub fn App() -> impl IntoView {
                     <Route path="/blogs/deploy-flutter-web" view=DeployFlutterWebPage/>
                     <Route path="/*any" view=NotFound/>
                 </Routes>
-                <script type="module" src="/assets/js/react/index.js"></script>
+                <script type="module" src={build_report.js_file}></script>
             </main>
         </Router>
         <MainFooter/>

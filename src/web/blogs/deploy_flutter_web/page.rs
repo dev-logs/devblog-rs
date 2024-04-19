@@ -36,7 +36,7 @@ pub fn DeployFlutterWebPage() -> impl IntoView {
     let blog = blog_context.get_selected_blog().clone();
 
     view! {
-        <BlogContainer class="flex flex-col pt-10 py-10 font-main" blog={blog.clone()} header={move || view! {<Header blog={blog.clone()}/>}}>
+        <BlogContainer class="flex flex-col pt-10 py-10 font-main.jsx" blog={blog.clone()} header={move || view! {<Header blog={blog.clone()}/>}}>
             <BlogHeader>Introduction</BlogHeader>
             <BlogBody>
                 <BlogLink href="https://flutter.dev/multi-platform/web">Flutter Web</BlogLink> brings the power of Flutter declarative approach to web development, enabling developers to construct high-quality.
@@ -80,19 +80,19 @@ pub fn DeployFlutterWebPage() -> impl IntoView {
                 Here is my configurations:
                 <ul class="list-none text-lg list-outside text-gray-200 rounded-xl border-2 border-cyan-900 p-2">
                     <li>
-                        <BlogBody class="font-main-bold">Region: Singapore</BlogBody>
+                        <BlogBody class="font-main.jsx-bold">Region: Singapore</BlogBody>
                         <BlogBody>Choose country that the most nearest your country</BlogBody>
                     </li>
                     <li>
-                        <BlogBody class="font-main-bold">Choose an image: Ubuntu</BlogBody>
+                        <BlogBody class="font-main.jsx-bold">Choose an image: Ubuntu</BlogBody>
                         <BlogBody>Choose what OS you want, but in this article I choose Ubuntu as the most common linux</BlogBody>
                     </li>
                     <li>
-                        <BlogBody class="font-main-bold">Choose size: select the cheapest one 1CPU, 1GB RAM took 6$/month</BlogBody>
+                        <BlogBody class="font-main.jsx-bold">Choose size: select the cheapest one 1CPU, 1GB RAM took 6$/month</BlogBody>
                         <BlogBody>Since the heaviest job is build the source code is taken by Github Action Runner, so we only need a very tiny server to host our webserver</BlogBody>
                     </li>
                     <li>
-                        <BlogBody class="font-main-bold">Select Authentication Method: SSH</BlogBody>
+                        <BlogBody class="font-main.jsx-bold">Select Authentication Method: SSH</BlogBody>
                         <BlogBody>To perform the remote access to your droplet, you need to setup the authentication method, visit digital ocean website <BlogLink href="https://docs.digitalocean.com/products/droplets/how-to/connect-with-ssh">how to connect with ssh</BlogLink>
                         </BlogBody>
                     </li>
@@ -288,7 +288,7 @@ docker run -p 3000:80 --name simple_web_container simple_web:latest
 on:
   push:
     branches:
-      - 'main' # Your master branch
+      - 'main.jsx' # Your master branch
 env:
   IMAGE_NAME: ${{ secrets.DOCKER_REGISTRY_USERNAME }}/simple_web # feel free to edit to your project name
 
