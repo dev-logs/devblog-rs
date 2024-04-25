@@ -12,11 +12,11 @@ async fn main() -> std::io::Result<()> {
     use devblog_rs::app::*;
     use devblog_rs::core_services::surrealdb::connect::connect_surrealdb;
 
-    connect_surrealdb().await;
+    // connect_surrealdb().await;
 
-    start_migration().await.map_err(|e| {
-        log!("Failed to perform migration {:?}", e)
-    }).unwrap();
+    // start_migration().await.map_err(|e| {
+    //     log!("Failed to perform migration {:?}", e)
+    // }).unwrap();
 
     let conf = get_configuration(None).await.unwrap();
     let addr = conf.leptos_options.site_addr;
@@ -34,7 +34,7 @@ async fn main() -> std::io::Result<()> {
             .service(Files::new("/pkg", format!("{site_root}/pkg")))
             // serve other assets from the `assets` directory
             .service(Files::new("/assets", site_root))
-            // serve source code of 3d project under buildDir 3d/dist
+            // serve source code of 3d project under buildDir 3d-dist
             .service(Files::new("/assets-3d", format!("{site_root}/3d-dist")))
             // serve the favicon from /favicon.ico
             .service(favicon)

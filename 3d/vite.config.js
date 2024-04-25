@@ -8,8 +8,8 @@ import cheerio from 'cheerio'
 export default defineConfig({
   plugins: [
       react(),
-      Checker()
-      // myPlugin()
+      Checker(),
+      generateBuildReport()
   ],
   publicDir: 'assets-3d',
   build: {
@@ -19,17 +19,17 @@ export default defineConfig({
     manifest: false,
     rollupOptions: {
       output: {
-        entryFileNames: '[name].js',
-        chunkFileNames: '[name].js',
-        assetFileNames: '[name].[ext]'
+        entryFileNames: `[name].js`,
+        chunkFileNames: `[name].js`,
+        assetFileNames: `[name].[ext]`
       }
     }
   }
 })
 
-function myPlugin()  {
+function generateBuildReport()  {
   return {
-    name: 'my-plugin',
+    name: 'build-report',
     enforce: 'post',
     apply: 'build',
     buildStart: async () => {
@@ -40,7 +40,7 @@ function myPlugin()  {
       const $ = cheerio.load(html);
       const scriptSrc = $('script').attr('src');
       fs.writeFileSync('./build-report.json', JSON.stringify({
-        js_file: scriptSrc
+        js_file: '/assets-3d/index.js'
       }))
     },
   };

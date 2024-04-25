@@ -22,6 +22,7 @@ impl<T> Service<Params, User> for CreateGuestUserApiImpl<T> where T: RandomUserD
                     .query(surreal_quote!(r#"CREATE #record(&user)"#))
                     .await?
                     .take(0)?;
+
                 Ok(created_user.unwrap())
             }
             Some(_) => {Err(Errors::AlreadyExist(format!("User {}", params.display_name)))}
