@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from "react";
-import {useRef, Suspense} from "react";
+import React, {useEffect, useState} from "react"
+import {useRef, Suspense} from "react"
 import {Canvas, useFrame, useThree, useLoader} from "@react-three/fiber";
 import {
   OrbitControls,
@@ -7,46 +7,54 @@ import {
   Gltf,
   useGLTF,
   Environment,
-} from "@react-three/drei";
+} from "@react-three/drei"
 import {ViewPortPosition} from "../utils"
 
-import * as THREE from "three";
+import {Leva, useControls} from 'leva'
+import {Perf} from 'r3f-perf'
+import * as THREE from "three"
 import {Hamburger} from "../models/index.js"
+import beermugVertexShader from '../glsl/beermug/vertex.glsl'
+import beermugFragmentShader from '../glsl/beermug/fragment.glsl'
+
+const defaultValueDecimalControl = ({value = 0, step = 0.01, min = 0.1, max = 1}) => {
+  return {value, min, max, step}
+}
 
 export const R3FHeaderComponent = () => {
-  const three = useThree();
-  const hamburger = useRef();
-  const beerModel = useGLTF("/assets-3d/models/beermug/geometries.glb");
+  const three = useThree()
+  const hamburger = useRef()
+  const controls = useControls({
+    perfVisible: true,
+    glassColor: '#ffffff',
+    glassTransparent: defaultValueDecimalControl({value: 1}),
+    glassMetalness: defaultValueDecimalControl({value: 0.6}),
+    glassRoughness: defaultValueDecimalControl({value: 0}),
+    glassEmissive: '#aa7a13',
+    foamWaveSpeed: defaultValueDecimalControl({value: 0.1, step: 0.01, min: 0}),
+    foamElevation: defaultValueDecimalControl({value: 0.1, step: 0.01, max: 0.2, min: 0.00}),
+    foamColor: '#ffffff',
+    foamWaveFrequency: {
+      x: 0.1,
+      y: 0.2
+    }
+  })
+
+  const beerModel = useGLTF("/assets-3d/models/beermug/geometries.glb")
   const map = useLoader(
     THREE.TextureLoader,
     "/assets-3d/models/beermug/baked.jpg",
-  );
+  )
 
-
-  // const studioMap = useLoader(
-  //   THREE.TextureLoader,
-  //   "/assets-3d/studio-light.jpg",
-  // )
-
-
-  map.colorSpace = THREE.SRGBColorSpace;
+  map.colorSpace = THREE.SRGBColorSpace
   map.flipY = false
-  let material = new THREE.MeshBasicMaterial({
-    map,
-    transparent: true,
-  });
-
-  // material = new THREE.MeshStandardMaterial({
-  //     roughness: 0.1,
-  //     transparent: true
-  // })
 
   const glassMaterial = new THREE.MeshPhysicalMaterial({
-    color: 0xffffff,
-    roughness: 0.0,
-    metalness: 0.6,
-    transmission: 1, // Add transparency
-    emissive: 0xaa7a13,
+    color: controls.glassColor,
+    roughness: controls.glassRoughness,
+    metalness: controls.glassMetalness,
+    transmission: controls.glassTransparent,
+    emissive: controls.glassEmissive
   })
 
   const beerMaterial = new THREE.MeshPhongMaterial({
@@ -54,11 +62,23 @@ export const R3FHeaderComponent = () => {
     emissive: 0xff7b00
   })
 
-  const foamMaterial = new THREE.MeshPhysicalMaterial({
-   color: 0xe7eff3,
-   roughness: 0.0,
-   transmission: 0.09, // Add transparency
-   emissive: 0xe7eff3,
+  const foamMaterial = new THREE.ShaderMaterial({
+    vertexShader: beermugVertexShader,
+    fragmentShader: beermugFragmentShader,
+    uniforms: {
+      uRotation: {value: new THREE.Vector3(0, 0, 0)},
+      uTime: {value: 1.0},
+      uBigWavesSpeed: {value: controls.foamWaveSpeed},
+      uBigWavesElevation: {value: controls.foamElevation},
+      uBigWavesFrequency: {value: controls.foamWaveFrequency},
+      uColor: {value: new THREE.Color(controls.foamColor)}
+    }
+  })
+
+  useFrame(({clock}) => {
+    const delta = clock.getDelta()
+    foamMaterial.uniforms.uRotation.value = three.camera.rotation
+    foamMaterial.uniforms.uTime.value = clock.elapsedTime
   })
 
   beerModel.scene.traverse((c) => {
@@ -68,7 +88,6 @@ export const R3FHeaderComponent = () => {
         break
       case 'BEER':
         c.material = beerMaterial
-        console.log('ok')
         break
       case 'FOAM':
         c.material = foamMaterial
@@ -79,18 +98,18 @@ export const R3FHeaderComponent = () => {
     }
   })
 
-  const [viewport, updateViewport] = useState(three.viewport);
+  const [viewport, updateViewport] = useState(three.viewport)
 
   useFrame((frame) => {
-    const elapsedTime = frame.clock.elapsedTime;
+    const elapsedTime = frame.clock.elapsedTime
     if (hamburger.current) {
-      hamburger.current.rotation.y = elapsedTime * 0.1;
+      hamburger.current.rotation.y = elapsedTime * 0.1
     }
-  });
+  })
 
   React.useEffect(() => {
-    if (!three) return;
-  }, [three]);
+    if (!three) return
+  }, [three])
 
   return (
     <>
@@ -100,8 +119,7 @@ export const R3FHeaderComponent = () => {
       />
       <OrbitControls />
       <directionalLight position={beerModel.scene.children[0].position} intensity={0.5} args={[0xff7b00]}/>
-      {/*<Hamburger ref={hamburger} viewportPosition={[1, 2]} scale={0.5} rotation-z={Math.PI * 0.3}/>*/}
       <primitive object={beerModel.scene} scale={6} transparent={true} />
     </>
-  );
-};
+  )
+}
