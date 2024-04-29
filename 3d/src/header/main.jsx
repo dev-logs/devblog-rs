@@ -1,20 +1,24 @@
 import React from "react";
 import {
     Environment,
-    OrbitControls
+    OrbitControls,
+    useTexture
 } from "@react-three/drei";
-import { BeerMug } from "../models/beermug";
+import { BeerMug } from "../models/beermug"
+import { MacOne } from "../models/macone"
 
 export const R3FHeaderComponent = () => {
   return (
     <>
       <Environment
-        environmentIntensity={7}
-        files={"/assets-3d/studio-light.jpg"}
+        environmentIntensity={3}
+        files={"/assets-3d/studio-room.jpg"}
       />
       <OrbitControls />
-      {/* <directionalLight position={beerModel.scene.children[0].position} intensity={0.5} args={[0xff7b00]}/> */}
       <BeerMug/>
+      <MacOne/>
     </>
   )
 }
+
+useTexture.preload('/assets-3d/studio-room.jpg')

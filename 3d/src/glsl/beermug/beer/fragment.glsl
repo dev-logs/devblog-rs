@@ -2,7 +2,7 @@ varying vec2 vUv;
 varying float vRandom;
 uniform vec3 uColor;
 uniform float uTime;
-
+uniform sampler2D uTexture;
 
 // Classic Perlin 3D Noise
 // by Stefan Gustavson
@@ -103,5 +103,6 @@ void main() {
     float bubbles = smoothstep(0.55, 0.8, bubblePattern);
 
     vec3 color = uColor * (1.0 - bubbles * 0.8);
+
     gl_FragColor = vec4(color, 1.0);;
 }

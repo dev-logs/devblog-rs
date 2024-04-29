@@ -8,6 +8,7 @@ import beerVertexShader from '../glsl/beermug/beer/vertex.glsl'
 import beerFragmentShader from '../glsl/beermug/beer/fragment.glsl'
 import {
   useGLTF,
+  useTexture
 } from "@react-three/drei"
 import { getControlValue } from "../utils"
 
@@ -36,6 +37,7 @@ export const BeerMugDefaultConfig = {
 export const BeerMug = (props) => {
   const three = useThree()
   const controls = useControls(BeerMugDefaultConfig)
+  const envMap = useTexture('/assets-3d/studio-room.jpg')
 
   const beerModel = useGLTF("/assets-3d/models/beermug/geometries.glb")
 
